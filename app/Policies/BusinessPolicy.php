@@ -40,4 +40,12 @@ class BusinessPolicy
     {
         return $user->isAdmin();
     }
+
+    /**
+     * Approving, suspending and reactivating are all admin moderation actions.
+     */
+    public function updateStatus(User $user, Business $business): bool
+    {
+        return $user->isAdmin();
+    }
 }

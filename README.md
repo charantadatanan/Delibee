@@ -70,7 +70,9 @@ Seller accounts are generated with fake emails; use the admin account to approve
 
 ## Admin operations
 
-Seller onboarding requires admin approval. Until the admin UI exists, set a shop's status from the CLI:
+Admins get a **Hive Guard** page at `/admin/businesses` (linked in the sidebar) to review pending shops, approve them, suspend active sellers, and reactivate suspended ones.
+
+The same actions are available from the CLI:
 
 ```bash
 php artisan business:status sunrise-orchard active
@@ -115,7 +117,7 @@ docs/screenshots/                                README screenshots
 
 ## Status
 
-- 80 tests (79 passing, 1 skipped — two-factor authentication is disabled in this build), 189 assertions.
+- 86 tests (85 passing, 1 skipped — two-factor authentication is disabled in this build), 199 assertions.
 - PHPStan level 7: 0 errors. Pint: clean.
 - Payment is offline for now; launch currency, seller payout model and the payment gateway remain open product decisions.
 

@@ -50,6 +50,16 @@
             </flux:sidebar.nav>
             @endif
 
+            @if (auth()->check() && auth()->user()->isAdmin())
+            <flux:sidebar.nav>
+                <flux:sidebar.group :heading="__('Hive Guard')" class="grid">
+                    <flux:sidebar.item icon="shield-check" :href="route('admin.businesses')" :current="request()->routeIs('admin.*')" wire:navigate>
+                        {{ __('Businesses') }}
+                    </flux:sidebar.item>
+                </flux:sidebar.group>
+            </flux:sidebar.nav>
+            @endif
+
             <flux:spacer />
 
             <flux:sidebar.nav>
