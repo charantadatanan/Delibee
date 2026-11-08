@@ -11,8 +11,6 @@ new #[Livewire\Attributes\Title('Conversation')] class extends Component
 
     public string $newMessage = '';
 
-    protected $listeners = ['echo' => '$refresh'];
-
     public function mount(Conversation $conversation): void
     {
         $this->authorize('view', $conversation);
@@ -104,8 +102,8 @@ new #[Livewire\Attributes\Title('Conversation')] class extends Component
         </a>
     </div>
 
-    <div wire:poll.5s="echo" class="overflow-hidden rounded-2xl border border-comb/90 bg-white/70 dark:border-zinc-800 dark:bg-zinc-900/70">
-        <div class="h-[400px] overflow-y-auto p-4 space-y-4" wire:scroll.near.bottom="echo">
+    <div wire:poll.5s class="overflow-hidden rounded-2xl border border-comb/90 bg-white/70 dark:border-zinc-800 dark:bg-zinc-900/70">
+        <div class="h-[400px] overflow-y-auto p-4 space-y-4" wire:scroll.near.bottom="$refresh">
             @if ($this->conversation->messages->isEmpty())
                 <p class="text-center text-zinc-500 py-8">No messages yet. Start the conversation.</p>
             @else

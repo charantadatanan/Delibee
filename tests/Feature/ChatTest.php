@@ -3,6 +3,7 @@
 use App\Models\Business;
 use App\Models\Conversation;
 use App\Models\Message;
+use App\Models\Product;
 use App\Models\User;
 use Livewire\Livewire;
 
@@ -54,6 +55,64 @@ it('marks the other party messages as read', function () {
         ->assertHasNoErrors();
 
     expect($message->fresh()->read_at)->not->toBeNull();
+});
+
+it('starts a conversation from the product page', function () {
+    $customer = User::factory()->create();
+    $owner = User::factory()->create();
+    $business = Business::factory()->for($owner, 'owner')->create();
+    $product = Product::factory()->for($business)->create();
+
+    $component = Livewire::actingAs($customer)
+        ->test('storefront.product-details', ['business' => $business, 'product' => $product])
+        ->call('startChat');
+
+    $conversation = Conversation::firstOrFail();
+    $component->assertRedirect(route('chat.show', $conversation));
+
+    expect($conversation->business_id)->toBe($business->id)
+        ->and($conversation->user_id)->toBe($customer->id);
+});
+
+it('reuses an existing conversation when messaging the seller again', function () {
+    $customer = User::factory()->create();
+    $owner = User::factory()->create();
+    $business = Business::factory()->for($owner, 'owner')->create();
+    $product = Product::factory()->for($business)->create();
+
+    $existing = Conversation::factory()->for($business)->for($customer)->create();
+
+    Livewire::actingAs($customer)
+        ->test('storefront.product-details', ['business' => $business, 'product' => $product])
+        ->call('startChat')
+        ->assertRedirect(route('chat.show', $existing));
+
+    expect(Conversation::count())->toBe(1);
+});
+
+it('redirects a guest to login when messaging a seller', function () {
+    $owner = User::factory()->create();
+    $business = Business::factory()->for($owner, 'owner')->create();
+    $product = Product::factory()->for($business)->create();
+
+    Livewire::test('storefront.product-details', ['business' => $business, 'product' => $product])
+        ->call('startChat')
+        ->assertRedirect(route('login'));
+
+    expect(Conversation::count())->toBe(0);
+});
+
+it('does not let a seller message their own shop', function () {
+    $owner = User::factory()->create();
+    $business = Business::factory()->for($owner, 'owner')->create();
+    $product = Product::factory()->for($business)->create();
+
+    Livewire::actingAs($owner)
+        ->test('storefront.product-details', ['business' => $business, 'product' => $product])
+        ->call('startChat')
+        ->assertDontSee('Message seller');
+
+    expect(Conversation::count())->toBe(0);
 });
 
 it('forbids outsiders from viewing a conversation', function () {

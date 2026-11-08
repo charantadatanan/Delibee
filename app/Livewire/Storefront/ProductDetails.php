@@ -5,6 +5,7 @@ namespace App\Livewire\Storefront;
 use App\Enums\BusinessStatus;
 use App\Enums\ProductStatus;
 use App\Models\Business;
+use App\Models\Conversation;
 use App\Models\Product;
 use App\Services\CartService;
 use Flux\Flux;
@@ -74,6 +75,30 @@ class ProductDetails extends Component
         Flux::toast('Added to your Honey Pot.', variant: 'success');
 
         unset($this->inCart);
+    }
+
+    public function startChat(): void
+    {
+        $user = Auth::user();
+
+        if ($user === null) {
+            Flux::toast('Please sign in to message a seller.', variant: 'info');
+
+            $this->redirect(route('login'), navigate: true);
+
+            return;
+        }
+
+        if ($user->id === $this->business->owner_id) {
+            return;
+        }
+
+        $conversation = Conversation::firstOrCreate([
+            'business_id' => $this->business->id,
+            'user_id' => $user->id,
+        ]);
+
+        $this->redirect(route('chat.show', $conversation), navigate: true);
     }
 
     public function render(): View

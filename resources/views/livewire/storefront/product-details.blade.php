@@ -81,6 +81,14 @@
                 <span wire:loading.remove wire:target="addToCart">Add to Honey Pot</span>
                 <span wire:loading wire:target="addToCart">Adding…</span>
             </button>
+
+            @if (auth()->id() !== $business->owner_id)
+                <button type="button"
+                        wire:click="startChat"
+                        class="rounded-lg border border-comb bg-white/60 px-5 py-2.5 font-semibold text-ink transition hover:border-honey-deep/40 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100 dark:hover:border-honey/40">
+                    Message seller
+                </button>
+            @endif
         </div>
 
         @if ($this->inCart() > 0)
