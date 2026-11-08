@@ -1,0 +1,153 @@
+<?php
+
+use App\Models\Conversation;
+use App\Models\Message;
+use Livewire\Attributes\Computed;
+use Livewire\Component;
+
+new #[Livewire\Attributes\Title('Conversation')] class extends Component
+{
+    public Conversation $conversation;
+
+    public string $newMessage = '';
+
+    protected $listeners = ['echo' => '$refresh'];
+
+    public function mount(Conversation $conversation): void
+    {
+        $this->authorize('view', $conversation);
+
+        $this->conversation = $conversation->load(['business', 'user', 'messages.sender']);
+    }
+
+    #[Computed]
+    public function otherParty()
+    {
+        return $this->conversation->user_id === auth()->id()
+            ? $this->conversation->business
+            : $this->conversation->user;
+    }
+
+    public function sendMessage(): void
+    {
+        $this->authorize('reply', $this->conversation);
+
+        $this->validate([
+            'newMessage' => ['required', 'string', 'max:4000'],
+        ]);
+
+        $message = $this->conversation->messages()->create([
+            'sender_id' => auth()->id(),
+            'body' => $this->newMessage,
+        ]);
+
+        // If this is the seller's first reply, stamp it
+        if ($this->conversation->first_reply_at === null &&
+            auth()->id() === $this->conversation->business->owner_id) {
+            $this->conversation->update([
+                'first_reply_at' => now(),
+            ]);
+        }
+
+        $this->conversation->update([
+            'last_message_at' => now(),
+        ]);
+
+        $this->newMessage = '';
+
+        unset($this->conversation);
+    }
+
+    public function markAsRead(): void
+    {
+        $this->authorize('view', $this->conversation);
+
+        $this->conversation->messages()
+            ->where('sender_id', '!=', auth()->id())
+            ->whereNull('read_at')
+            ->update(['read_at' => now()]);
+
+        unset($this->conversation);
+    }
+};
+?>
+
+<div class="space-y-6">
+    @php($isCustomer = $conversation->user_id === auth()->id())
+    @php($otherParty = $isCustomer ? $conversation->business : $conversation->user)
+
+    <div class="flex flex-wrap items-center justify-between gap-4">
+        <div class="flex items-center gap-3 min-w-0">
+            <a href="{{ $isCustomer ? route('businesses.show', $otherParty->slug) : route('dashboard') }}"
+               wire:navigate>
+                <flux:avatar name="{{ $otherParty->name }}" class="size-10" />
+            </a>
+            <div>
+                <p class="font-medium truncate">{{ $otherParty->name }}</p>
+                <p class="text-xs text-zinc-500">
+                    @if ($isCustomer)
+                        {{ $conversation->business->name }}
+                    @else
+                        {{ $conversation->user->name }}
+                    @endif
+                    @if ($conversation->subject)
+                        · {{ $conversation->subject }}
+                    @endif
+                </p>
+            </div>
+        </div>
+
+        <a href="{{ route('chat.index') }}"
+           class="rounded-lg border border-zinc-300 bg-white px-4 py-2 text-sm font-medium text-zinc-700 hover:bg-zinc-50 dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-200 dark:hover:bg-zinc-700"
+           wire:navigate>
+            Back to conversations
+        </a>
+    </div>
+
+    <div wire:poll.5s="echo" class="rounded-xl border border-zinc-200 bg-white dark:border-zinc-700 dark:bg-zinc-800">
+        <div class="h-[400px] overflow-y-auto p-4 space-y-4" wire:scroll.near.bottom="echo">
+            @if ($this->conversation->messages->isEmpty())
+                <p class="text-center text-zinc-500 py-8">No messages yet. Start the conversation.</p>
+            @else
+                @foreach ($this->conversation->messages as $message)
+                    @php($isOwn = $message->sender_id === auth()->id())
+                    <div class="flex gap-3 {{ $isOwn ? 'flex-row-reverse' : '' }}">
+                        <flux:avatar
+                            name="{{ $message->sender->name }}"
+                            initials="{{ $message->sender->initials() }}"
+                            class="size-8 shrink-0 mt-1" />
+
+                        <div class="max-w-[70%] {{ $isOwn ? 'text-right' : '' }}">
+                            <div class="{{ $isOwn ? 'bg-amber-500 text-white' : 'bg-zinc-100 text-zinc-900 dark:bg-zinc-700 dark:text-zinc-100' }}
+                                        rounded-2xl px-4 py-2 {{ $isOwn ? 'rounded-tr-sm' : 'rounded-tl-sm' }}">
+                                <p class="text-sm">{{ $message->body }}</p>
+                            </div>
+                            <p class="mt-1 text-xs text-zinc-400">
+                                {{ $message->created_at->format('g:i a') }}
+                                @if ($isOwn && $message->read_at)
+                                    <span class="ml-1 text-emerald-500">✓✓</span>
+                                @endif
+                            </p>
+                        </div>
+                    </div>
+                @endforeach
+            @endif
+        </div>
+
+        <form wire:submit="sendMessage" class="border-t border-zinc-200 p-4 dark:border-zinc-700">
+            <div class="flex items-center gap-3">
+                <input type="text"
+                       wire:model="newMessage"
+                       placeholder="Type a message..."
+                       class="flex-1 rounded-lg border border-zinc-300 bg-white px-4 py-2 text-sm dark:border-zinc-600 dark:bg-zinc-900"
+                       wire:keydown.enter="sendMessage">
+
+                <button type="submit"
+                        wire:loading.attr="disabled"
+                        class="rounded-lg bg-amber-500 px-4 py-2 text-sm font-semibold text-white hover:bg-amber-600 disabled:opacity-50">
+                    Send
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

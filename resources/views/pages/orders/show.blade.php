@@ -1,0 +1,280 @@
+<?php
+
+use App\Enums\OrderStatus;
+use App\Enums\PointsReason;
+use App\Enums\ReviewStatus;
+use App\Models\Order;
+use App\Models\OrderItem;
+use App\Models\PointsLedgerEntry;
+use App\Models\Review;
+use App\Services\CheckoutService;
+use App\Services\PointsService;
+use Illuminate\Support\Facades\DB;
+use Livewire\Attributes\Computed;
+use Livewire\Component;
+
+new #[Livewire\Attributes\Title('Order Details')] class extends Component
+{
+    public Order $order;
+
+    /**
+     * The rating the customer is leaving for a given order item.
+     *
+     * @var array<int, int>
+     */
+    public array $ratings = [];
+
+    /**
+     * @var array<int, string>
+     */
+    public array $reviewBodies = [];
+
+    public function mount(Order $order): void
+    {
+        $this->authorize('view', $order);
+
+        $this->order = $order->load(['business', 'items.product', 'statusEvents.actor']);
+    }
+
+    #[Computed]
+    public function timeline(): array
+    {
+        $steps = collect(OrderStatus::progression())->map(fn (OrderStatus $status): array => [
+            'status' => $status,
+            'at' => $this->order->statusEvents->firstWhere('status', $status)?->created_at,
+        ]);
+
+        return $steps->all();
+    }
+
+    public function leaveReview(int $orderItemId): void
+    {
+        $item = $this->order->items->firstWhere('id', $orderItemId);
+
+        if ($item === null || ! $this->order->status->isTerminal()) {
+            return;
+        }
+
+        $this->authorize('review', $this->order);
+
+        $validated = $this->validate([
+            "ratings.{$orderItemId}" => ['required', 'integer', 'min:1', 'max:5'],
+            "reviewBodies.{$orderItemId}" => ['nullable', 'string', 'max:2000'],
+        ]);
+
+        DB::transaction(function () use ($item, $orderItemId, $validated): void {
+            $review = Review::updateOrCreate(
+                [
+                    'user_id' => auth()->id(),
+                    'order_item_id' => $orderItemId,
+                ],
+                [
+                    'business_id' => $this->order->business_id,
+                    'product_id' => $item->product_id,
+                    'order_id' => $this->order->id,
+                    'rating' => $validated['ratings'][$orderItemId],
+                    'title' => null,
+                    'body' => $validated['reviewBodies'][$orderItemId] ?? null,
+                    'status' => ReviewStatus::Published,
+                ],
+            );
+
+            // Reward the first submission only; editing a rating must not
+            // farm the review bonus again.
+            if ($review->wasRecentlyCreated) {
+                app(PointsService::class)->award(
+                    auth()->user(),
+                    (int) config('commerce.review_reward_points'),
+                    PointsReason::ReviewReward,
+                    OrderItem::class,
+                    $orderItemId,
+                );
+            }
+        });
+
+        \Flux\Flux::toast('Thanks for your rating.', variant: 'success');
+
+        unset($this->timeline);
+    }
+
+    public function cancel(): void
+    {
+        $this->authorize('cancel', $this->order);
+
+        if (! $this->order->status->isCancellable()) {
+            return;
+        }
+
+        DB::transaction(function (): void {
+            foreach ($this->order->items as $item) {
+                $item->product?->increment('stock', $item->quantity);
+            }
+
+            $this->order->update([
+                'status' => OrderStatus::Cancelled,
+                'cancelled_at' => now(),
+            ]);
+
+            $this->order->statusEvents()->create([
+                'status' => OrderStatus::Cancelled,
+                'note' => 'Order cancelled.',
+                'created_by' => auth()->id(),
+            ]);
+
+            $this->reversePurchasePoints();
+        });
+
+        unset($this->timeline);
+    }
+
+    /**
+     * Put back the points the order earned, once, when it is cancelled.
+     */
+    private function reversePurchasePoints(): void
+    {
+        $ledger = PointsLedgerEntry::query()
+            ->where('user_id', $this->order->user_id)
+            ->where('reference_type', Order::class)
+            ->where('reference_id', $this->order->id);
+
+        $wasAwarded = (clone $ledger)->where('reason', PointsReason::Purchase)->exists();
+        $alreadyReversed = (clone $ledger)->where('reason', PointsReason::Refund)->exists();
+
+        if (! $wasAwarded || $alreadyReversed) {
+            return;
+        }
+
+        app(PointsService::class)->reverse(
+            $this->order->user,
+            app(CheckoutService::class)->pointsFor($this->order),
+            PointsReason::Refund,
+            Order::class,
+            $this->order->id,
+        );
+    }
+};
+?>
+
+<div class="space-y-6">
+    <div class="flex flex-wrap items-start justify-between gap-3">
+        <div>
+            <h1 class="text-2xl font-bold tracking-tight">Order {{ $order->number }}</h1>
+            <p class="mt-1 text-sm text-zinc-500">
+                {{ $order->business->name }} · ordered {{ $order->ordered_at?->format('j M Y, g:i a') }}
+            </p>
+        </div>
+
+        <span class="rounded-full bg-amber-100 px-3 py-1.5 text-sm font-semibold text-amber-800 dark:bg-amber-500/20 dark:text-amber-300">
+            {{ $order->status->label() }}
+        </span>
+    </div>
+
+    <section class="rounded-xl border border-zinc-200 bg-white p-5 dark:border-zinc-700 dark:bg-zinc-800">
+        <h2 class="font-semibold">Tracking</h2>
+
+        <ol class="mt-4 space-y-4">
+            @foreach ($this->timeline() as $step)
+                <li class="flex gap-3">
+                    <span class="mt-1 grid size-4 shrink-0 place-items-center rounded-full
+                        {{ $step['at'] ? 'bg-amber-500' : 'bg-zinc-300 dark:bg-zinc-600' }}"></span>
+                    <div>
+                        <p class="text-sm font-medium {{ $step['at'] ? '' : 'text-zinc-400' }}">
+                            {{ $step['status']->label() }}
+                        </p>
+                        @if ($step['at'])
+                            <p class="text-xs text-zinc-500">{{ $step['at']->format('j M Y, g:i a') }}</p>
+                        @endif
+                    </div>
+                </li>
+            @endforeach
+        </ol>
+
+        @if ($order->status->isCancellable())
+            <button type="button" wire:click="cancel" wire:confirm="Cancel this order?"
+                    class="mt-5 rounded-lg border border-red-300 px-3 py-1.5 text-sm font-medium text-red-700 hover:bg-red-50 dark:border-red-800 dark:text-red-400 dark:hover:bg-red-500/10">
+                Cancel order
+            </button>
+        @endif
+    </section>
+
+    <section class="rounded-xl border border-zinc-200 bg-white p-5 dark:border-zinc-700 dark:bg-zinc-800">
+        <h2 class="font-semibold">Items</h2>
+
+        <ul class="mt-4 divide-y divide-zinc-200 dark:divide-zinc-700">
+            @foreach ($order->items as $item)
+                <li class="py-3">
+                    <div class="flex flex-wrap items-center justify-between gap-2">
+                        <div>
+                            <p class="font-medium">{{ $item->product_name }}</p>
+                            <p class="text-xs text-zinc-500">
+                                {{ $item->quantity }} × {{ \App\Support\Money::format($item->unit_price_minor, $order->currency) }}
+                            </p>
+                        </div>
+                        <p class="font-semibold">{{ \App\Support\Money::format($item->subtotal_minor, $order->currency) }}</p>
+                    </div>
+
+                    @if ($order->status === OrderStatus::Delivered)
+                        <div class="mt-3 rounded-lg bg-zinc-50 p-3 dark:bg-zinc-900">
+                            @php($existing = $item->reviews->first())
+
+                            @if ($existing)
+                                <p class="text-sm text-zinc-600 dark:text-zinc-400">
+                                    Your rating: <span class="text-amber-500">{{ str_repeat('★', $existing->rating) }}</span>
+                                </p>
+                            @else
+                                <p class="text-xs font-medium uppercase tracking-wide text-zinc-500">Rate this item</p>
+                                <div class="mt-2 flex items-center gap-3">
+                                    <select wire:model="ratings.{{ $item->id }}"
+                                            class="rounded-lg border border-zinc-300 bg-white px-3 py-1.5 text-sm dark:border-zinc-600 dark:bg-zinc-900">
+                                        <option value="">Choose a rating</option>
+                                        @for ($star = 5; $star >= 1; $star--)
+                                            <option value="{{ $star }}">{{ $star }} star{{ $star === 1 ? '' : 's' }}</option>
+                                        @endfor
+                                    </select>
+
+                                    <input type="text"
+                                           wire:model="reviewBodies.{{ $item->id }}"
+                                           placeholder="Tell other buyers about it (optional)"
+                                           class="flex-1 rounded-lg border border-zinc-300 bg-white px-3 py-1.5 text-sm dark:border-zinc-600 dark:bg-zinc-900">
+
+                                    <button type="button"
+                                            wire:click="leaveReview({{ $item->id }})"
+                                            class="rounded-lg bg-amber-500 px-3 py-1.5 text-sm font-semibold text-white hover:bg-amber-600">
+                                        Submit
+                                    </button>
+                                </div>
+                            @endif
+                        </div>
+                    @endif
+                </li>
+            @endforeach
+        </ul>
+
+        <dl class="mt-4 space-y-1 border-t border-zinc-200 pt-4 text-sm dark:border-zinc-700">
+            <div class="flex justify-between">
+                <dt class="text-zinc-500">Subtotal</dt>
+                <dd>{{ \App\Support\Money::format($order->subtotal_minor, $order->currency) }}</dd>
+            </div>
+            <div class="flex justify-between">
+                <dt class="text-zinc-500">Shipping</dt>
+                <dd>{{ \App\Support\Money::format($order->shipping_minor, $order->currency) }}</dd>
+            </div>
+            <div class="flex justify-between pt-1 text-base font-semibold">
+                <dt>Total</dt>
+                <dd>{{ \App\Support\Money::format($order->total_minor, $order->currency) }}</dd>
+            </div>
+        </dl>
+
+        @if ($order->shipping_address)
+            <div class="mt-4 border-t border-zinc-200 pt-4 text-sm dark:border-zinc-700">
+                <p class="font-medium">Delivering to</p>
+                <p class="mt-1 text-zinc-600 dark:text-zinc-400">
+                    {{ $order->shipping_address['name'] ?? '' }}<br>
+                    {{ $order->shipping_address['line1'] ?? '' }}<br>
+                    {{ $order->shipping_address['city'] ?? '' }} {{ $order->shipping_address['postal_code'] ?? '' }}<br>
+                    {{ $order->shipping_address['phone'] ?? '' }}
+                </p>
+            </div>
+        @endif
+    </section>
+</div>
