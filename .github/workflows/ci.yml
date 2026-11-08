@@ -53,6 +53,9 @@ jobs:
       - name: Install PHP dependencies
         run: composer install --no-interaction --prefer-dist --no-progress
 
+      - name: Audit PHP dependencies
+        run: composer audit --no-interaction
+
       - name: Prepare environment
         run: |
           cp .env.example .env
@@ -62,6 +65,9 @@ jobs:
         run: |
           npm ci
           npm run build
+
+      - name: Audit Node dependencies
+        run: npm audit --omit=dev --audit-level=high
 
       - name: Coding style
         run: vendor/bin/pint --test
