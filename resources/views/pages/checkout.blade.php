@@ -32,24 +32,33 @@ new #[Livewire\Attributes\Title('Checkout')] class extends Component
         return app(CartService::class)->groups(auth()->user());
     }
 
+    /**
+     * Totals grouped by the currency each seller charges in, so a cart that
+     * spans currencies never shows a meaningless combined figure.
+     *
+     * @return array<string, array{subtotal: int, shipping: int, total: int}>
+     */
     #[Computed]
-    public function subtotalMinor(): int
+    public function totalsByCurrency(): array
     {
-        return app(CartService::class)->subtotalMinor(auth()->user());
-    }
+        $flatShipping = (int) config('commerce.flat_shipping_minor', 0);
+        $totals = [];
 
-    #[Computed]
-    public function shippingMinor(): int
-    {
-        $groups = $this->groups();
+        foreach ($this->groups() as $items) {
+            $currency = $items->first()->product->business->currency;
 
-        return $groups->count() * (int) config('commerce.flat_shipping_minor', 0);
-    }
+            $totals[$currency] ??= ['subtotal' => 0, 'shipping' => 0, 'total' => 0];
+            $totals[$currency]['subtotal'] += $items->sum(fn ($item) => $item->subtotalMinor());
+            $totals[$currency]['shipping'] += $flatShipping;
+        }
 
-    #[Computed]
-    public function totalMinor(): int
-    {
-        return $this->subtotalMinor() + $this->shippingMinor();
+        foreach ($totals as $currency => $row) {
+            $totals[$currency]['total'] = $row['subtotal'] + $row['shipping'];
+        }
+
+        ksort($totals);
+
+        return $totals;
     }
 
     public function placeOrder(): void
@@ -177,18 +186,20 @@ new #[Livewire\Attributes\Title('Checkout')] class extends Component
                 </ul>
 
                 <dl class="mt-4 space-y-1 border-t border-comb/70 pt-4 text-sm dark:border-zinc-700">
-                    <div class="flex justify-between">
-                        <dt class="text-zinc-500">Subtotal</dt>
-                        <dd>{{ \App\Support\Money::format($this->subtotalMinor(), config('commerce.currency')) }}</dd>
-                    </div>
-                    <div class="flex justify-between">
-                        <dt class="text-zinc-500">Shipping</dt>
-                        <dd>{{ \App\Support\Money::format($this->shippingMinor(), config('commerce.currency')) }}</dd>
-                    </div>
-                    <div class="flex justify-between pt-1 text-base font-semibold">
-                        <dt>Total</dt>
-                        <dd>{{ \App\Support\Money::format($this->totalMinor(), config('commerce.currency')) }}</dd>
-                    </div>
+                    @foreach ($this->totalsByCurrency() as $currency => $totals)
+                        <div class="flex justify-between">
+                            <dt class="text-zinc-500 dark:text-zinc-400">Subtotal ({{ $currency }})</dt>
+                            <dd>{{ \App\Support\Money::format($totals['subtotal'], $currency) }}</dd>
+                        </div>
+                        <div class="flex justify-between">
+                            <dt class="text-zinc-500 dark:text-zinc-400">Shipping ({{ $currency }})</dt>
+                            <dd>{{ \App\Support\Money::format($totals['shipping'], $currency) }}</dd>
+                        </div>
+                        <div class="flex justify-between pt-1 text-base font-semibold">
+                            <dt>Total ({{ $currency }})</dt>
+                            <dd>{{ \App\Support\Money::format($totals['total'], $currency) }}</dd>
+                        </div>
+                    @endforeach
                 </dl>
 
                 <button type="submit"

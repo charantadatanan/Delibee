@@ -12,10 +12,13 @@ new #[Livewire\Attributes\Title('Honey Pot')] class extends Component
         return app(CartService::class)->groups(auth()->user());
     }
 
+    /**
+     * @return array<string, int>
+     */
     #[Computed]
-    public function subtotalMinor(): int
+    public function subtotals(): array
     {
-        return app(CartService::class)->subtotalMinor(auth()->user());
+        return app(CartService::class)->subtotalsByCurrency(auth()->user());
     }
 
     public function updateQuantity(int $itemId, int $quantity): void
@@ -24,7 +27,7 @@ new #[Livewire\Attributes\Title('Honey Pot')] class extends Component
 
         app(CartService::class)->updateQuantity(auth()->user(), $item, $quantity);
 
-        unset($this->groups, $this->subtotalMinor);
+        unset($this->groups, $this->subtotals);
     }
 
     public function remove(int $itemId): void
@@ -33,7 +36,7 @@ new #[Livewire\Attributes\Title('Honey Pot')] class extends Component
 
         app(CartService::class)->remove(auth()->user(), $item);
 
-        unset($this->groups, $this->subtotalMinor);
+        unset($this->groups, $this->subtotals);
     }
 };
 ?>
@@ -111,11 +114,13 @@ new #[Livewire\Attributes\Title('Honey Pot')] class extends Component
 
         <div class="flex flex-wrap items-center justify-between gap-4 rounded-2xl border border-comb/90 bg-white/70 p-4 dark:border-zinc-800 dark:bg-zinc-900/70">
             <div>
-                <p class="text-sm text-zinc-500 dark:text-zinc-400">Subtotal</p>
-                <p class="font-display text-3xl font-semibold">
-                    {{ \App\Support\Money::format($this->subtotalMinor(), config('commerce.currency')) }}
-                </p>
-                <p class="text-xs text-zinc-500 dark:text-zinc-400">Shipping is added per seller at checkout.</p>
+                @foreach ($this->subtotals() as $currency => $amount)
+                    <p class="text-sm text-zinc-500 dark:text-zinc-400">Subtotal ({{ $currency }})</p>
+                    <p class="font-display text-3xl font-semibold">
+                        {{ \App\Support\Money::format($amount, $currency) }}
+                    </p>
+                @endforeach
+                <p class="mt-1 text-xs text-zinc-500 dark:text-zinc-400">Shipping is added per seller at checkout.</p>
             </div>
 
             <a href="{{ route('checkout') }}"

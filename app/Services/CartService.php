@@ -125,6 +125,27 @@ class CartService
     }
 
     /**
+     * Minor-unit subtotals keyed by currency, because a cart can span sellers
+     * in different currencies.
+     *
+     * @return array<string, int>
+     */
+    public function subtotalsByCurrency(User $user): array
+    {
+        $totals = [];
+
+        foreach ($this->items($user) as $item) {
+            $currency = $item->product->currency;
+
+            $totals[$currency] = ($totals[$currency] ?? 0) + $item->subtotalMinor();
+        }
+
+        ksort($totals);
+
+        return $totals;
+    }
+
+    /**
      * How many units of a product the customer already has in the cart, so
      * the product page can cap the quantity it will accept.
      */

@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Business;
 use App\Models\CartItem;
 use App\Models\Product;
 use App\Models\User;
@@ -45,6 +46,31 @@ it('rejects adding an out-of-stock product', function () {
 
     expect(fn () => app(CartService::class)->add($user, $product))
         ->toThrow(RuntimeException::class);
+});
+
+it('groups cart subtotals by currency', function () {
+    $user = User::factory()->create();
+    $phpBusiness = Business::factory()->create(['currency' => 'PHP']);
+    $usdBusiness = Business::factory()->create(['currency' => 'USD']);
+    $phpProduct = Product::factory()->for($phpBusiness)->create([
+        'price_minor' => 10000,
+        'currency' => 'PHP',
+        'stock' => 5,
+    ]);
+    $usdProduct = Product::factory()->for($usdBusiness)->create([
+        'price_minor' => 2000,
+        'currency' => 'USD',
+        'stock' => 5,
+    ]);
+
+    $cart = app(CartService::class);
+    $cart->add($user, $phpProduct, 1);
+    $cart->add($user, $usdProduct, 1);
+
+    expect($cart->subtotalsByCurrency($user))->toBe([
+        'PHP' => 10000,
+        'USD' => 2000,
+    ]);
 });
 
 it('refuses to modify a cart line belonging to another user', function () {
