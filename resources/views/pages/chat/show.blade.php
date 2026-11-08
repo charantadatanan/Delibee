@@ -55,7 +55,7 @@ new #[Livewire\Attributes\Title('Conversation')] class extends Component
 
         $this->newMessage = '';
 
-        unset($this->conversation);
+        $this->conversation = $this->conversation->fresh(['business', 'user', 'messages.sender']);
     }
 
     public function markAsRead(): void
@@ -67,7 +67,7 @@ new #[Livewire\Attributes\Title('Conversation')] class extends Component
             ->whereNull('read_at')
             ->update(['read_at' => now()]);
 
-        unset($this->conversation);
+        $this->conversation = $this->conversation->fresh(['business', 'user', 'messages.sender']);
     }
 };
 ?>

@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Enums\BusinessStatus;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -26,8 +27,13 @@ class EnsureSeller
             return redirect()->route('seller.onboarding');
         }
 
-        if ($business->status->value === 'pending') {
+        if ($business->status === BusinessStatus::Pending) {
             return redirect()->route('seller.pending');
+        }
+
+        // Suspended shops keep their data but lose access to the seller desk.
+        if ($business->status !== BusinessStatus::Active) {
+            abort(403, 'This shop is not active.');
         }
 
         return $next($request);
