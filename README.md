@@ -68,6 +68,17 @@ php artisan serve
 
 Seller accounts are generated with fake emails; use the admin account to approve sellers or create one through the onboarding flow.
 
+## Admin operations
+
+Seller onboarding requires admin approval. Until the admin UI exists, set a shop's status from the CLI:
+
+```bash
+php artisan business:status sunrise-orchard active
+php artisan business:status sunrise-orchard suspended
+```
+
+Statuses are `pending`, `active` and `suspended`; the command looks the business up by slug.
+
 ## Quality gates
 
 ```bash
@@ -104,7 +115,7 @@ docs/screenshots/                                README screenshots
 
 ## Status
 
-- 73 tests (72 passing, 1 skipped — two-factor authentication is disabled in this build), 172 assertions.
+- 77 tests (76 passing, 1 skipped — two-factor authentication is disabled in this build), 179 assertions.
 - PHPStan level 7: 0 errors. Pint: clean.
 - Payment is offline for now; launch currency, seller payout model and the payment gateway remain open product decisions.
 
