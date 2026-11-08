@@ -83,28 +83,28 @@ new #[Livewire\Attributes\Title('Conversation')] class extends Component
                 <flux:avatar name="{{ $otherParty->name }}" class="size-10" />
             </a>
             <div>
-                <p class="font-medium truncate">{{ $otherParty->name }}</p>
-                <p class="text-xs text-zinc-500">
+                <p class="font-display text-lg font-semibold truncate">{{ $otherParty->name }}</p>
+                <p class="text-xs text-zinc-500 dark:text-zinc-400">
                     @if ($isCustomer)
                         {{ $conversation->business->name }}
                     @else
                         {{ $conversation->user->name }}
                     @endif
                     @if ($conversation->subject)
-                        · {{ $conversation->subject }}
+                        , {{ $conversation->subject }}
                     @endif
                 </p>
             </div>
         </div>
 
         <a href="{{ route('chat.index') }}"
-           class="rounded-lg border border-zinc-300 bg-white px-4 py-2 text-sm font-medium text-zinc-700 hover:bg-zinc-50 dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-200 dark:hover:bg-zinc-700"
+           class="rounded-lg border border-comb bg-white/60 px-4 py-2 text-sm font-medium text-zinc-700 transition hover:border-honey-deep/40 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:border-honey/40"
            wire:navigate>
             Back to conversations
         </a>
     </div>
 
-    <div wire:poll.5s="echo" class="rounded-xl border border-zinc-200 bg-white dark:border-zinc-700 dark:bg-zinc-800">
+    <div wire:poll.5s="echo" class="overflow-hidden rounded-2xl border border-comb/90 bg-white/70 dark:border-zinc-800 dark:bg-zinc-900/70">
         <div class="h-[400px] overflow-y-auto p-4 space-y-4" wire:scroll.near.bottom="echo">
             @if ($this->conversation->messages->isEmpty())
                 <p class="text-center text-zinc-500 py-8">No messages yet. Start the conversation.</p>
@@ -118,14 +118,14 @@ new #[Livewire\Attributes\Title('Conversation')] class extends Component
                             class="size-8 shrink-0 mt-1" />
 
                         <div class="max-w-[70%] {{ $isOwn ? 'text-right' : '' }}">
-                            <div class="{{ $isOwn ? 'bg-amber-500 text-white' : 'bg-zinc-100 text-zinc-900 dark:bg-zinc-700 dark:text-zinc-100' }}
+                            <div class="{{ $isOwn ? 'bg-honey text-ink' : 'bg-comb/50 text-ink dark:bg-zinc-800 dark:text-zinc-100' }}
                                         rounded-2xl px-4 py-2 {{ $isOwn ? 'rounded-tr-sm' : 'rounded-tl-sm' }}">
                                 <p class="text-sm">{{ $message->body }}</p>
                             </div>
                             <p class="mt-1 text-xs text-zinc-400">
                                 {{ $message->created_at->format('g:i a') }}
                                 @if ($isOwn && $message->read_at)
-                                    <span class="ml-1 text-emerald-500">✓✓</span>
+                                    <span class="ml-1 text-leaf dark:text-emerald-300">✓✓</span>
                                 @endif
                             </p>
                         </div>
@@ -134,17 +134,17 @@ new #[Livewire\Attributes\Title('Conversation')] class extends Component
             @endif
         </div>
 
-        <form wire:submit="sendMessage" class="border-t border-zinc-200 p-4 dark:border-zinc-700">
+        <form wire:submit="sendMessage" class="border-t border-comb/70 p-4 dark:border-zinc-800">
             <div class="flex items-center gap-3">
                 <input type="text"
                        wire:model="newMessage"
                        placeholder="Type a message..."
-                       class="flex-1 rounded-lg border border-zinc-300 bg-white px-4 py-2 text-sm dark:border-zinc-600 dark:bg-zinc-900"
+                       class="flex-1 rounded-lg border border-comb bg-paper/60 px-4 py-2 text-sm placeholder:text-zinc-400 focus:border-honey-deep focus:outline-none focus:ring-2 focus:ring-honey/40 dark:border-zinc-700 dark:bg-zinc-950 dark:placeholder:text-zinc-500"
                        wire:keydown.enter="sendMessage">
 
                 <button type="submit"
                         wire:loading.attr="disabled"
-                        class="rounded-lg bg-amber-500 px-4 py-2 text-sm font-semibold text-white hover:bg-amber-600 disabled:opacity-50">
+                        class="rounded-lg bg-ink px-4 py-2 text-sm font-semibold text-paper transition hover:bg-honey hover:text-ink disabled:opacity-50 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-honey dark:hover:text-ink">
                     Send
                 </button>
             </div>

@@ -94,64 +94,66 @@ new #[Livewire\Attributes\Title('Checkout')] class extends Component
 
 <div class="space-y-6">
     <div>
-        <h1 class="text-2xl font-bold tracking-tight">Checkout</h1>
-        <p class="mt-1 text-sm text-zinc-500">
-            Your cart will be split into {{ $this->groups()->count() }} {{ \Illuminate\Support\Str::plural('order', $this->groups()->count()) }} —
+        <h1 class="font-display text-3xl font-semibold tracking-tight sm:text-4xl">Checkout</h1>
+        <p class="mt-2 max-w-2xl text-sm text-zinc-500 dark:text-zinc-400">
+            Your cart will be split into {{ $this->groups()->count() }} {{ \Illuminate\Support\Str::plural('order', $this->groups()->count()) }},
             one per seller, each shipped separately.
         </p>
     </div>
 
     @if ($this->groups()->isEmpty())
-        <div class="rounded-xl border border-dashed border-zinc-300 p-12 text-center dark:border-zinc-700">
-            <p class="text-lg font-medium">There is nothing to check out.</p>
-            <a href="{{ route('marketplace') }}" class="mt-4 inline-block rounded-lg bg-amber-500 px-4 py-2 font-semibold text-white" wire:navigate>
+        <div class="rounded-2xl border border-dashed border-comb bg-white/50 p-12 text-center dark:border-zinc-700 dark:bg-zinc-900/50">
+            <p class="font-display text-xl font-semibold">There is nothing to check out.</p>
+            <a href="{{ route('marketplace') }}"
+               class="mt-5 inline-block rounded-lg bg-ink px-4 py-2 font-semibold text-paper transition hover:bg-honey hover:text-ink dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-honey dark:hover:text-ink"
+               wire:navigate>
                 Browse the marketplace
             </a>
         </div>
     @else
         <form wire:submit="placeOrder" class="grid gap-6 lg:grid-cols-[2fr_1fr]">
-            <section class="rounded-xl border border-zinc-200 bg-white p-5 dark:border-zinc-700 dark:bg-zinc-800">
+            <section class="rounded-2xl border border-comb/90 bg-white/70 p-5 dark:border-zinc-800 dark:bg-zinc-900/70">
                 <h2 class="font-semibold">Delivery address</h2>
 
                 <div class="mt-4 grid gap-4 sm:grid-cols-2">
                     <label class="block sm:col-span-2">
-                        <span class="text-xs font-medium uppercase tracking-wide text-zinc-500">Full name</span>
+                        <span class="text-xs font-medium text-zinc-500 dark:text-zinc-400">Full name</span>
                         <input type="text" wire:model="name"
-                               class="mt-1 w-full rounded-lg border border-zinc-300 bg-white px-3 py-2 text-sm dark:border-zinc-600 dark:bg-zinc-900">
+                               class="mt-1.5 w-full rounded-lg border border-comb bg-paper/60 px-3 py-2 text-sm focus:border-honey-deep focus:outline-none focus:ring-2 focus:ring-honey/40 dark:border-zinc-700 dark:bg-zinc-950">
                     </label>
 
                     <label class="block sm:col-span-2">
-                        <span class="text-xs font-medium uppercase tracking-wide text-zinc-500">Street address</span>
+                        <span class="text-xs font-medium text-zinc-500 dark:text-zinc-400">Street address</span>
                         <input type="text" wire:model="line1"
-                               class="mt-1 w-full rounded-lg border border-zinc-300 bg-white px-3 py-2 text-sm dark:border-zinc-600 dark:bg-zinc-900">
+                               class="mt-1.5 w-full rounded-lg border border-comb bg-paper/60 px-3 py-2 text-sm focus:border-honey-deep focus:outline-none focus:ring-2 focus:ring-honey/40 dark:border-zinc-700 dark:bg-zinc-950">
                     </label>
 
                     <label class="block">
-                        <span class="text-xs font-medium uppercase tracking-wide text-zinc-500">City</span>
+                        <span class="text-xs font-medium text-zinc-500 dark:text-zinc-400">City</span>
                         <input type="text" wire:model="city"
-                               class="mt-1 w-full rounded-lg border border-zinc-300 bg-white px-3 py-2 text-sm dark:border-zinc-600 dark:bg-zinc-900">
+                               class="mt-1.5 w-full rounded-lg border border-comb bg-paper/60 px-3 py-2 text-sm focus:border-honey-deep focus:outline-none focus:ring-2 focus:ring-honey/40 dark:border-zinc-700 dark:bg-zinc-950">
                     </label>
 
                     <label class="block">
-                        <span class="text-xs font-medium uppercase tracking-wide text-zinc-500">Postal code</span>
+                        <span class="text-xs font-medium text-zinc-500 dark:text-zinc-400">Postal code</span>
                         <input type="text" wire:model="postalCode"
-                               class="mt-1 w-full rounded-lg border border-zinc-300 bg-white px-3 py-2 text-sm dark:border-zinc-600 dark:bg-zinc-900">
+                               class="mt-1.5 w-full rounded-lg border border-comb bg-paper/60 px-3 py-2 text-sm focus:border-honey-deep focus:outline-none focus:ring-2 focus:ring-honey/40 dark:border-zinc-700 dark:bg-zinc-950">
                     </label>
 
                     <label class="block">
-                        <span class="text-xs font-medium uppercase tracking-wide text-zinc-500">Contact number</span>
+                        <span class="text-xs font-medium text-zinc-500 dark:text-zinc-400">Contact number</span>
                         <input type="tel" wire:model="phone"
-                               class="mt-1 w-full rounded-lg border border-zinc-300 bg-white px-3 py-2 text-sm dark:border-zinc-600 dark:bg-zinc-900">
+                               class="mt-1.5 w-full rounded-lg border border-comb bg-paper/60 px-3 py-2 text-sm focus:border-honey-deep focus:outline-none focus:ring-2 focus:ring-honey/40 dark:border-zinc-700 dark:bg-zinc-950">
                     </label>
 
                     <label class="block sm:col-span-2">
-                        <span class="text-xs font-medium uppercase tracking-wide text-zinc-500">Note for the sellers (optional)</span>
+                        <span class="text-xs font-medium text-zinc-500 dark:text-zinc-400">Note for the sellers (optional)</span>
                         <textarea wire:model="note" rows="3"
-                                  class="mt-1 w-full rounded-lg border border-zinc-300 bg-white px-3 py-2 text-sm dark:border-zinc-600 dark:bg-zinc-900"></textarea>
+                                  class="mt-1.5 w-full rounded-lg border border-comb bg-paper/60 px-3 py-2 text-sm focus:border-honey-deep focus:outline-none focus:ring-2 focus:ring-honey/40 dark:border-zinc-700 dark:bg-zinc-950"></textarea>
                     </label>
                 </div>
 
-                <div class="mt-6 rounded-lg bg-zinc-50 p-4 text-sm dark:bg-zinc-900">
+                <div class="mt-6 rounded-xl bg-comb/40 p-4 text-sm dark:bg-zinc-950/60">
                     <p class="font-medium">Payment</p>
                     <p class="mt-1 text-zinc-600 dark:text-zinc-400">
                         The payment method is not set up yet — the launch country and the seller payout model
@@ -161,7 +163,7 @@ new #[Livewire\Attributes\Title('Checkout')] class extends Component
                 </div>
             </section>
 
-            <aside class="h-fit rounded-xl border border-zinc-200 bg-white p-5 dark:border-zinc-700 dark:bg-zinc-800">
+            <aside class="h-fit rounded-2xl border border-comb/90 bg-white/70 p-5 dark:border-zinc-800 dark:bg-zinc-900/70">
                 <h2 class="font-semibold">Order summary</h2>
 
                 <ul class="mt-4 space-y-2 text-sm">
@@ -174,7 +176,7 @@ new #[Livewire\Attributes\Title('Checkout')] class extends Component
                     @endforeach
                 </ul>
 
-                <dl class="mt-4 space-y-1 border-t border-zinc-200 pt-4 text-sm dark:border-zinc-700">
+                <dl class="mt-4 space-y-1 border-t border-comb/70 pt-4 text-sm dark:border-zinc-700">
                     <div class="flex justify-between">
                         <dt class="text-zinc-500">Subtotal</dt>
                         <dd>{{ \App\Support\Money::format($this->subtotalMinor(), config('commerce.currency')) }}</dd>
@@ -191,7 +193,7 @@ new #[Livewire\Attributes\Title('Checkout')] class extends Component
 
                 <button type="submit"
                         wire:loading.attr="disabled"
-                        class="mt-5 w-full rounded-lg bg-amber-500 px-4 py-2.5 font-semibold text-white hover:bg-amber-600 disabled:opacity-50">
+                        class="mt-5 w-full rounded-lg bg-ink px-4 py-2.5 font-semibold text-paper transition hover:bg-honey hover:text-ink disabled:opacity-50 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-honey dark:hover:text-ink">
                     <span wire:loading.remove wire:target="placeOrder">Place order</span>
                     <span wire:loading wire:target="placeOrder">Placing…</span>
                 </button>

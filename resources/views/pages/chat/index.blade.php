@@ -56,25 +56,25 @@ new #[Livewire\Attributes\Title('Bee Chat')] class extends Component
 <div class="space-y-6">
     <div class="flex flex-wrap items-center justify-between gap-4">
         <div>
-            <h1 class="text-2xl font-bold tracking-tight">Bee Chat</h1>
-            <p class="mt-1 text-sm text-zinc-500">Messages with sellers and customers.</p>
+            <h1 class="font-display text-3xl font-semibold tracking-tight sm:text-4xl">Bee Chat</h1>
+            <p class="mt-2 text-sm text-zinc-500 dark:text-zinc-400">Messages with sellers and customers.</p>
         </div>
 
         <div class="relative max-w-xs flex-1">
             <flux:icon name="magnifying-glass" class="absolute left-3 top-1/2 -translate-y-1/2 size-5 text-zinc-400" />
             <input type="text"
                    wire:model.live.debounce.300ms="search"
-                   placeholder="Search conversations..."
-                   class="w-full rounded-lg border border-zinc-300 bg-white pl-10 pr-4 py-2 text-sm dark:border-zinc-600 dark:bg-zinc-900">
+                   placeholder="Search conversations"
+                   class="w-full rounded-lg border border-comb bg-paper/60 pl-10 pr-4 py-2 text-sm placeholder:text-zinc-400 focus:border-honey-deep focus:outline-none focus:ring-2 focus:ring-honey/40 dark:border-zinc-700 dark:bg-zinc-950 dark:placeholder:text-zinc-500">
         </div>
     </div>
 
     @if ($this->conversations()->isEmpty())
-        <div class="rounded-xl border border-dashed border-zinc-300 p-12 text-center dark:border-zinc-700">
-            <p class="text-lg font-medium">No conversations yet.</p>
-            <p class="mt-1 text-sm text-zinc-500">Start chatting with a seller from their product page.</p>
+        <div class="rounded-2xl border border-dashed border-comb bg-white/50 p-12 text-center dark:border-zinc-700 dark:bg-zinc-900/50">
+            <p class="font-display text-xl font-semibold">No conversations yet.</p>
+            <p class="mt-1 text-sm text-zinc-500 dark:text-zinc-400">Start chatting with a seller from their product page.</p>
             <a href="{{ route('marketplace') }}"
-               class="mt-4 inline-block rounded-lg bg-amber-500 px-4 py-2 font-semibold text-white hover:bg-amber-600"
+               class="mt-5 inline-block rounded-lg bg-ink px-4 py-2 font-semibold text-paper transition hover:bg-honey hover:text-ink dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-honey dark:hover:text-ink"
                wire:navigate>
                 Browse the marketplace
             </a>
@@ -88,7 +88,7 @@ new #[Livewire\Attributes\Title('Bee Chat')] class extends Component
                     $lastMessage = $conversation->messages->last();
                 @endphp
                 <a href="{{ route('chat.show', $conversation) }}"
-                   class="block rounded-xl border border-zinc-200 bg-white p-4 transition hover:border-amber-300 hover:bg-amber-50 dark:border-zinc-700 dark:bg-zinc-800 dark:hover:border-amber-800 dark:hover:bg-amber-500/10"
+                   class="block rounded-2xl border border-comb/90 bg-white/70 p-4 transition-colors hover:border-honey-deep/40 dark:border-zinc-800 dark:bg-zinc-900/70 dark:hover:border-honey/40"
                    wire:navigate>
                     <div class="flex flex-wrap items-center justify-between gap-3">
                         <div class="flex items-center gap-3 min-w-0">
@@ -119,7 +119,7 @@ new #[Livewire\Attributes\Title('Bee Chat')] class extends Component
                                 </p>
                             @endif
                             @if ($lastMessage && ! $lastMessage->read_at && $lastMessage->sender_id !== auth()->id())
-                                <span class="size-2 rounded-full bg-amber-500" />
+                                <span class="size-2 rounded-full bg-honey" />
                             @endif
                         </div>
                     </div>

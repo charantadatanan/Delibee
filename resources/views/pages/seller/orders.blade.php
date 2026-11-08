@@ -89,12 +89,12 @@ new #[Livewire\Attributes\Title('Seller Orders')] class extends Component
 <div class="space-y-6">
     <div class="flex flex-wrap items-center justify-between gap-4">
         <div>
-            <h1 class="text-2xl font-bold tracking-tight">Orders</h1>
-            <p class="mt-1 text-sm text-zinc-500">Manage orders for {{ $this->business()->name }}.</p>
+            <h1 class="font-display text-3xl font-semibold tracking-tight sm:text-4xl">Orders</h1>
+            <p class="mt-2 text-sm text-zinc-500 dark:text-zinc-400">Manage orders for {{ $this->business()->name }}.</p>
         </div>
 
         <select wire:model="statusFilter"
-                class="rounded-lg border border-zinc-300 bg-white px-3 py-2 text-sm dark:border-zinc-600 dark:bg-zinc-900">
+                class="rounded-lg border border-comb bg-paper/60 px-3 py-2 text-sm focus:border-honey-deep focus:outline-none focus:ring-2 focus:ring-honey/40 dark:border-zinc-700 dark:bg-zinc-950">
             <option value="all">All statuses</option>
             @foreach (App\Enums\OrderStatus::cases() as $status)
                 <option value="{{ $status->value }}">{{ $status->label() }}</option>
@@ -103,19 +103,19 @@ new #[Livewire\Attributes\Title('Seller Orders')] class extends Component
     </div>
 
     @if ($this->orders()->isEmpty())
-        <div class="rounded-xl border border-dashed border-zinc-300 p-12 text-center dark:border-zinc-700">
-            <p class="text-lg font-medium">No orders yet.</p>
+        <div class="rounded-2xl border border-dashed border-comb bg-white/50 p-12 text-center dark:border-zinc-700 dark:bg-zinc-900/50">
+            <p class="font-display text-xl font-semibold">No orders yet.</p>
             @if ($this->statusFilter !== 'all')
-                <a href="{{ route('seller.orders') }}" class="mt-4 inline-block text-sm text-amber-600 hover:underline" wire:navigate>
+                <a href="{{ route('seller.orders') }}" class="mt-4 inline-block text-sm font-medium text-honey-deep hover:underline dark:text-honey" wire:navigate>
                     View all statuses
                 </a>
             @endif
         </div>
     @else
-        <div class="overflow-x-auto rounded-xl border border-zinc-200 dark:border-zinc-700">
+        <div class="overflow-x-auto rounded-2xl border border-comb/90 dark:border-zinc-800">
             <table class="w-full">
-                <thead class="bg-zinc-50 dark:bg-zinc-800">
-                    <tr class="text-left text-xs font-semibold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
+                <thead class="bg-comb/40 dark:bg-zinc-800">
+                    <tr class="text-left text-xs font-semibold text-zinc-500 dark:text-zinc-400">
                         <th class="px-4 py-3">Order</th>
                         <th class="px-4 py-3">Customer</th>
                         <th class="px-4 py-3">Items</th>
@@ -125,12 +125,12 @@ new #[Livewire\Attributes\Title('Seller Orders')] class extends Component
                         <th class="px-4 py-3">Ordered</th>
                     </tr>
                 </thead>
-                <tbody class="divide-y divide-zinc-200 dark:divide-zinc-700">
+                <tbody class="divide-y divide-comb/70 dark:divide-zinc-800">
                     @foreach ($this->orders() as $order)
-                        <tr class="hover:bg-zinc-50 dark:hover:bg-zinc-800/50">
+                        <tr class="transition-colors hover:bg-comb/30 dark:hover:bg-zinc-800/50">
                             <td class="px-4 py-3">
                                 <a href="{{ route('seller.orders') }}#order-{{ $order->number }}"
-                                   class="font-medium text-amber-700 hover:underline dark:text-amber-400">
+                                   class="font-medium text-honey-deep hover:underline dark:text-honey">
                                     {{ $order->number }}
                                 </a>
                             </td>
@@ -146,10 +146,10 @@ new #[Livewire\Attributes\Title('Seller Orders')] class extends Component
                             </td>
                             <td class="px-4 py-3">
                                 @php($statusClasses = match ($order->status) {
-                                    OrderStatus::Delivered => 'bg-emerald-100 text-emerald-800 dark:bg-emerald-500/20 dark:text-emerald-300',
-                                    OrderStatus::Cancelled => 'bg-zinc-200 text-zinc-700 dark:bg-zinc-700 dark:text-zinc-200',
+                                    OrderStatus::Delivered => 'bg-leaf/10 text-leaf dark:bg-leaf/20 dark:text-emerald-300',
+                                    OrderStatus::Cancelled => 'bg-zinc-200 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400',
                                     OrderStatus::Shipped, OrderStatus::OutForDelivery => 'bg-sky-100 text-sky-800 dark:bg-sky-500/20 dark:text-sky-300',
-                                    default => 'bg-amber-100 text-amber-800 dark:bg-amber-500/20 dark:text-amber-300',
+                                    default => 'bg-honey/15 text-honey-deep dark:bg-honey/15 dark:text-honey',
                                 })
                                 <span class="rounded-full px-2.5 py-1 text-xs font-semibold {{ $statusClasses }}">
                                     {{ $order->status->label() }}
@@ -161,7 +161,7 @@ new #[Livewire\Attributes\Title('Seller Orders')] class extends Component
                                     <button type="button"
                                             wire:click="updateStatus('{{ $order->number }}', '{{ $next->value }}')"
                                             wire:confirm="Move order to {{ $next->label() }}?"
-                                            class="rounded-lg bg-amber-500 px-3 py-1.5 text-xs font-semibold text-white hover:bg-amber-600 disabled:opacity-50"
+                                            class="rounded-lg bg-ink px-3 py-1.5 text-xs font-semibold text-paper transition hover:bg-honey hover:text-ink disabled:opacity-50 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-honey dark:hover:text-ink"
                                             wire:loading.attr="disabled">
                                         {{ $next->label() }}
                                     </button>

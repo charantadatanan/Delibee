@@ -67,35 +67,35 @@ new #[Livewire\Attributes\Title('Open your shop')] class extends Component
 
 <div class="mx-auto max-w-2xl space-y-6">
     <div>
-        <h1 class="text-2xl font-bold tracking-tight">Open your shop</h1>
-        <p class="mt-1 text-sm text-zinc-500">
+        <h1 class="font-display text-3xl font-semibold tracking-tight sm:text-4xl">Open your shop</h1>
+        <p class="mt-2 text-sm text-zinc-500 dark:text-zinc-400">
             Tell us about your business. Once an admin approves it you can list products and start
             fulfilling orders.
         </p>
     </div>
 
-    <form wire:submit="submit" class="space-y-5 rounded-xl border border-zinc-200 bg-white p-6 dark:border-zinc-700 dark:bg-zinc-800">
+    <form wire:submit="submit" class="space-y-5 rounded-2xl border border-comb/90 bg-white/70 p-6 dark:border-zinc-800 dark:bg-zinc-900/70">
         <label class="block">
-            <span class="text-xs font-medium uppercase tracking-wide text-zinc-500">Business name</span>
+            <span class="text-xs font-medium text-zinc-500 dark:text-zinc-400">Business name</span>
             <input type="text" wire:model="name" placeholder="Sunrise Orchard"
-                   class="mt-1 w-full rounded-lg border border-zinc-300 bg-white px-3 py-2 text-sm dark:border-zinc-600 dark:bg-zinc-900">
+                   class="mt-1.5 w-full rounded-lg border border-comb bg-paper/60 px-3 py-2 text-sm focus:border-honey-deep focus:outline-none focus:ring-2 focus:ring-honey/40 dark:border-zinc-700 dark:bg-zinc-950">
         </label>
 
         <label class="block">
-            <span class="text-xs font-medium uppercase tracking-wide text-zinc-500">What do you sell?</span>
+            <span class="text-xs font-medium text-zinc-500 dark:text-zinc-400">What do you sell?</span>
             <textarea wire:model="description" rows="4" placeholder="Freshly picked fruit, delivered within the day."
-                      class="mt-1 w-full rounded-lg border border-zinc-300 bg-white px-3 py-2 text-sm dark:border-zinc-600 dark:bg-zinc-900"></textarea>
+                      class="mt-1.5 w-full rounded-lg border border-comb bg-paper/60 px-3 py-2 text-sm focus:border-honey-deep focus:outline-none focus:ring-2 focus:ring-honey/40 dark:border-zinc-700 dark:bg-zinc-950"></textarea>
         </label>
 
         <label class="block">
-            <span class="text-xs font-medium uppercase tracking-wide text-zinc-500">Currency</span>
+            <span class="text-xs font-medium text-zinc-500 dark:text-zinc-400">Currency</span>
             <input type="text" wire:model="currency" maxlength="3"
-                   class="mt-1 w-24 rounded-lg border border-zinc-300 bg-white px-3 py-2 text-sm uppercase dark:border-zinc-600 dark:bg-zinc-900">
+                   class="mt-1.5 w-24 rounded-lg border border-comb bg-paper/60 px-3 py-2 text-sm uppercase focus:border-honey-deep focus:outline-none focus:ring-2 focus:ring-honey/40 dark:border-zinc-700 dark:bg-zinc-950">
         </label>
 
         <button type="submit"
                 wire:loading.attr="disabled"
-                class="rounded-lg bg-amber-500 px-4 py-2.5 font-semibold text-white hover:bg-amber-600 disabled:opacity-50">
+                class="rounded-lg bg-ink px-4 py-2.5 font-semibold text-paper transition hover:bg-honey hover:text-ink disabled:opacity-50 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-honey dark:hover:text-ink">
             <span wire:loading.remove wire:target="submit">Submit for approval</span>
             <span wire:loading wire:target="submit">Submitting…</span>
         </button>

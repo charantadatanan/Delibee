@@ -158,25 +158,32 @@ new #[Livewire\Attributes\Title('Order Details')] class extends Component
 <div class="space-y-6">
     <div class="flex flex-wrap items-start justify-between gap-3">
         <div>
-            <h1 class="text-2xl font-bold tracking-tight">Order {{ $order->number }}</h1>
-            <p class="mt-1 text-sm text-zinc-500">
-                {{ $order->business->name }} · ordered {{ $order->ordered_at?->format('j M Y, g:i a') }}
+            <h1 class="font-display text-3xl font-semibold tracking-tight sm:text-4xl">Order {{ $order->number }}</h1>
+            <p class="mt-2 text-sm text-zinc-500 dark:text-zinc-400">
+                {{ $order->business->name }}, placed {{ $order->ordered_at?->format('j M Y, g:i a') }}
             </p>
         </div>
 
-        <span class="rounded-full bg-amber-100 px-3 py-1.5 text-sm font-semibold text-amber-800 dark:bg-amber-500/20 dark:text-amber-300">
+        @php($statusClasses = match ($order->status) {
+            OrderStatus::Delivered => 'bg-leaf/10 text-leaf dark:bg-leaf/20 dark:text-emerald-300',
+            OrderStatus::Cancelled => 'bg-zinc-200 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400',
+            OrderStatus::Shipped, OrderStatus::OutForDelivery => 'bg-sky-100 text-sky-800 dark:bg-sky-500/20 dark:text-sky-300',
+            default => 'bg-honey/15 text-honey-deep dark:bg-honey/15 dark:text-honey',
+        })
+
+        <span class="rounded-full px-3 py-1.5 text-sm font-semibold {{ $statusClasses }}">
             {{ $order->status->label() }}
         </span>
     </div>
 
-    <section class="rounded-xl border border-zinc-200 bg-white p-5 dark:border-zinc-700 dark:bg-zinc-800">
+    <section class="rounded-2xl border border-comb/90 bg-white/70 p-5 dark:border-zinc-800 dark:bg-zinc-900/70">
         <h2 class="font-semibold">Tracking</h2>
 
         <ol class="mt-4 space-y-4">
             @foreach ($this->timeline() as $step)
                 <li class="flex gap-3">
                     <span class="mt-1 grid size-4 shrink-0 place-items-center rounded-full
-                        {{ $step['at'] ? 'bg-amber-500' : 'bg-zinc-300 dark:bg-zinc-600' }}"></span>
+                        {{ $step['at'] ? 'bg-honey' : 'bg-comb dark:bg-zinc-700' }}"></span>
                     <div>
                         <p class="text-sm font-medium {{ $step['at'] ? '' : 'text-zinc-400' }}">
                             {{ $step['status']->label() }}
@@ -197,10 +204,10 @@ new #[Livewire\Attributes\Title('Order Details')] class extends Component
         @endif
     </section>
 
-    <section class="rounded-xl border border-zinc-200 bg-white p-5 dark:border-zinc-700 dark:bg-zinc-800">
+    <section class="rounded-2xl border border-comb/90 bg-white/70 p-5 dark:border-zinc-800 dark:bg-zinc-900/70">
         <h2 class="font-semibold">Items</h2>
 
-        <ul class="mt-4 divide-y divide-zinc-200 dark:divide-zinc-700">
+        <ul class="mt-4 divide-y divide-comb/70 dark:divide-zinc-800">
             @foreach ($order->items as $item)
                 <li class="py-3">
                     <div class="flex flex-wrap items-center justify-between gap-2">
@@ -214,18 +221,18 @@ new #[Livewire\Attributes\Title('Order Details')] class extends Component
                     </div>
 
                     @if ($order->status === OrderStatus::Delivered)
-                        <div class="mt-3 rounded-lg bg-zinc-50 p-3 dark:bg-zinc-900">
+                        <div class="mt-3 rounded-xl bg-comb/30 p-3 dark:bg-zinc-950/60">
                             @php($existing = $item->reviews->first())
 
                             @if ($existing)
                                 <p class="text-sm text-zinc-600 dark:text-zinc-400">
-                                    Your rating: <span class="text-amber-500">{{ str_repeat('★', $existing->rating) }}</span>
+                                    Your rating: <span class="text-honey">{{ str_repeat('★', $existing->rating) }}</span>
                                 </p>
                             @else
-                                <p class="text-xs font-medium uppercase tracking-wide text-zinc-500">Rate this item</p>
+                                <p class="text-xs font-medium text-zinc-500 dark:text-zinc-400">Rate this item</p>
                                 <div class="mt-2 flex items-center gap-3">
                                     <select wire:model="ratings.{{ $item->id }}"
-                                            class="rounded-lg border border-zinc-300 bg-white px-3 py-1.5 text-sm dark:border-zinc-600 dark:bg-zinc-900">
+                                            class="rounded-lg border border-comb bg-paper/60 px-3 py-1.5 text-sm focus:border-honey-deep focus:outline-none focus:ring-2 focus:ring-honey/40 dark:border-zinc-700 dark:bg-zinc-950">
                                         <option value="">Choose a rating</option>
                                         @for ($star = 5; $star >= 1; $star--)
                                             <option value="{{ $star }}">{{ $star }} star{{ $star === 1 ? '' : 's' }}</option>
@@ -235,11 +242,11 @@ new #[Livewire\Attributes\Title('Order Details')] class extends Component
                                     <input type="text"
                                            wire:model="reviewBodies.{{ $item->id }}"
                                            placeholder="Tell other buyers about it (optional)"
-                                           class="flex-1 rounded-lg border border-zinc-300 bg-white px-3 py-1.5 text-sm dark:border-zinc-600 dark:bg-zinc-900">
+                                           class="flex-1 rounded-lg border border-comb bg-paper/60 px-3 py-1.5 text-sm focus:border-honey-deep focus:outline-none focus:ring-2 focus:ring-honey/40 dark:border-zinc-700 dark:bg-zinc-950">
 
                                     <button type="button"
                                             wire:click="leaveReview({{ $item->id }})"
-                                            class="rounded-lg bg-amber-500 px-3 py-1.5 text-sm font-semibold text-white hover:bg-amber-600">
+                                            class="rounded-lg bg-ink px-3 py-1.5 text-sm font-semibold text-paper transition hover:bg-honey hover:text-ink dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-honey dark:hover:text-ink">
                                         Submit
                                     </button>
                                 </div>
@@ -250,13 +257,13 @@ new #[Livewire\Attributes\Title('Order Details')] class extends Component
             @endforeach
         </ul>
 
-        <dl class="mt-4 space-y-1 border-t border-zinc-200 pt-4 text-sm dark:border-zinc-700">
+        <dl class="mt-4 space-y-1 border-t border-comb/70 pt-4 text-sm dark:border-zinc-800">
             <div class="flex justify-between">
-                <dt class="text-zinc-500">Subtotal</dt>
+                <dt class="text-zinc-500 dark:text-zinc-400">Subtotal</dt>
                 <dd>{{ \App\Support\Money::format($order->subtotal_minor, $order->currency) }}</dd>
             </div>
             <div class="flex justify-between">
-                <dt class="text-zinc-500">Shipping</dt>
+                <dt class="text-zinc-500 dark:text-zinc-400">Shipping</dt>
                 <dd>{{ \App\Support\Money::format($order->shipping_minor, $order->currency) }}</dd>
             </div>
             <div class="flex justify-between pt-1 text-base font-semibold">
@@ -266,7 +273,7 @@ new #[Livewire\Attributes\Title('Order Details')] class extends Component
         </dl>
 
         @if ($order->shipping_address)
-            <div class="mt-4 border-t border-zinc-200 pt-4 text-sm dark:border-zinc-700">
+            <div class="mt-4 border-t border-comb/70 pt-4 text-sm dark:border-zinc-800">
                 <p class="font-medium">Delivering to</p>
                 <p class="mt-1 text-zinc-600 dark:text-zinc-400">
                     {{ $order->shipping_address['name'] ?? '' }}<br>
