@@ -3,18 +3,31 @@
     <head>
         @include('partials.head')
     </head>
-    <body class="min-h-screen bg-white antialiased dark:bg-linear-to-b dark:from-neutral-950 dark:to-neutral-900">
-        <div class="bg-background flex min-h-svh flex-col items-center justify-center gap-6 p-6 md:p-10">
-            <div class="flex w-full max-w-sm flex-col gap-2">
-                <a href="{{ route('home') }}" class="flex flex-col items-center gap-2 font-medium" wire:navigate>
-                    <span class="flex h-9 w-9 mb-1 items-center justify-center rounded-md">
-                        <x-app-logo-icon class="size-9 fill-current text-black dark:text-white" />
-                    </span>
-                    <span class="sr-only">{{ config('app.name', 'Laravel') }}</span>
+    <body class="relative min-h-screen bg-paper font-sans text-ink antialiased dark:bg-zinc-950 dark:text-zinc-100">
+        <div class="pointer-events-none absolute inset-0 bg-comb opacity-40 dark:opacity-10"></div>
+
+        <div class="relative flex min-h-svh flex-col items-center justify-center gap-6 p-6 md:p-10">
+            <div class="flex w-full max-w-sm flex-col gap-5">
+                <a href="{{ route('home') }}" class="flex flex-col items-center gap-2.5" wire:navigate>
+                    <span class="clip-hex grid size-12 place-items-center bg-honey font-display text-2xl font-bold text-ink">d</span>
+                    <span class="font-display text-2xl font-semibold tracking-tight">{{ config('app.name', 'deliBEE') }}</span>
                 </a>
-                <div class="flex flex-col gap-6">
+
+                <p class="text-center text-sm text-zinc-500 dark:text-zinc-400">
+                    A marketplace ranked on how sellers are doing right now.
+                </p>
+
+                <div class="rounded-2xl border border-comb/90 bg-white/70 p-6 shadow-sm dark:border-zinc-800 dark:bg-zinc-900/70">
                     {{ $slot }}
                 </div>
+
+                <p class="text-center text-xs">
+                    <a href="{{ route('marketplace') }}"
+                       class="font-medium text-honey-deep hover:underline dark:text-honey"
+                       wire:navigate>
+                        Back to the marketplace
+                    </a>
+                </p>
             </div>
         </div>
 
