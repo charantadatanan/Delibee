@@ -117,7 +117,7 @@ docs/screenshots/                                README screenshots
 
 ## Status
 
-- 86 tests (85 passing, 1 skipped — two-factor authentication is disabled in this build), 199 assertions.
+- 90 tests (89 passing, 1 skipped — two-factor authentication is disabled in this build), 203 assertions.
 - PHPStan level 7: 0 errors. Pint: clean.
 - Payment is offline for now; launch currency, seller payout model and the payment gateway remain open product decisions.
 
