@@ -28,7 +28,7 @@ new #[Livewire\Attributes\Title('Honey Rewards')] class extends Component
 <div class="space-y-6">
     <div>
         <h1 class="font-display text-3xl font-semibold tracking-tight sm:text-4xl">Honey Rewards</h1>
-        <p class="mt-2 max-w-2xl text-sm text-zinc-500 dark:text-zinc-400">
+        <p class="mt-2 max-w-2xl text-sm text-zinc-600 dark:text-zinc-400">
             Points you earn from shopping and rating. Every point is recorded in a ledger, so your balance
             is always exact and can be traced back to where it came from.
         </p>

@@ -27,7 +27,7 @@
                 </ul>
             </div>
 
-            <aside class="rounded-2xl border border-comb/90 bg-paper/80 p-5 dark:border-zinc-700 dark:bg-zinc-950/60">
+            <div class="rounded-2xl border border-comb/90 bg-paper/80 p-5 dark:border-zinc-700 dark:bg-zinc-950/60">
                 <h2 class="font-display text-lg font-semibold">How the hive ranks</h2>
 
                 <dl class="mt-4 space-y-4 text-sm">
@@ -55,7 +55,7 @@
                         </dd>
                     </div>
                 </dl>
-            </aside>
+            </div>
         </div>
     </section>
 

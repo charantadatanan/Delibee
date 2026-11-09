@@ -103,3 +103,29 @@ select:focus[data-flux-control] {
         letter-spacing: -0.01em;
     }
 }
+
+/* Flux's sidebar text sits a shade lighter than the Warm Hive paper palette
+   allows. Darken it in light mode and keep hover/current states untouched. */
+html:not(.dark) [data-flux-sidebar-nav] [data-flux-sidebar-item]:not([data-current]):not(:hover) {
+    color: var(--color-zinc-600);
+}
+
+.dark [data-flux-sidebar-nav] [data-flux-sidebar-item]:not([data-current]):not(:hover) {
+    color: var(--color-zinc-300);
+}
+
+html:not(.dark) [data-flux-sidebar-group] > div:first-child {
+    color: var(--color-zinc-600);
+}
+
+.dark [data-flux-sidebar-group] > div:first-child {
+    color: var(--color-zinc-400);
+}
+
+html:not(.dark) [data-flux-sidebar-profile]:not(:hover) span {
+    color: var(--color-zinc-600);
+}
+
+html:not(.dark) [data-flux-subheading] {
+    color: var(--color-zinc-600);
+}

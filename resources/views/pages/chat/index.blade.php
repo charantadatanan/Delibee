@@ -57,7 +57,7 @@ new #[Livewire\Attributes\Title('Bee Chat')] class extends Component
     <div class="flex flex-wrap items-center justify-between gap-4">
         <div>
             <h1 class="font-display text-3xl font-semibold tracking-tight sm:text-4xl">Bee Chat</h1>
-            <p class="mt-2 text-sm text-zinc-500 dark:text-zinc-400">Messages with sellers and customers.</p>
+            <p class="mt-2 text-sm text-zinc-600 dark:text-zinc-400">Messages with sellers and customers.</p>
         </div>
 
         <div class="relative max-w-xs flex-1">
@@ -87,7 +87,7 @@ new #[Livewire\Attributes\Title('Bee Chat')] class extends Component
                     $otherParty = $isCustomer ? $conversation->business->name : $conversation->user->name;
                     $lastMessage = $conversation->messages->last();
                 @endphp
-                <a href="{{ route('chat.show', $conversation) }}"
+                <li><a href="{{ route('chat.show', $conversation) }}"
                    class="block rounded-2xl border border-comb/90 bg-white/70 p-4 transition-colors hover:border-honey-deep/40 dark:border-zinc-800 dark:bg-zinc-900/70 dark:hover:border-honey/40"
                    wire:navigate>
                     <div class="flex flex-wrap items-center justify-between gap-3">
@@ -114,7 +114,7 @@ new #[Livewire\Attributes\Title('Bee Chat')] class extends Component
                                 <p class="text-sm text-zinc-600 dark:text-zinc-400 truncate max-w-[200px]">
                                     {{ $lastMessage->body }}
                                 </p>
-                                <p class="text-xs text-zinc-400">
+                                <p class="text-xs text-zinc-600 dark:text-zinc-400">
                                     {{ $lastMessage->created_at->diffForHumans() }}
                                 </p>
                             @endif
@@ -123,7 +123,7 @@ new #[Livewire\Attributes\Title('Bee Chat')] class extends Component
                             @endif
                         </div>
                     </div>
-                </a>
+                </a></li>
             @endforeach
         </ul>
 

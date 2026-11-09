@@ -13,7 +13,7 @@
                     <span class="font-display text-xl font-semibold tracking-tight">deliBEE</span>
                 </a>
 
-                <nav class="hidden items-center gap-1 text-sm sm:flex">
+                <nav aria-label="Primary" class="hidden items-center gap-1 text-sm sm:flex">
                     @foreach ([['marketplace', 'Marketplace'], ['categories.index', 'Categories'], ['ranking', 'Ranking']] as [$route, $label])
                         <a href="{{ route($route) }}"
                            class="rounded-lg px-3 py-2 transition {{ request()->routeIs($route) ? 'bg-ink font-medium text-paper dark:bg-zinc-100 dark:text-zinc-900' : 'text-zinc-600 hover:bg-comb/50 hover:text-ink dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-100' }}"
@@ -59,7 +59,7 @@
             </div>
 
             <div class="border-t border-comb/60 px-4 py-2 sm:hidden dark:border-zinc-800">
-                <nav class="flex items-center gap-1 text-sm">
+                <nav aria-label="Primary" class="flex items-center gap-1 text-sm">
                     @foreach ([['marketplace', 'Marketplace'], ['categories.index', 'Categories'], ['ranking', 'Ranking']] as [$route, $label])
                         <a href="{{ route($route) }}"
                            class="rounded-lg px-2.5 py-1.5 transition {{ request()->routeIs($route) ? 'bg-ink font-medium text-paper dark:bg-zinc-100 dark:text-zinc-900' : 'text-zinc-600 hover:bg-comb/50 hover:text-ink dark:text-zinc-400 dark:hover:bg-zinc-800' }}"
@@ -86,7 +86,7 @@
                     A marketplace that ranks sellers on how they are doing now, not how long they have been around.
                 </p>
 
-                <nav class="flex gap-4 text-sm">
+                <nav aria-label="Footer" class="flex gap-4 text-sm">
                     <a class="transition hover:text-honey" href="{{ route('marketplace') }}" wire:navigate>Marketplace</a>
                     <a class="transition hover:text-honey" href="{{ route('ranking') }}" wire:navigate>Ranking</a>
                 </nav>

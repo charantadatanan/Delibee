@@ -4,13 +4,13 @@
         @include('partials.head')
     </head>
     <body class="min-h-screen bg-paper text-ink dark:bg-zinc-950 dark:text-zinc-100">
-        <flux:sidebar sticky collapsible="mobile" class="border-e border-comb/80 bg-[#f6ecd4]/50 dark:border-zinc-800 dark:bg-zinc-900">
+        <flux:sidebar sticky collapsible="mobile" role="complementary" aria-label="Sidebar" class="border-e border-comb/80 bg-[#f6ecd4]/50 dark:border-zinc-800 dark:bg-zinc-900">
             <flux:sidebar.header>
                 <x-app-logo :sidebar="true" href="{{ route('dashboard') }}" wire:navigate />
                 <flux:sidebar.collapse class="lg:hidden" />
             </flux:sidebar.header>
 
-            <flux:sidebar.nav>
+            <flux:sidebar.nav aria-label="Platform">
                 <flux:sidebar.group :heading="__('Platform')" class="grid">
                     <flux:sidebar.item icon="home" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>
                         {{ __('Dashboard') }}
@@ -37,7 +37,7 @@
             </flux:sidebar.nav>
 
             @if (auth()->check() && auth()->user()->hasRole('seller'))
-            <flux:sidebar.nav>
+            <flux:sidebar.nav aria-label="Seller">
                 <flux:sidebar.group :heading="__('Seller')" class="grid">
                     <flux:sidebar.item icon="shopping-bag" :href="route('seller.products')" :current="request()->routeIs('seller.products')" wire:navigate>
                         {{ __('Your products') }}
@@ -51,7 +51,7 @@
             @endif
 
             @if (auth()->check() && auth()->user()->isAdmin())
-            <flux:sidebar.nav>
+            <flux:sidebar.nav aria-label="Hive Guard">
                 <flux:sidebar.group :heading="__('Hive Guard')" class="grid">
                     <flux:sidebar.item icon="shield-check" :href="route('admin.businesses')" :current="request()->routeIs('admin.*')" wire:navigate>
                         {{ __('Businesses') }}
@@ -62,7 +62,7 @@
 
             <flux:spacer />
 
-            <flux:sidebar.nav>
+            <flux:sidebar.nav aria-label="Marketplace">
                 <flux:sidebar.item icon="building-storefront" :href="route('marketplace')" wire:navigate>
                     {{ __('Marketplace') }}
                 </flux:sidebar.item>

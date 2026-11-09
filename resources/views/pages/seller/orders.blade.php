@@ -90,10 +90,11 @@ new #[Livewire\Attributes\Title('Seller Orders')] class extends Component
     <div class="flex flex-wrap items-center justify-between gap-4">
         <div>
             <h1 class="font-display text-3xl font-semibold tracking-tight sm:text-4xl">Orders</h1>
-            <p class="mt-2 text-sm text-zinc-500 dark:text-zinc-400">Manage orders for {{ $this->business()->name }}.</p>
+            <p class="mt-2 text-sm text-zinc-600 dark:text-zinc-400">Manage orders for {{ $this->business()->name }}.</p>
         </div>
 
         <select wire:model="statusFilter"
+                aria-label="Filter orders by status"
                 class="rounded-lg border border-comb bg-paper/60 px-3 py-2 text-sm focus:border-honey-deep focus:outline-none focus:ring-2 focus:ring-honey/40 dark:border-zinc-700 dark:bg-zinc-950">
             <option value="all">All statuses</option>
             @foreach (App\Enums\OrderStatus::cases() as $status)
@@ -115,7 +116,7 @@ new #[Livewire\Attributes\Title('Seller Orders')] class extends Component
         <div class="overflow-x-auto rounded-2xl border border-comb/90 dark:border-zinc-800">
             <table class="w-full">
                 <thead class="bg-comb/40 dark:bg-zinc-800">
-                    <tr class="text-left text-xs font-semibold text-zinc-500 dark:text-zinc-400">
+                    <tr class="text-left text-xs font-semibold text-zinc-600 dark:text-zinc-400">
                         <th class="px-4 py-3">Order</th>
                         <th class="px-4 py-3">Customer</th>
                         <th class="px-4 py-3">Items</th>
@@ -136,7 +137,7 @@ new #[Livewire\Attributes\Title('Seller Orders')] class extends Component
                             </td>
                             <td class="px-4 py-3">
                                 <p class="font-medium">{{ $order->user->name }}</p>
-                                <p class="text-xs text-zinc-500">{{ $order->user->email }}</p>
+                                <p class="text-xs text-zinc-600 dark:text-zinc-400">{{ $order->user->email }}</p>
                             </td>
                             <td class="px-4 py-3">
                                 {{ $order->items->count() }} {{ \Illuminate\Support\Str::plural('item', $order->items->count()) }}
@@ -166,10 +167,10 @@ new #[Livewire\Attributes\Title('Seller Orders')] class extends Component
                                         {{ $next->label() }}
                                     </button>
                                 @else
-                                    <span class="text-xs text-zinc-400">Complete</span>
+                                    <span class="text-xs text-zinc-600 dark:text-zinc-400">Complete</span>
                                 @endif
                             </td>
-                            <td class="px-4 py-3 text-sm text-zinc-500">
+                            <td class="px-4 py-3 text-sm text-zinc-600 dark:text-zinc-400">
                                 {{ $order->ordered_at?->format('j M Y, g:i a') }}
                             </td>
                         </tr>

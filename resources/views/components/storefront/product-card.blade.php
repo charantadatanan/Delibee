@@ -37,7 +37,7 @@
 
         <div class="mt-auto flex items-baseline justify-between gap-3 pt-3">
             <p class="font-semibold">{{ $product->formattedPrice() }}</p>
-            <span class="text-xs font-medium text-zinc-400 transition-colors group-hover:text-honey-deep dark:text-zinc-500 dark:group-hover:text-honey">
+            <span class="text-xs font-medium text-zinc-500 transition-colors group-hover:text-honey-deep dark:text-zinc-400 dark:group-hover:text-honey">
                 View
             </span>
         </div>

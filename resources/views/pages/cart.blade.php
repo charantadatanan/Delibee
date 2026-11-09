@@ -44,7 +44,7 @@ new #[Livewire\Attributes\Title('Honey Pot')] class extends Component
 <div class="space-y-6">
     <div>
         <h1 class="font-display text-3xl font-semibold tracking-tight sm:text-4xl">Honey Pot</h1>
-        <p class="mt-2 text-sm text-zinc-500 dark:text-zinc-400">
+        <p class="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
             Your cart. Checkout will split it into one order per seller.
         </p>
     </div>

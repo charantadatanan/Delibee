@@ -11,7 +11,7 @@
     <section class="mt-10">
         <div class="flex flex-wrap items-baseline justify-between gap-3">
             <h2 class="font-display text-2xl font-semibold">Monthly ranking</h2>
-            <p class="text-sm font-medium text-zinc-500 dark:text-zinc-400">{{ $periodStart->format('F Y') }}</p>
+            <p class="text-sm font-medium text-zinc-600 dark:text-zinc-400">{{ $periodStart->format('F Y') }}</p>
         </div>
 
         @if ($published->isEmpty())
@@ -47,7 +47,7 @@
 
     <section class="mt-12">
         <h2 class="font-display text-2xl font-semibold">Rising bees</h2>
-        <p class="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
+        <p class="mt-1 text-sm text-zinc-600 dark:text-zinc-400">
             New businesses, less than {{ config('beerank.rising_bee_months') }} months old, that are already trading well.
         </p>
 

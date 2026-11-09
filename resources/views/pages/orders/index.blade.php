@@ -24,7 +24,7 @@ new #[Livewire\Attributes\Title('Bee Flight — Your Orders')] class extends Com
 <div class="space-y-6">
     <div>
         <h1 class="font-display text-3xl font-semibold tracking-tight sm:text-4xl">Bee Flight</h1>
-        <p class="mt-2 text-sm text-zinc-500 dark:text-zinc-400">Order tracking for everything you have bought.</p>
+        <p class="mt-2 text-sm text-zinc-600 dark:text-zinc-400">Order tracking for everything you have bought.</p>
     </div>
 
     @if ($this->orders()->isEmpty())

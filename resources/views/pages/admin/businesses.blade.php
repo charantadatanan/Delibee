@@ -93,13 +93,13 @@ new #[Title('Hive Guard — Businesses')] class extends Component
     <div class="flex flex-wrap items-end justify-between gap-4">
         <div>
             <h1 class="font-display text-3xl font-semibold tracking-tight sm:text-4xl">Hive Guard</h1>
-            <p class="mt-2 max-w-2xl text-sm text-zinc-500 dark:text-zinc-400">
+            <p class="mt-2 max-w-2xl text-sm text-zinc-600 dark:text-zinc-400">
                 Approve new shops, suspend sellers who break the rules, and bring them back when they are ready.
             </p>
         </div>
 
         <label class="block">
-            <span class="text-xs font-medium text-zinc-500 dark:text-zinc-400">Status</span>
+            <span class="text-xs font-medium text-zinc-600 dark:text-zinc-400">Status</span>
             <select wire:model.live="statusFilter"
                     class="mt-1.5 rounded-lg border border-comb bg-paper/60 px-3 py-2 text-sm focus:border-honey-deep focus:outline-none focus:ring-2 focus:ring-honey/40 dark:border-zinc-700 dark:bg-zinc-950">
                 <option value="all">All statuses</option>

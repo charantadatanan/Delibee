@@ -104,7 +104,7 @@ new #[Livewire\Attributes\Title('Checkout')] class extends Component
 <div class="space-y-6">
     <div>
         <h1 class="font-display text-3xl font-semibold tracking-tight sm:text-4xl">Checkout</h1>
-        <p class="mt-2 max-w-2xl text-sm text-zinc-500 dark:text-zinc-400">
+        <p class="mt-2 max-w-2xl text-sm text-zinc-600 dark:text-zinc-400">
             Your cart will be split into {{ $this->groups()->count() }} {{ \Illuminate\Support\Str::plural('order', $this->groups()->count()) }},
             one per seller, each shipped separately.
         </p>

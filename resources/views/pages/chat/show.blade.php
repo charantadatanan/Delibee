@@ -81,8 +81,8 @@ new #[Livewire\Attributes\Title('Conversation')] class extends Component
                 <flux:avatar name="{{ $otherParty->name }}" class="size-10" />
             </a>
             <div>
-                <p class="font-display text-lg font-semibold truncate">{{ $otherParty->name }}</p>
-                <p class="text-xs text-zinc-500 dark:text-zinc-400">
+                <h1 class="font-display text-lg font-semibold truncate">{{ $otherParty->name }}</h1>
+                <p class="text-xs text-zinc-600 dark:text-zinc-400">
                     @if ($isCustomer)
                         {{ $conversation->business->name }}
                     @else
@@ -120,7 +120,7 @@ new #[Livewire\Attributes\Title('Conversation')] class extends Component
                                         rounded-2xl px-4 py-2 {{ $isOwn ? 'rounded-tr-sm' : 'rounded-tl-sm' }}">
                                 <p class="text-sm">{{ $message->body }}</p>
                             </div>
-                            <p class="mt-1 text-xs text-zinc-400">
+                            <p class="mt-1 text-xs text-zinc-600 dark:text-zinc-400">
                                 {{ $message->created_at->format('g:i a') }}
                                 @if ($isOwn && $message->read_at)
                                     <span class="ml-1 text-leaf dark:text-emerald-300">✓✓</span>

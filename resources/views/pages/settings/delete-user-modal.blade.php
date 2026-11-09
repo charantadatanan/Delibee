@@ -42,7 +42,7 @@ new class extends Component {
                 <flux:button variant="filled">{{ __('Cancel') }}</flux:button>
             </flux:modal.close>
 
-            <flux:button variant="danger" type="submit" data-test="confirm-delete-user-button">
+            <flux:button variant="danger" type="submit" data-test="confirm-delete-user-button" class="bg-red-600! hover:bg-red-700! dark:bg-red-600! dark:hover:bg-red-500!">
                 {{ __('Delete account') }}
             </flux:button>
         </div>

@@ -113,7 +113,7 @@ new #[Livewire\Attributes\Title('Your products')] class extends Component
     <div class="flex flex-wrap items-start justify-between gap-3">
         <div>
             <h1 class="font-display text-3xl font-semibold tracking-tight sm:text-4xl">Your products</h1>
-            <p class="mt-2 text-sm text-zinc-500 dark:text-zinc-400">Everything you have listed in the marketplace.</p>
+            <p class="mt-2 text-sm text-zinc-600 dark:text-zinc-400">Everything you have listed in the marketplace.</p>
         </div>
 
         <button type="button"

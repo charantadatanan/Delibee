@@ -6,7 +6,7 @@
     <body class="relative min-h-screen bg-paper font-sans text-ink antialiased dark:bg-zinc-950 dark:text-zinc-100">
         <div class="pointer-events-none absolute inset-0 bg-comb opacity-40 dark:opacity-10"></div>
 
-        <div class="relative flex min-h-svh flex-col items-center justify-center gap-6 p-6 md:p-10">
+        <main class="relative flex min-h-svh flex-col items-center justify-center gap-6 p-6 md:p-10">
             <div class="flex w-full max-w-sm flex-col gap-5">
                 <a href="{{ route('home') }}" class="flex flex-col items-center gap-2.5" wire:navigate>
                     <span class="clip-hex grid size-12 place-items-center bg-honey font-display text-2xl font-bold text-ink">d</span>
@@ -29,7 +29,7 @@
                     </a>
                 </p>
             </div>
-        </div>
+        </main>
 
         @persist('toast')
             <flux:toast.group>
