@@ -91,6 +91,14 @@ powershell -ExecutionPolicy Bypass -File scripts\backup-database.ps1
 
 Options: `-OutputDir`, `-KeepDays`, `-PgDump` and `-PgRestore` (both default to the PostgreSQL 18 Windows path; `-PgRestore` is resolved next to `-PgDump`). The script reads `DB_*` from `.env` and deletes a dump that fails verification.
 
+On Linux or macOS, `scripts/backup-database.sh` reads the same `.env` and verifies dumps the same way:
+
+```bash
+./scripts/backup-database.sh --output-dir /var/backups/delibee --keep-days 30
+```
+
+Options: `--output-dir`, `--keep-days`, `--pg-dump` and `--pg-restore`; the binaries default to `pg_dump`/`pg_restore` on `PATH`. A cron entry such as `0 21 * * * cd /srv/delibee && ./scripts/backup-database.sh >> storage/logs/backup.log 2>&1` runs it nightly.
+
 To restore, create a fresh database and restore into it (do not restore over the live one):
 
 ```powershell
