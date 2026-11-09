@@ -26,7 +26,22 @@ pg_dump_bin="${PG_DUMP:-pg_dump}"
 pg_restore_bin="${PG_RESTORE:-pg_restore}"
 
 usage() {
-    sed -n '2,20p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'
+    cat <<'EOF'
+Create a verified PostgreSQL custom-format backup of the deliBEE database.
+
+Reads DB_* from the project's .env, writes a timestamped dump into
+storage/backups, verifies it with pg_restore --list, and removes dumps older
+than --keep-days. Suitable for cron:
+
+  0 21 * * * cd /path/to/Delibee && ./scripts/backup-database.sh >> storage/logs/backup.log 2>&1
+
+Usage: ./scripts/backup-database.sh [options]
+  --output-dir DIR    Where to write dumps (default: storage/backups)
+  --keep-days N       Delete dumps older than N days (default: 14)
+  --pg-dump PATH      pg_dump binary (default: pg_dump from PATH or $PG_DUMP)
+  --pg-restore PATH   pg_restore binary (default: pg_restore from PATH or $PG_RESTORE)
+  --help              Show this help
+EOF
 }
 
 while [ $# -gt 0 ]; do
