@@ -83,13 +83,13 @@ Statuses are `pending`, `active` and `suspended`; the command looks the business
 
 ## Database backups
 
-Create a compressed, custom-format PostgreSQL dump in `storage/backups` and prune dumps older than 14 days:
+Create a compressed, custom-format PostgreSQL dump in `storage/backups`, verify it with `pg_restore --list`, and prune dumps older than 14 days:
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File scripts\backup-database.ps1
 ```
 
-Options: `-OutputDir`, `-KeepDays`, and `-PgDump` (defaults to the PostgreSQL 18 Windows path). The script reads `DB_*` from `.env`.
+Options: `-OutputDir`, `-KeepDays`, `-PgDump` and `-PgRestore` (both default to the PostgreSQL 18 Windows path; `-PgRestore` is resolved next to `-PgDump`). The script reads `DB_*` from `.env` and deletes a dump that fails verification.
 
 To restore, create a fresh database and restore into it (do not restore over the live one):
 

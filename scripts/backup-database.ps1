@@ -5,8 +5,9 @@
 
 .DESCRIPTION
     Reads the DB_* settings from the project's .env file, writes a timestamped
-    custom-format dump into storage\backups, and removes dumps older than
-    -KeepDays. Designed to be run manually or from Windows Task Scheduler.
+    custom-format dump into storage\backups, verifies the archive with
+    pg_restore --list, and removes dumps older than -KeepDays. Designed to be
+    run manually or from Windows Task Scheduler.
 
 .EXAMPLE
     powershell -ExecutionPolicy Bypass -File scripts\backup-database.ps1
@@ -18,7 +19,8 @@
 param(
     [string]$OutputDir,
     [int]$KeepDays = 14,
-    [string]$PgDump = "C:\Program Files\PostgreSQL\18\bin\pg_dump.exe"
+    [string]$PgDump = "C:\Program Files\PostgreSQL\18\bin\pg_dump.exe",
+    [string]$PgRestore
 )
 
 $ErrorActionPreference = "Stop"
@@ -37,6 +39,14 @@ if (-not (Test-Path $envFile)) {
 
 if (-not (Test-Path $PgDump)) {
     throw "pg_dump not found at '$PgDump'. Pass -PgDump <path to pg_dump.exe>."
+}
+
+if (-not $PgRestore) {
+    $PgRestore = Join-Path (Split-Path -Parent $PgDump) "pg_restore.exe"
+}
+
+if (-not (Test-Path $PgRestore)) {
+    throw "pg_restore not found at '$PgRestore'. Pass -PgRestore <path to pg_restore.exe>."
 }
 
 $config = @{}
@@ -71,6 +81,13 @@ try {
 
     if ($LASTEXITCODE -ne 0) {
         throw "pg_dump failed with exit code $LASTEXITCODE"
+    }
+
+    & $PgRestore --list $file | Out-Null
+
+    if ($LASTEXITCODE -ne 0) {
+        Remove-Item $file -Force
+        throw "Backup failed verification: pg_restore could not read the archive."
     }
 }
 finally {
