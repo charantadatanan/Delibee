@@ -81,6 +81,26 @@ php artisan business:status sunrise-orchard suspended
 
 Statuses are `pending`, `active` and `suspended`; the command looks the business up by slug.
 
+## Database backups
+
+Create a compressed, custom-format PostgreSQL dump in `storage/backups` and prune dumps older than 14 days:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts\backup-database.ps1
+```
+
+Options: `-OutputDir`, `-KeepDays`, and `-PgDump` (defaults to the PostgreSQL 18 Windows path). The script reads `DB_*` from `.env`.
+
+To restore, create a fresh database and restore into it (do not restore over the live one):
+
+```powershell
+# adjust paths/credentials to your environment
+createdb -h 127.0.0.1 -p 5432 -U postgres -O delibee delibee_restore
+pg_restore -h 127.0.0.1 -p 5432 -U delibee -d delibee_restore storage\backups\delibee-YYYYMMDD-HHMMSS.dump
+```
+
+Schedule the backup with Windows Task Scheduler (or cron on Linux) before relying on the database for anything important.
+
 ## Quality gates
 
 ```bash
