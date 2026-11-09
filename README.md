@@ -99,7 +99,13 @@ createdb -h 127.0.0.1 -p 5432 -U postgres -O delibee delibee_restore
 pg_restore -h 127.0.0.1 -p 5432 -U delibee -d delibee_restore storage\backups\delibee-YYYYMMDD-HHMMSS.dump
 ```
 
-Schedule the backup with Windows Task Scheduler (or cron on Linux) before relying on the database for anything important.
+Schedule the backup with Windows Task Scheduler (or cron on Linux) before relying on the database for anything important. On Windows, register a daily task with:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts\register-backup-task.ps1
+```
+
+The task runs as your user and only while you are logged on. Options: `-Time` (default `21:30`), `-KeepDays`, `-OutputDir`, `-PgDump`. Remove it with the same script plus `-Remove`.
 
 ## Data retention
 
