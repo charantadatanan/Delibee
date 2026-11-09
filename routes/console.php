@@ -18,3 +18,10 @@ Schedule::command('bee:rank --period=month')
 Schedule::command('bee:rank --period=year')
     ->yearlyOn(1, 1, '03:30')
     ->withoutOverlapping();
+
+// Housekeeping: sessions abandoned long past their 120-minute lifetime and
+// failed jobs kept for debugging have no ongoing value. Rank snapshots are
+// deliberately kept indefinitely as historical records.
+Schedule::command('delibee:prune')
+    ->dailyAt('03:05')
+    ->withoutOverlapping();

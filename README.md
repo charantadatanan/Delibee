@@ -101,6 +101,12 @@ pg_restore -h 127.0.0.1 -p 5432 -U delibee -d delibee_restore storage\backups\de
 
 Schedule the backup with Windows Task Scheduler (or cron on Linux) before relying on the database for anything important.
 
+## Data retention
+
+`php artisan delibee:prune` deletes database sessions idle for more than seven days and failed jobs older than 30 days. It is scheduled daily at 03:05 and runs whenever Laravel's scheduler runs (`php artisan schedule:work` in development, or a cron/Task Scheduler entry in production). Override the windows with `--session-days` and `--failed-job-days`.
+
+BeeRank snapshots are historical records and are kept indefinitely.
+
 ## Quality gates
 
 ```bash
@@ -137,7 +143,7 @@ docs/screenshots/                                README screenshots
 
 ## Status
 
-- 90 tests (89 passing, 1 skipped — two-factor authentication is disabled in this build), 203 assertions.
+- 93 tests (92 passing, 1 skipped — two-factor authentication is disabled in this build), 212 assertions.
 - PHPStan level 7: 0 errors. Pint: clean.
 - Payment is offline for now; launch currency, seller payout model and the payment gateway remain open product decisions.
 
