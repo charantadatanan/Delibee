@@ -68,7 +68,7 @@ new #[Livewire\Attributes\Title('Open your shop')] class extends Component
 <div class="mx-auto max-w-2xl space-y-6">
     <div>
         <h1 class="font-display text-3xl font-semibold tracking-tight sm:text-4xl">Open your shop</h1>
-        <p class="mt-2 text-sm text-zinc-500 dark:text-zinc-400">
+        <p class="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
             Tell us about your business. Once an admin approves it you can list products and start
             fulfilling orders.
         </p>

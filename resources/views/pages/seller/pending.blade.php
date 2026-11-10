@@ -16,7 +16,7 @@ new #[Livewire\Attributes\Title('Approval pending')] class extends Component
 <div class="mx-auto max-w-2xl space-y-6">
     <div>
         <h1 class="font-display text-3xl font-semibold tracking-tight sm:text-4xl">Approval pending</h1>
-        <p class="mt-1 text-sm text-zinc-500">
+        <p class="mt-1 text-sm text-zinc-600 dark:text-zinc-400">
             Your shop is waiting for an admin to review it. You will be able to list products and take
             orders as soon as it is approved.
         </p>
