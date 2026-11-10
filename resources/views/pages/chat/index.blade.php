@@ -21,7 +21,7 @@ new #[Livewire\Attributes\Title('Bee Chat')] class extends Component
                 $q->where('user_id', auth()->id())
                   ->orWhereHas('business', fn ($q) => $q->where('owner_id', auth()->id()));
             })
-            ->with(['business', 'user', 'messages'])
+            ->with(['business', 'user', 'latestMessage'])
             ->orderByDesc('last_message_at')
             ->orderByDesc('created_at');
 
@@ -85,7 +85,7 @@ new #[Livewire\Attributes\Title('Bee Chat')] class extends Component
                 @php
                     $isCustomer = $conversation->user_id === auth()->id();
                     $otherParty = $isCustomer ? $conversation->business->name : $conversation->user->name;
-                    $lastMessage = $conversation->messages->last();
+                    $lastMessage = $conversation->latestMessage;
                 @endphp
                 <li><a href="{{ route('chat.show', $conversation) }}"
                    class="block rounded-2xl border border-comb/90 bg-white/70 p-4 transition-colors hover:border-honey-deep/40 dark:border-zinc-800 dark:bg-zinc-900/70 dark:hover:border-honey/40"

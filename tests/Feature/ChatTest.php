@@ -126,3 +126,21 @@ it('forbids outsiders from viewing a conversation', function () {
         ->get(route('chat.show', $conversation))
         ->assertForbidden();
 });
+
+it('loads only the latest message for each conversation in the inbox', function () {
+    $customer = User::factory()->create();
+
+    foreach (range(1, 3) as $i) {
+        $business = Business::factory()->create();
+        $conversation = Conversation::factory()->for($business)->for($customer)->create();
+        Message::factory()->for($conversation)->count(3)->create();
+    }
+
+    $component = Livewire::actingAs($customer)->test('pages::chat.index');
+
+    $conversations = collect($component->instance()->conversations()->items());
+
+    expect($conversations)->toHaveCount(3)
+        ->and($conversations->every(fn (Conversation $conversation): bool => ! $conversation->relationLoaded('messages')))->toBeTrue()
+        ->and($conversations->every(fn (Conversation $conversation): bool => $conversation->latestMessage !== null))->toBeTrue();
+});
