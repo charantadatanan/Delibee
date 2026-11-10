@@ -22,7 +22,7 @@ new #[Livewire\Attributes\Title('Seller Orders')] class extends Component
     #[Computed]
     public function orders()
     {
-        $query = $this->business()->orders()->with(['user', 'items', 'statusEvents.actor'])->orderByDesc('created_at');
+        $query = $this->business()->orders()->with(['user', 'items'])->orderByDesc('created_at');
 
         if ($this->statusFilter !== 'all') {
             $query->where('status', $this->statusFilter);
