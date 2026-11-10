@@ -20,7 +20,7 @@ class CartService
     public function items(User $user): Collection
     {
         return CartItem::query()
-            ->with(['product.business', 'product.images'])
+            ->with(['product.business'])
             ->where('user_id', $user->id)
             ->get();
     }
