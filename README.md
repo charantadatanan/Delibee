@@ -25,7 +25,7 @@ A multi-vendor marketplace where sellers are ranked on **how they are performing
 | UI | Livewire 4 single-file components, Flux, Tailwind CSS 4 |
 | Database | PostgreSQL 18 (search via `tsvector`, `pg_trgm`) |
 | Assets | Vite 8, Bunny-hosted Fraunces + Instrument Sans |
-| Quality | Pest 5, Larastan (level 7), Pint |
+| Quality | Pest 5, Larastan (level 8), Pint |
 
 ## Screenshots
 
@@ -126,7 +126,7 @@ BeeRank snapshots are historical records and are kept indefinitely.
 ```bash
 php artisan test                   # Pest feature + unit suite
 vendor/bin/pint --test             # coding style
-vendor/bin/phpstan analyse         # Larastan, level 7
+vendor/bin/phpstan analyse         # Larastan, level 8
 ```
 
 GitHub Actions runs the same checks against a PostgreSQL service on every push and pull request.
@@ -157,8 +157,8 @@ docs/screenshots/                                README screenshots
 
 ## Status
 
-- 96 tests (95 passing, 1 skipped — two-factor authentication is disabled in this build), 230 assertions.
-- PHPStan level 7: 0 errors. Pint: clean.
+- 98 tests (97 passing, 1 skipped — two-factor authentication is disabled in this build), 234 assertions.
+- PHPStan level 8: 0 errors. Pint: clean.
 - Storefront, customer, seller, admin and settings pages were audited with axe-core against WCAG 2.2 AA and report zero violations.
 - Payment is offline for now; launch currency, seller payout model and the payment gateway remain open product decisions.
 

@@ -36,7 +36,13 @@ class CartService
         $groups = new SupportCollection;
 
         foreach ($this->items($user) as $item) {
-            $businessId = (int) $item->product->business_id;
+            $product = $item->product;
+
+            if ($product === null) {
+                continue;
+            }
+
+            $businessId = (int) $product->business_id;
 
             $group = $groups->get($businessId) ?? new Collection;
             $group->push($item);
@@ -70,7 +76,7 @@ class CartService
             ]);
         }
 
-        return $item->fresh(['product.business']);
+        return $item->load('product.business');
     }
 
     public function updateQuantity(User $user, CartItem $item, int $quantity): void
@@ -83,7 +89,15 @@ class CartService
             return;
         }
 
-        $stock = (int) $item->product->stock;
+        $product = $item->product;
+
+        if ($product === null) {
+            $item->delete();
+
+            return;
+        }
+
+        $stock = (int) $product->stock;
 
         if ($stock <= 0) {
             $item->delete();
@@ -135,7 +149,13 @@ class CartService
         $totals = [];
 
         foreach ($this->items($user) as $item) {
-            $currency = $item->product->currency;
+            $product = $item->product;
+
+            if ($product === null) {
+                continue;
+            }
+
+            $currency = $product->currency;
 
             $totals[$currency] = ($totals[$currency] ?? 0) + $item->subtotalMinor();
         }

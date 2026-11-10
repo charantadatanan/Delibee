@@ -31,7 +31,15 @@ class ComputeBeeRank extends Command
         }
 
         if ($period === 'month') {
-            [$start, $end] = $this->monthWindow();
+            $start = $this->monthStart();
+
+            if ($start === null) {
+                $this->error('The --month option must use the YYYY-MM format (for example 2026-11).');
+
+                return self::FAILURE;
+            }
+
+            $end = $start->copy()->endOfMonth();
         } else {
             [$start, $end] = $this->yearWindow();
         }
@@ -47,10 +55,12 @@ class ComputeBeeRank extends Command
         ));
 
         foreach ($snapshots->take(10) as $snapshot) {
+            $business = $snapshot->business;
+
             $this->line(sprintf(
                 '  #%d %s — %.2f',
                 $snapshot->rank,
-                $snapshot->business->name,
+                $business === null ? 'Unknown business' : $business->name,
                 (float) $snapshot->score,
             ));
         }
@@ -58,20 +68,21 @@ class ComputeBeeRank extends Command
         return self::SUCCESS;
     }
 
-    /**
-     * @return array{0: CarbonInterface, 1: CarbonInterface}
-     */
-    private function monthWindow(): array
+    private function monthStart(): ?CarbonInterface
     {
         $month = $this->option('month');
 
-        if (is_string($month) && $month !== '') {
-            $start = Carbon::createFromFormat('Y-m', $month)->startOfMonth();
-        } else {
-            $start = now()->subMonth()->startOfMonth();
+        if (! is_string($month) || $month === '') {
+            return now()->subMonth()->startOfMonth();
         }
 
-        return [$start, $start->copy()->endOfMonth()];
+        if (! Carbon::hasFormat($month, 'Y-m')) {
+            return null;
+        }
+
+        $start = Carbon::createFromFormat('Y-m', $month);
+
+        return $start instanceof Carbon ? $start->startOfMonth() : null;
     }
 
     /**

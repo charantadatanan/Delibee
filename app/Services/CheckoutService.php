@@ -64,7 +64,11 @@ class CheckoutService
      */
     private function placeForBusiness(User $user, Collection $items, array $shippingAddress, ?string $note): Order
     {
-        $business = $items->first()->product->business;
+        $business = $items->first()?->product?->business;
+
+        if ($business === null) {
+            throw new CheckoutException('A product in your cart is no longer available.');
+        }
 
         $subtotal = 0;
         // Flat shipping is charged once per order, not once per line.
@@ -144,7 +148,7 @@ class CheckoutService
             $order->id,
         );
 
-        return $order->fresh(['items', 'business']);
+        return $order->load(['items', 'business']);
     }
 
     /**
