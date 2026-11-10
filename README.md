@@ -157,7 +157,7 @@ docs/screenshots/                                README screenshots
 
 ## Status
 
-- 93 tests (92 passing, 1 skipped — two-factor authentication is disabled in this build), 212 assertions.
+- 96 tests (95 passing, 1 skipped — two-factor authentication is disabled in this build), 230 assertions.
 - PHPStan level 7: 0 errors. Pint: clean.
 - Storefront, customer, seller, admin and settings pages were audited with axe-core against WCAG 2.2 AA and report zero violations.
 - Payment is offline for now; launch currency, seller payout model and the payment gateway remain open product decisions.
