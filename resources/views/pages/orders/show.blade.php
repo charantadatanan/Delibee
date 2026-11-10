@@ -159,7 +159,7 @@ new #[Livewire\Attributes\Title('Order Details')] class extends Component
     <div class="flex flex-wrap items-start justify-between gap-3">
         <div>
             <h1 class="font-display text-3xl font-semibold tracking-tight sm:text-4xl">Order {{ $order->number }}</h1>
-            <p class="mt-2 text-sm text-zinc-500 dark:text-zinc-400">
+            <p class="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
                 {{ $order->business->name }}, placed {{ $order->ordered_at?->format('j M Y, g:i a') }}
             </p>
         </div>
@@ -185,7 +185,7 @@ new #[Livewire\Attributes\Title('Order Details')] class extends Component
                     <span class="mt-1 grid size-4 shrink-0 place-items-center rounded-full
                         {{ $step['at'] ? 'bg-honey' : 'bg-comb dark:bg-zinc-700' }}"></span>
                     <div>
-                        <p class="text-sm font-medium {{ $step['at'] ? '' : 'text-zinc-400' }}">
+                        <p class="text-sm font-medium {{ $step['at'] ? '' : 'text-zinc-600 dark:text-zinc-400' }}">
                             {{ $step['status']->label() }}
                         </p>
                         @if ($step['at'])
