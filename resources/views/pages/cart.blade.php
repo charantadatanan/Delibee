@@ -91,6 +91,7 @@ new #[Livewire\Attributes\Title('Honey Pot')] class extends Component
                             </div>
 
                             <input type="number"
+                                   aria-label="Quantity for {{ $item->product->name }}"
                                    min="0"
                                    max="{{ $item->product->stock + $item->quantity }}"
                                    value="{{ $item->quantity }}"
