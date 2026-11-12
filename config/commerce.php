@@ -62,6 +62,18 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Review Rate Limit
+    |--------------------------------------------------------------------------
+    |
+    | Maximum reviews a customer may submit per minute. Editing an existing
+    | rating still counts towards the limit.
+    |
+    */
+
+    'review_rate_limit_per_minute' => (int) env('REVIEW_RATE_LIMIT_PER_MINUTE', 10),
+
+    /*
+    |--------------------------------------------------------------------------
     | Payment
     |--------------------------------------------------------------------------
     |

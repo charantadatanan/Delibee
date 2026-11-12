@@ -9,7 +9,9 @@ use App\Models\PointsLedgerEntry;
 use App\Models\Review;
 use App\Services\CheckoutService;
 use App\Services\PointsService;
+use Flux\Flux;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\RateLimiter;
 use Livewire\Attributes\Computed;
 use Livewire\Component;
 
@@ -61,6 +63,17 @@ new #[Livewire\Attributes\Title('Order Details')] class extends Component
             "ratings.{$orderItemId}" => ['required', 'integer', 'min:1', 'max:5'],
             "reviewBodies.{$orderItemId}" => ['nullable', 'string', 'max:2000'],
         ]);
+
+        $limit = (int) config('commerce.review_rate_limit_per_minute', 10);
+        $key = 'review-submit:'.auth()->id();
+
+        if (RateLimiter::tooManyAttempts($key, $limit)) {
+            Flux::toast('You are submitting reviews too quickly. Please wait a moment.', variant: 'danger');
+
+            return;
+        }
+
+        RateLimiter::hit($key, 60);
 
         DB::transaction(function () use ($item, $orderItemId, $validated): void {
             $review = Review::updateOrCreate(

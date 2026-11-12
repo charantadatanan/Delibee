@@ -230,3 +230,22 @@ it('replaces a period when republished so stale ranks cannot survive', function 
     expect($snapshots)->toBeEmpty()
         ->and(RankSnapshot::where('period_type', 'month')->count())->toBe(0);
 });
+
+it('rate limits review submissions', function () {
+    config(['commerce.review_rate_limit_per_minute' => 1]);
+
+    $customer = User::factory()->create();
+    $business = Business::factory()->create();
+    $product = Product::factory()->for($business)->create();
+
+    $order = Order::factory()->delivered()->for($business)->for($customer)->create();
+    $first = OrderItem::factory()->for($order)->create(['product_id' => $product->id]);
+    $second = OrderItem::factory()->for($order)->create(['product_id' => $product->id]);
+
+    $component = Livewire::actingAs($customer)->test('pages::orders.show', ['order' => $order]);
+
+    $component->set("ratings.{$first->id}", 5)->call('leaveReview', $first->id)->assertHasNoErrors();
+    $component->set("ratings.{$second->id}", 5)->call('leaveReview', $second->id);
+
+    expect(Review::count())->toBe(1);
+});

@@ -167,10 +167,11 @@ See [`docs/README.md`](docs/README.md) for the documentation index.
 - Publishing a ranking is transactional and replaces the whole period, so a business that drops out cannot keep a stale rank.
 - Suspended or pending businesses and their products are hidden from the storefront and rankings.
 - Chat messages are rate-limited per user (20 per minute by default, configurable via `CHAT_RATE_LIMIT_PER_MINUTE`).
+- Review submissions are rate-limited per user (10 per minute by default, configurable via `REVIEW_RATE_LIMIT_PER_MINUTE`).
 
 ## Status
 
-- 111 tests (110 passing, 1 skipped — two-factor authentication is disabled in this build), 263 assertions.
+- 113 tests (112 passing, 1 skipped — two-factor authentication is disabled in this build), 268 assertions.
 - PHPStan level 8: 0 errors. Pint: clean.
 - Storefront, customer, seller, admin and settings pages were audited with axe-core against WCAG 2.2 AA and report zero violations.
 - Payment is offline for now; launch currency, seller payout model and the payment gateway remain open product decisions.
