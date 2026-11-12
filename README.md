@@ -114,6 +114,15 @@ Options: `--output-dir`, `--offsite-dir`, `--keep-days`, `--pg-dump` and `--pg-r
 
 Both scripts can also copy the verified dump to an off-site folder (`-OffsiteDir`, `--offsite-dir`, or `BACKUP_OFFSITE_DIR`) — point it at a synced OneDrive folder, network share or USB drive. The copy is hash-verified and pruned with the same retention. See [`docs/operations/database-operations.md`](docs/operations/database-operations.md) for restore drills, point-in-time recovery, `listen_addresses` and SSL.
 
+To prove a dump restores, run the restore verifier (it creates a scratch database, compares counts, and drops it):
+
+```powershell
+$env:PG_ADMIN_PASSWORD = "your-postgres-admin-password"
+powershell -ExecutionPolicy Bypass -File scripts\backup\verify-backup.ps1
+```
+
+On Linux/macOS: `PG_ADMIN_PASSWORD=... ./scripts/backup/verify-backup.sh`.
+
 To restore, create a fresh database and restore into it (do not restore over the live one):
 
 ```powershell

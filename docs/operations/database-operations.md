@@ -47,7 +47,18 @@ Linux cron:
 
 ### Restore drill
 
-Run this periodically — a dump is only proven when it restores:
+Run this periodically — a dump is only proven when it restores. The drill is automated:
+
+```powershell
+$env:PG_ADMIN_PASSWORD = "your-postgres-admin-password"
+powershell -ExecutionPolicy Bypass -File scripts\backup\verify-backup.ps1
+```
+
+```bash
+PG_ADMIN_PASSWORD=... ./scripts/backup/verify-backup.sh
+```
+
+The verifier restores the newest dump (or `-DumpFile` / `--dump-file`) into `delibee_restore_check`, compares table, migration and row counts with the live database, and drops the scratch database even when a comparison fails. To do it by hand:
 
 ```powershell
 # 1. Create a scratch database owned by the application role

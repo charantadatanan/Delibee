@@ -182,6 +182,7 @@ The project was committed and shipped as a working application:
 | CI | GitHub Actions green on every push |
 | Accessibility | 0 axe violations across 12+ page groups, light and dark |
 | Backup restore drill | Latest dump restored into a scratch database — 28 tables, 21 migrations, all compared row counts matched |
+| Restore verifier | `verify-backup.ps1` / `verify-backup.sh` automate the restore, comparison and cleanup |
 | Smoke tests | `/up`, `/marketplace`, `/login`, `/ranking` — HTTP 200 |
 
 The one skipped test is two-factor authentication, which is disabled in this build.
