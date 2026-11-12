@@ -1,0 +1,80 @@
+/* ============================================================
+   deliBEE theme tokens — plain CSS
+   ------------------------------------------------------------
+   Mirrors the Tailwind @theme block in resources/css/app.css,
+   which is the source of truth. If a token changes there,
+   update this file and ui-ux/preview.css to match.
+
+   Values verified 2026-11-12.
+   ============================================================ */
+
+:root {
+    /* Type */
+    --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+    --font-display: 'Fredoka', ui-sans-serif, system-ui, sans-serif;
+
+    /* Brand palette */
+    --paper: #fff8e7;
+    --hero: #fff4c5;          /* hero and media surfaces, one step above paper */
+    --ink: #1e1e1e;
+    --honey: #f2c96d;
+    --honey-deep: #6b5745;
+    --comb: #e6dcc4;
+    --leaf: #5b6b2e;
+
+    /* Warm zinc scale (replaces Tailwind's default zinc) */
+    --zinc-50: #faf6ec;
+    --zinc-100: #f5efe1;
+    --zinc-200: #e9dfc9;
+    --zinc-300: #d8cbb0;
+    --zinc-400: #b3a488;
+    --zinc-500: #7a6852;
+    --zinc-600: #6b5745;
+    --zinc-700: #4a3c2f;
+    --zinc-800: #2e2720;
+    --zinc-900: #1e1e1e;
+    --zinc-950: #12100d;
+
+    /* Radius scale */
+    --radius-lg: 0.9375rem;   /* 15px — buttons, inputs */
+    --radius-xl: 1.25rem;     /* 20px */
+    --radius-2xl: 1.5rem;     /* 24px — cards, panels */
+    --radius-3xl: 2rem;       /* 32px — heroes */
+
+    /* Texture and shape helpers */
+    --clip-hex: polygon(50% 0%, 93% 25%, 93% 75%, 50% 100%, 7% 75%, 7% 25%);
+    --comb-pattern: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='49' viewBox='0 0 28 49'%3E%3Cpath fill='%23C89B3C' fill-opacity='0.18' fill-rule='evenodd' d='M13.99 9.25l13 7.5v15l-13 7.5L1 31.75v-15l12.99-7.5zM3 17.9v12.7l10.99 6.34 11-6.35V17.9l-11-6.34L3 17.9zM0 15l12.98-7.5V0h-2v6.35L0 12.69v2.3zm0 18.5L12.98 41v8h-2v-6.85L0 35.81v-2.3zM15 0v7.5L27.99 15H28v-2.31h-.01L17 6.35V0h-2zm0 49v-8l12.99-7.5H28v2.31h-.01L17 42.15V49h-2z'/%3E%3C/svg%3E");
+
+    /* Semantic aliases — light mode */
+    --surface-page: var(--paper);
+    --surface-raised: rgba(255, 255, 255, 0.7);
+    --surface-sunken: rgba(255, 248, 231, 0.6);
+    --surface-hero: var(--hero);
+
+    --text-primary: var(--ink);
+    --text-muted: var(--zinc-600);
+    --text-subtle: var(--zinc-500);
+
+    --border-subtle: rgba(230, 220, 196, 0.9);
+    --border-default: var(--comb);
+    --border-strong: var(--zinc-300);
+    --divider: rgba(230, 220, 196, 0.7);
+    --focus-ring: rgba(242, 201, 109, 0.4);
+}
+
+.dark {
+    --surface-page: var(--zinc-950);
+    --surface-raised: rgba(30, 30, 30, 0.7);
+    --surface-sunken: var(--zinc-950);
+    --surface-hero: var(--zinc-900);
+
+    --text-primary: var(--zinc-100);
+    --text-muted: var(--zinc-400);
+    --text-subtle: var(--zinc-400);
+
+    --border-subtle: var(--zinc-800);
+    --border-default: var(--zinc-800);
+    --border-strong: var(--zinc-700);
+    --divider: var(--zinc-800);
+    --focus-ring: rgba(242, 201, 109, 0.35);
+}

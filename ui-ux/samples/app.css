@@ -1,0 +1,136 @@
+@import 'tailwindcss';
+@import '../../vendor/livewire/flux/dist/flux.css';
+
+@source '../views';
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../vendor/livewire/flux-pro/stubs/**/*.blade.php';
+@source '../../vendor/livewire/flux/stubs/**/*.blade.php';
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+    --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+    --font-display: 'Fredoka', ui-sans-serif, system-ui, sans-serif;
+
+    --color-paper: #fff8e7;
+    --color-ink: #1e1e1e;
+    --color-honey: #f2c96d;
+    --color-honey-deep: #6b5745;
+    --color-comb: #e6dcc4;
+    --color-leaf: #5b6b2e;
+
+    --color-zinc-50: #faf6ec;
+    --color-zinc-100: #f5efe1;
+    --color-zinc-200: #e9dfc9;
+    --color-zinc-300: #d8cbb0;
+    --color-zinc-400: #b3a488;
+    --color-zinc-500: #7a6852;
+    --color-zinc-600: #6b5745;
+    --color-zinc-700: #4a3c2f;
+    --color-zinc-800: #2e2720;
+    --color-zinc-900: #1e1e1e;
+    --color-zinc-950: #12100d;
+
+    --radius-lg: 0.9375rem;
+    --radius-xl: 1.25rem;
+    --radius-2xl: 1.5rem;
+    --radius-3xl: 2rem;
+
+    --color-accent: var(--color-honey);
+    --color-accent-content: var(--color-honey-deep);
+    --color-accent-foreground: var(--color-ink);
+}
+
+@layer theme {
+    .dark {
+        --color-accent: var(--color-honey);
+        --color-accent-content: var(--color-honey);
+        --color-accent-foreground: var(--color-ink);
+    }
+}
+
+@layer base {
+
+    *,
+    ::after,
+    ::before,
+    ::backdrop,
+    ::file-selector-button {
+        border-color: var(--color-gray-200, currentColor);
+    }
+}
+
+[data-flux-field]:not(ui-radio, ui-checkbox) {
+    @apply grid gap-2;
+}
+
+[data-flux-label] {
+    @apply  !mb-0 !leading-tight;
+}
+
+input:focus[data-flux-control],
+textarea:focus[data-flux-control],
+select:focus[data-flux-control] {
+    @apply outline-hidden ring-2 ring-accent ring-offset-2 ring-offset-accent-foreground;
+}
+
+/* \[:where(&)\]:size-4 {
+    @apply size-4;
+} */
+
+@layer utilities {
+    /* A structural honeycomb ground: used behind ranking ladders, product
+       placeholders and the storefront hero — never as pure decoration. */
+    .bg-comb {
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='49' viewBox='0 0 28 49'%3E%3Cpath fill='%23C89B3C' fill-opacity='0.18' fill-rule='evenodd' d='M13.99 9.25l13 7.5v15l-13 7.5L1 31.75v-15l12.99-7.5zM3 17.9v12.7l10.99 6.34 11-6.35V17.9l-11-6.34L3 17.9zM0 15l12.98-7.5V0h-2v6.35L0 12.69v2.3zm0 18.5L12.98 41v8h-2v-6.85L0 35.81v-2.3zM15 0v7.5L27.99 15H28v-2.31h-.01L17 6.35V0h-2zm0 49v-8l12.99-7.5H28v2.31h-.01L17 42.15V49h-2z'/%3E%3C/svg%3E");
+        background-size: 28px 49px;
+    }
+
+    .clip-hex {
+        clip-path: polygon(50% 0%, 93% 25%, 93% 75%, 50% 100%, 7% 75%, 7% 25%);
+    }
+}
+
+@layer base {
+    ::selection {
+        background-color: var(--color-honey);
+        color: var(--color-ink);
+    }
+
+    :focus-visible {
+        outline: 2px solid var(--color-honey-deep);
+        outline-offset: 2px;
+    }
+
+    h1,
+    h2 {
+        font-family: var(--font-display);
+        letter-spacing: -0.01em;
+    }
+}
+
+/* Flux's sidebar text sits a shade lighter than the Warm Hive paper palette
+   allows. Darken it in light mode and keep hover/current states untouched. */
+html:not(.dark) [data-flux-sidebar-nav] [data-flux-sidebar-item]:not([data-current]):not(:hover) {
+    color: var(--color-zinc-600);
+}
+
+.dark [data-flux-sidebar-nav] [data-flux-sidebar-item]:not([data-current]):not(:hover) {
+    color: var(--color-zinc-300);
+}
+
+html:not(.dark) [data-flux-sidebar-group] > div:first-child {
+    color: var(--color-zinc-600);
+}
+
+.dark [data-flux-sidebar-group] > div:first-child {
+    color: var(--color-zinc-400);
+}
+
+html:not(.dark) [data-flux-sidebar-profile]:not(:hover) span {
+    color: var(--color-zinc-600);
+}
+
+html:not(.dark) [data-flux-subheading] {
+    color: var(--color-zinc-600);
+}

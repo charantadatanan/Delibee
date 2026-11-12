@@ -175,6 +175,7 @@ docs/reports/                                    progress and submission reports
 docs/screenshots/figma-theme/                    current theme screenshots
 docs/screenshots/                                previous Warm Hive screenshots
 docs/archive/                                    historical build notes
+ui-ux/                                           static UI/UX sampler and sampled source for the design team
 .github/workflows/ci.yml                         CI pipeline
 ```
 
