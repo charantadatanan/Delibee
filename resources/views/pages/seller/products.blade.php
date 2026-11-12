@@ -180,10 +180,10 @@ new #[Livewire\Attributes\Title('Your products')] class extends Component
                     <li class="flex flex-wrap items-center justify-between gap-3 px-4 py-3">
                         <div>
                             <p class="font-display text-lg font-semibold">{{ $product->name }}</p>
-                            <p class="text-xs text-zinc-500">
+                            <p class="text-xs text-zinc-500 dark:text-zinc-400">
                                 {{ $product->formattedPrice() }}, {{ $product->stock }} in stock
                                 @if ($product->category)
-                                    <span class="text-zinc-400 dark:text-zinc-500">/</span> {{ $product->category->name }}
+                                    <span class="text-zinc-400">/</span> {{ $product->category->name }}
                                 @endif
                             </p>
                         </div>

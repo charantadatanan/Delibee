@@ -95,7 +95,7 @@ new #[Livewire\Attributes\Title('Bee Chat')] class extends Component
                             <flux:avatar name="{{ $otherParty }}" class="size-10" />
                             <div class="min-w-0">
                                 <p class="font-medium truncate">{{ $otherParty }}</p>
-                                <p class="text-xs text-zinc-500 truncate">
+                                <p class="text-xs text-zinc-500 dark:text-zinc-400 truncate">
                                     @if ($conversation->subject)
                                         {{ $conversation->subject }}
                                     @else
