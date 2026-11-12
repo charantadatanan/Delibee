@@ -25,7 +25,7 @@ param(
 
 $ErrorActionPreference = "Stop"
 
-$projectRoot = Split-Path -Parent $PSScriptRoot
+$projectRoot = Split-Path -Parent (Split-Path -Parent $PSScriptRoot)
 
 if (-not $OutputDir) {
     $OutputDir = Join-Path $projectRoot "storage\backups"

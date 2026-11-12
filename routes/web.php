@@ -14,7 +14,7 @@ Route::get('businesses/{business}/products/{product}', [StorefrontController::cl
 Route::get('ranking', [StorefrontController::class, 'ranking'])->name('ranking');
 
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::view('dashboard', 'dashboard')->name('dashboard');
+    Route::view('dashboard', 'pages.dashboard')->name('dashboard');
 
     // Honey Pot and checkout.
     Route::livewire('cart', 'pages::cart')->name('cart.index');

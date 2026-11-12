@@ -86,18 +86,18 @@ Statuses are `pending`, `active` and `suspended`; the command looks the business
 Create a compressed, custom-format PostgreSQL dump in `storage/backups`, verify it with `pg_restore --list`, and prune dumps older than 14 days:
 
 ```powershell
-powershell -ExecutionPolicy Bypass -File scripts\backup-database.ps1
+powershell -ExecutionPolicy Bypass -File scripts\backup\backup-database.ps1
 ```
 
 Options: `-OutputDir`, `-KeepDays`, `-PgDump` and `-PgRestore` (both default to the PostgreSQL 18 Windows path; `-PgRestore` is resolved next to `-PgDump`). The script reads `DB_*` from `.env` and deletes a dump that fails verification.
 
-On Linux or macOS, `scripts/backup-database.sh` reads the same `.env` and verifies dumps the same way:
+On Linux or macOS, `scripts/backup/backup-database.sh` reads the same `.env` and verifies dumps the same way:
 
 ```bash
-./scripts/backup-database.sh --output-dir /var/backups/delibee --keep-days 30
+./scripts/backup/backup-database.sh --output-dir /var/backups/delibee --keep-days 30
 ```
 
-Options: `--output-dir`, `--keep-days`, `--pg-dump` and `--pg-restore`; the binaries default to `pg_dump`/`pg_restore` on `PATH`. A cron entry such as `0 21 * * * cd /srv/delibee && ./scripts/backup-database.sh >> storage/logs/backup.log 2>&1` runs it nightly.
+Options: `--output-dir`, `--keep-days`, `--pg-dump` and `--pg-restore`; the binaries default to `pg_dump`/`pg_restore` on `PATH`. A cron entry such as `0 21 * * * cd /srv/delibee && ./scripts/backup/backup-database.sh >> storage/logs/backup.log 2>&1` runs it nightly.
 
 To restore, create a fresh database and restore into it (do not restore over the live one):
 
@@ -110,7 +110,7 @@ pg_restore -h 127.0.0.1 -p 5432 -U delibee -d delibee_restore storage\backups\de
 Schedule the backup with Windows Task Scheduler (or cron on Linux) before relying on the database for anything important. On Windows, register a daily task with:
 
 ```powershell
-powershell -ExecutionPolicy Bypass -File scripts\register-backup-task.ps1
+powershell -ExecutionPolicy Bypass -File scripts\backup\register-backup-task.ps1
 ```
 
 The task runs as your user and only while you are logged on. Options: `-Time` (default `21:30`), `-KeepDays`, `-OutputDir`, `-PgDump`. Remove it with the same script plus `-Remove`.
@@ -137,14 +137,21 @@ GitHub Actions runs the same checks against a PostgreSQL service on every push a
 app/
   Models/ Enums/ Policies/ Services/ Support/    domain logic
   Livewire/Storefront/                           public Livewire components
+  Http/Middleware/                               seller, admin and security middleware
 resources/views/pages/                           Livewire 4 single-file pages
+resources/views/livewire/storefront/             public component views
 resources/views/components/storefront/           storefront shell + cards
 resources/css/app.css                            Warm Hive design tokens
 database/migrations/                             schema, indexes, search columns
-tests/Feature/                                   domain + page-render coverage
+tests/Feature/{Domain,Http,Admin,Seller,...}     domain, HTTP, command, auth and settings coverage
+scripts/backup/                                  verified backup and scheduling scripts
+docs/reports/                                    progress and submission reports
 docs/screenshots/                                README screenshots
+docs/archive/                                    historical build notes
 .github/workflows/ci.yml                         CI pipeline
 ```
+
+See [`docs/README.md`](docs/README.md) for the documentation index.
 
 ## Business rules worth knowing
 
@@ -157,7 +164,7 @@ docs/screenshots/                                README screenshots
 
 ## Status
 
-- 98 tests (97 passing, 1 skipped — two-factor authentication is disabled in this build), 234 assertions.
+- 100 tests (99 passing, 1 skipped — two-factor authentication is disabled in this build), 242 assertions.
 - PHPStan level 8: 0 errors. Pint: clean.
 - Storefront, customer, seller, admin and settings pages were audited with axe-core against WCAG 2.2 AA and report zero violations.
 - Payment is offline for now; launch currency, seller payout model and the payment gateway remain open product decisions.
