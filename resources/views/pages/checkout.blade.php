@@ -41,7 +41,7 @@ new #[Livewire\Attributes\Title('Checkout')] class extends Component
     #[Computed]
     public function totalsByCurrency(): array
     {
-        $flatShipping = (int) config('commerce.flat_shipping_minor', 0);
+        $checkout = app(CheckoutService::class);
         $totals = [];
 
         foreach ($this->groups() as $items) {
@@ -49,7 +49,7 @@ new #[Livewire\Attributes\Title('Checkout')] class extends Component
 
             $totals[$currency] ??= ['subtotal' => 0, 'shipping' => 0, 'total' => 0];
             $totals[$currency]['subtotal'] += $items->sum(fn ($item) => $item->subtotalMinor());
-            $totals[$currency]['shipping'] += $flatShipping;
+            $totals[$currency]['shipping'] += $checkout->shippingForCurrency($currency);
         }
 
         foreach ($totals as $currency => $row) {
@@ -165,9 +165,8 @@ new #[Livewire\Attributes\Title('Checkout')] class extends Component
                 <div class="mt-6 rounded-xl bg-comb/40 p-4 text-sm dark:bg-zinc-950/60">
                     <p class="font-medium">Payment</p>
                     <p class="mt-1 text-zinc-600 dark:text-zinc-400">
-                        The payment method is not set up yet — the launch country and the seller payout model
-                        are still open decisions. Your order is recorded now and you will pay the sellers
-                        directly once that is settled.
+                        The payment method is not set up yet. Each order is settled in the seller's currency,
+                        recorded now, and paid to the seller directly once the gateway is connected.
                     </p>
                 </div>
             </section>

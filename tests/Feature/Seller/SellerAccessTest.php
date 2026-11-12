@@ -40,3 +40,12 @@ it('forbids a non-seller from the seller desk', function () {
 
     $this->actingAs($customer)->get(route('seller.products'))->assertForbidden();
 });
+
+it('redirects a seller with a business away from onboarding', function () {
+    $seller = User::factory()->create();
+    $seller->assignRole('seller');
+
+    Business::factory()->for($seller, 'owner')->create();
+
+    $this->actingAs($seller)->get(route('seller.onboarding'))->assertRedirect(route('seller.products'));
+});

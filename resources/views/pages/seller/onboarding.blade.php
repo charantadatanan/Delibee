@@ -15,6 +15,12 @@ new #[Livewire\Attributes\Title('Open your shop')] class extends Component
 
     public function mount(): void
     {
+        if (auth()->user()->sellerBusiness() !== null) {
+            $this->redirect(route('seller.products'), navigate: true);
+
+            return;
+        }
+
         $this->currency = (string) config('commerce.currency', 'PHP');
     }
 

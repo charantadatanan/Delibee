@@ -168,13 +168,15 @@ See [`docs/README.md`](docs/README.md) for the documentation index.
 - Suspended or pending businesses and their products are hidden from the storefront and rankings.
 - Chat messages are rate-limited per user (20 per minute by default, configurable via `CHAT_RATE_LIMIT_PER_MINUTE`).
 - Review submissions are rate-limited per user (10 per minute by default, configurable via `REVIEW_RATE_LIMIT_PER_MINUTE`).
+- Each order is settled in the seller's currency; flat shipping is configured per currency and the platform does not convert between currencies.
+- One seller account owns one business in this build; onboarding redirects sellers who already have a business.
 
 ## Status
 
-- 113 tests (112 passing, 1 skipped — two-factor authentication is disabled in this build), 268 assertions.
+- 115 tests (114 passing, 1 skipped — two-factor authentication is disabled in this build), 273 assertions.
 - PHPStan level 8: 0 errors. Pint: clean.
 - Storefront, customer, seller, admin and settings pages were audited with axe-core against WCAG 2.2 AA and report zero violations.
-- Payment is offline for now; launch currency, seller payout model and the payment gateway remain open product decisions.
+- Payment is offline for now; the payment gateway remains an open product decision.
 
 ## License
 

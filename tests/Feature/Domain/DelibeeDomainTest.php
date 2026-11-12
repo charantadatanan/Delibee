@@ -231,6 +231,30 @@ it('replaces a period when republished so stale ranks cannot survive', function 
         ->and(RankSnapshot::where('period_type', 'month')->count())->toBe(0);
 });
 
+it('charges flat shipping in the seller currency', function () {
+    $customer = User::factory()->create();
+    $business = Business::factory()->create(['currency' => 'USD']);
+    $product = Product::factory()->for($business)->create([
+        'stock' => 5,
+        'price_minor' => 1000,
+        'currency' => 'USD',
+    ]);
+
+    CartItem::create(['user_id' => $customer->id, 'product_id' => $product->id, 'quantity' => 1]);
+
+    $orders = app(CheckoutService::class)->place($customer, [
+        'name' => 'Cora Customer',
+        'line1' => '12 Market Street',
+        'city' => 'Quezon City',
+        'postal_code' => '1100',
+        'phone' => '+63 900 000 0000',
+    ]);
+
+    expect($orders)->toHaveCount(1)
+        ->and($orders->first()->currency)->toBe('USD')
+        ->and($orders->first()->shipping_minor)->toBe((int) config('commerce.flat_shipping_minor.USD'));
+});
+
 it('rate limits review submissions', function () {
     config(['commerce.review_rate_limit_per_minute' => 1]);
 

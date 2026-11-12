@@ -19,12 +19,22 @@ return [
     | Flat Shipping
     |--------------------------------------------------------------------------
     |
-    | Charged once per seller order. Kept in minor units so no rounding is
-    | introduced by the price calculation.
+    | Charged once per seller order, in minor units of the seller's currency.
+    | Each order is settled in one currency; a currency without an entry falls
+    | back to the default below. The platform does not convert between
+    | currencies.
     |
     */
 
-    'flat_shipping_minor' => 5000,
+    'flat_shipping_minor' => [
+        'PHP' => 5000,
+        'USD' => 500,
+        'EUR' => 500,
+        'JPY' => 500,
+        'KRW' => 5000,
+    ],
+
+    'default_flat_shipping_minor' => 5000,
 
     /*
     |--------------------------------------------------------------------------

@@ -152,11 +152,25 @@ class CheckoutService
     }
 
     /**
-     * Flat shipping charged once per seller order.
+     * Flat shipping for a currency, in minor units. The platform does not
+     * convert between currencies.
+     */
+    public function shippingForCurrency(string $currency): int
+    {
+        $shipping = config('commerce.flat_shipping_minor.'.strtoupper($currency));
+
+        return is_int($shipping)
+            ? $shipping
+            : (int) config('commerce.default_flat_shipping_minor', 0);
+    }
+
+    /**
+     * Flat shipping charged once per seller order, priced in the seller's
+     * own currency.
      */
     private function shippingFor(Business $business): int
     {
-        return (int) config('commerce.flat_shipping_minor', 0);
+        return $this->shippingForCurrency($business->currency);
     }
 
     /**
