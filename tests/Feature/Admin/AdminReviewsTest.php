@@ -59,3 +59,19 @@ it('does not let non-admins moderate reviews', function () {
 
     expect(Gate::forUser($customer)->allows('moderate', $review))->toBeFalse();
 });
+
+it('removes a hidden review from the public storefront', function () {
+    $review = Review::factory()->create([
+        'body' => 'This review should disappear.',
+        'status' => ReviewStatus::Published,
+    ]);
+
+    Livewire::actingAs($this->admin)
+        ->test('pages::admin.reviews')
+        ->call('hide', $review->id)
+        ->assertHasNoErrors();
+
+    $this->get(route('businesses.show', $review->business->slug))
+        ->assertOk()
+        ->assertDontSee('This review should disappear.');
+});

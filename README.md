@@ -1,4 +1,4 @@
-# deliBEE
+d# deliBEE
 
 A multi-vendor marketplace where sellers are ranked on **how they are performing now**, not on lifetime totals.
 
@@ -168,7 +168,7 @@ See [`docs/README.md`](docs/README.md) for the documentation index.
 
 ## Status
 
-- 105 tests (104 passing, 1 skipped — two-factor authentication is disabled in this build), 250 assertions.
+- 106 tests (105 passing, 1 skipped — two-factor authentication is disabled in this build), 253 assertions.
 - PHPStan level 8: 0 errors. Pint: clean.
 - Storefront, customer, seller, admin and settings pages were audited with axe-core against WCAG 2.2 AA and report zero violations.
 - Payment is offline for now; launch currency, seller payout model and the payment gateway remain open product decisions.
