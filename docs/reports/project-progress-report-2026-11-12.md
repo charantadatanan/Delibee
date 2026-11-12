@@ -17,7 +17,7 @@ By the finish line the project had:
 
 - **41 commits**, **246 tracked files** and **24 Livewire pages**.
 - **21 migrations** covering **28 tables**, **79 indexes** and **7 database CHECK constraints**.
-- **115 automated tests** (114 passing, 1 skipped) with **273 assertions**.
+- **116 automated tests** (115 passing, 1 skipped) with **277 assertions**.
 - **PHPStan level 8** with zero errors and a clean Pint run.
 - GitHub Actions running the full suite against a fresh PostgreSQL 18 service on every push.
 - Zero axe-core accessibility violations across the storefront, customer, seller, admin, auth and settings pages in both light and dark mode.
@@ -39,7 +39,7 @@ The build is complete for the MVP. The only remaining work is operational (off-m
 | Business tables | 28 (including framework tables) |
 | Indexes | 79 |
 | CHECK constraints | 7 |
-| Application tests | 115 (114 passed, 1 skipped, 273 assertions) |
+| Application tests | 116 (115 passed, 1 skipped, 277 assertions) |
 | Static analysis | PHPStan level 8 — 0 errors |
 | Code style | Pint — clean |
 | Accessibility | 0 axe violations (light and dark) |
@@ -174,7 +174,7 @@ The project was committed and shipped as a working application:
 
 | Verification | Result |
 |---|---|
-| Application tests | 115 — 114 passed, 1 skipped, 273 assertions |
+| Application tests | 116 — 115 passed, 1 skipped, 277 assertions |
 | Static analysis | PHPStan level 8 — 0 errors |
 | Coding style | Pint — clean |
 | PHP dependency audit | No security advisories |
@@ -183,6 +183,7 @@ The project was committed and shipped as a working application:
 | Accessibility | 0 axe violations across 12+ page groups, light and dark |
 | Backup restore drill | Latest dump restored into a scratch database — 28 tables, 21 migrations, all compared row counts matched |
 | Restore verifier | `verify-backup.ps1` / `verify-backup.sh` automate the restore, comparison and cleanup |
+| Health check | `php artisan delibee:status` reports size, tables, indexes, migrations, queues and latest-backup age |
 | Smoke tests | `/up`, `/marketplace`, `/login`, `/ranking` — HTTP 200 |
 
 The one skipped test is two-factor authentication, which is disabled in this build.
@@ -275,6 +276,7 @@ Quality gates:
 php artisan test
 vendor/bin/pint --test
 vendor/bin/phpstan analyse
+php artisan delibee:status
 ```
 
 Backups:

@@ -151,6 +151,7 @@ BeeRank snapshots are historical records and are kept indefinitely.
 php artisan test                   # Pest feature + unit suite
 vendor/bin/pint --test             # coding style
 vendor/bin/phpstan analyse         # Larastan, level 8
+php artisan delibee:status         # database size, migrations, queues and latest backup
 ```
 
 GitHub Actions runs the same checks against a PostgreSQL service on every push and pull request.
@@ -193,7 +194,7 @@ See [`docs/README.md`](docs/README.md) for the documentation index.
 
 ## Status
 
-- 115 tests (114 passing, 1 skipped — two-factor authentication is disabled in this build), 273 assertions.
+- 116 tests (115 passing, 1 skipped — two-factor authentication is disabled in this build), 277 assertions.
 - PHPStan level 8: 0 errors. Pint: clean.
 - Storefront, customer, seller, admin and settings pages were audited with axe-core against WCAG 2.2 AA and report zero violations.
 - Payment is offline for now; the payment gateway remains an open product decision.

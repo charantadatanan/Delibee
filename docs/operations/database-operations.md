@@ -159,6 +159,7 @@ Use `hostssl` entries in `pg_hba.conf`, restart PostgreSQL, and point Laravel at
 - [ ] Dump created and verified with `pg_restore --list`.
 - [ ] Off-site copy exists and matches the local file.
 - [ ] Restore drill completes with matching table and row counts.
+- [ ] `php artisan delibee:status` reports healthy database, queue and latest-backup figures.
 - [ ] Scheduler is running; `delibee:prune` and BeeRank jobs appear in `php artisan schedule:list`.
 - [ ] Backup task/cron entry is enabled and its last run succeeded.
 - [ ] WAL archiving (if enabled) has no failures in the PostgreSQL log.
