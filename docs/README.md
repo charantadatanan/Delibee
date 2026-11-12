@@ -1,6 +1,8 @@
 # Documentation
 
-- `reports/` — local progress and submission reports (kept untracked until submitted).
+- `reports/` — progress and submission reports.
+  - `project-progress-report-2026-11-12.md` — the full build story from start to finish.
+  - `database-progress-report-2026-11-09.md` — the database report (kept local until submitted).
 - `screenshots/figma-theme/` — current Figma-inspired theme screenshots used by the README.
 - `screenshots/` — previous Warm Hive theme screenshots, kept for comparison.
 - `archive/` — historical build notes (`DEEPSEEK.md`, `PROGRESS.md`) and the previous Warm Hive theme reference (`theme-warm-hive.md`).
