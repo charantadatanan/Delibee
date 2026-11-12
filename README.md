@@ -15,6 +15,7 @@ A multi-vendor marketplace where sellers are ranked on **how they are performing
 - **Verified reviews** — only delivered purchases can rate, one review per purchased item, and only verified ratings feed BeeRank.
 - **Bee Chat** — customer/seller messaging with per-conversation response tracking.
 - **Seller desk** — store onboarding and admin approval, product management, and an order-fulfilment timeline.
+- **Hive Guard** — admin approval and suspension of sellers, plus review moderation.
 - **Warm Hive design system** — Fraunces + Instrument Sans, a honeycomb-derived visual language, light/dark mode, responsive down to mobile.
 
 ## Stack
@@ -70,7 +71,10 @@ Seller accounts are generated with fake emails; use the admin account to approve
 
 ## Admin operations
 
-Admins get a **Hive Guard** page at `/admin/businesses` (linked in the sidebar) to review pending shops, approve them, suspend active sellers, and reactivate suspended ones.
+Admins get two **Hive Guard** pages in the sidebar:
+
+- `/admin/businesses` — review pending shops, approve them, suspend active sellers, and reactivate suspended ones.
+- `/admin/reviews` — hide ratings that break the rules or republish them. Hidden reviews stay on record but no longer count towards storefront ratings or BeeRank.
 
 The same actions are available from the CLI:
 
@@ -164,7 +168,7 @@ See [`docs/README.md`](docs/README.md) for the documentation index.
 
 ## Status
 
-- 100 tests (99 passing, 1 skipped — two-factor authentication is disabled in this build), 242 assertions.
+- 105 tests (104 passing, 1 skipped — two-factor authentication is disabled in this build), 250 assertions.
 - PHPStan level 8: 0 errors. Pint: clean.
 - Storefront, customer, seller, admin and settings pages were audited with axe-core against WCAG 2.2 AA and report zero violations.
 - Payment is offline for now; launch currency, seller payout model and the payment gateway remain open product decisions.

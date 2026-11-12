@@ -53,8 +53,12 @@
             @if (auth()->check() && auth()->user()->isAdmin())
             <flux:sidebar.nav aria-label="Hive Guard">
                 <flux:sidebar.group :heading="__('Hive Guard')" class="grid">
-                    <flux:sidebar.item icon="shield-check" :href="route('admin.businesses')" :current="request()->routeIs('admin.*')" wire:navigate>
+                    <flux:sidebar.item icon="shield-check" :href="route('admin.businesses')" :current="request()->routeIs('admin.businesses')" wire:navigate>
                         {{ __('Businesses') }}
+                    </flux:sidebar.item>
+
+                    <flux:sidebar.item icon="star" :href="route('admin.reviews')" :current="request()->routeIs('admin.reviews')" wire:navigate>
+                        {{ __('Reviews') }}
                     </flux:sidebar.item>
                 </flux:sidebar.group>
             </flux:sidebar.nav>
