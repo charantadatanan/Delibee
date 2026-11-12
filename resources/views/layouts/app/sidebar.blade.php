@@ -4,7 +4,7 @@
         @include('partials.head')
     </head>
     <body class="min-h-screen bg-paper text-ink dark:bg-zinc-950 dark:text-zinc-100">
-        <flux:sidebar sticky collapsible="mobile" role="complementary" aria-label="Sidebar" class="border-e border-comb/80 bg-[#f6ecd4]/50 dark:border-zinc-800 dark:bg-zinc-900">
+        <flux:sidebar sticky collapsible="mobile" role="complementary" aria-label="Sidebar" class="border-e border-comb/80 bg-[#FFF4C5]/50 dark:border-zinc-800 dark:bg-zinc-900">
             <flux:sidebar.header>
                 <x-app-logo :sidebar="true" href="{{ route('dashboard') }}" wire:navigate />
                 <flux:sidebar.collapse class="lg:hidden" />

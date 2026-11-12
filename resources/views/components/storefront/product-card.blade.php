@@ -3,7 +3,7 @@
 <a href="{{ route('products.show', [$product->business->slug, $product->slug]) }}"
    class="group flex flex-col overflow-hidden rounded-2xl border border-comb/90 bg-white/70 transition-colors hover:border-honey-deep/40 dark:border-zinc-800 dark:bg-zinc-900 dark:hover:border-honey/40"
    wire:navigate>
-    <div class="relative grid aspect-[4/3] place-items-center overflow-hidden bg-[#f6ecd4] dark:bg-zinc-800">
+    <div class="relative grid aspect-[4/3] place-items-center overflow-hidden bg-[#FFF4C5] dark:bg-zinc-800">
         <div class="absolute inset-0 bg-comb opacity-70 dark:opacity-15"></div>
 
         @if ($product->images->isNotEmpty())

@@ -1,6 +1,6 @@
 <div class="grid gap-8 lg:grid-cols-[1.05fr_0.95fr] lg:gap-12">
     <div>
-        <div class="relative grid aspect-square place-items-center overflow-hidden rounded-3xl border border-comb bg-[#f6ecd4] dark:border-zinc-800 dark:bg-zinc-900">
+        <div class="relative grid aspect-square place-items-center overflow-hidden rounded-3xl border border-comb bg-[#FFF4C5] dark:border-zinc-800 dark:bg-zinc-900">
             <div class="absolute inset-0 bg-comb opacity-60 dark:opacity-10"></div>
 
             @if ($product->images->isNotEmpty())
@@ -17,7 +17,7 @@
         @if ($product->images->count() > 1)
             <div class="mt-3 grid grid-cols-4 gap-3">
                 @foreach ($product->images->skip(1) as $image)
-                    <div class="relative aspect-square overflow-hidden rounded-xl border border-comb bg-[#f6ecd4] dark:border-zinc-800 dark:bg-zinc-900">
+                    <div class="relative aspect-square overflow-hidden rounded-xl border border-comb bg-[#FFF4C5] dark:border-zinc-800 dark:bg-zinc-900">
                         <img src="{{ \Illuminate\Support\Facades\Storage::url($image->path) }}"
                              alt="{{ $image->alt_text ?? $product->name }}"
                              class="size-full object-cover">

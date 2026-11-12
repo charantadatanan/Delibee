@@ -4,7 +4,7 @@ A multi-vendor marketplace where sellers are ranked on **how they are performing
 
 [![CI](https://github.com/charantadatanan/Delibee/actions/workflows/ci.yml/badge.svg)](https://github.com/charantadatanan/Delibee/actions/workflows/ci.yml)
 
-![deliBEE marketplace](docs/screenshots/marketplace.png)
+![deliBEE marketplace](docs/screenshots/figma-theme/marketplace.png)
 
 ## What it does
 
@@ -16,7 +16,7 @@ A multi-vendor marketplace where sellers are ranked on **how they are performing
 - **Bee Chat** — customer/seller messaging with per-conversation response tracking and per-user rate limiting.
 - **Seller desk** — store onboarding and admin approval, product management, and an order-fulfilment timeline.
 - **Hive Guard** — admin approval and suspension of sellers, order oversight, and review moderation.
-- **Warm Hive design system** — Fraunces + Instrument Sans, a honeycomb-derived visual language, light/dark mode, responsive down to mobile.
+- **deliBEE UI theme** — Fredoka + Inter, a cream-and-honey palette drawn from the Figma UI project, honeycomb motifs, light/dark mode, responsive down to mobile.
 
 ## Stack
 
@@ -25,16 +25,24 @@ A multi-vendor marketplace where sellers are ranked on **how they are performing
 | Backend | Laravel 13, PHP 8.4 |
 | UI | Livewire 4 single-file components, Flux, Tailwind CSS 4 |
 | Database | PostgreSQL 18 (search via `tsvector`, `pg_trgm`) |
-| Assets | Vite 8, Bunny-hosted Fraunces + Instrument Sans |
+| Assets | Vite 8, Bunny-hosted Inter + Fredoka |
 | Quality | Pest 5, Larastan (level 8), Pint |
 
 ## Screenshots
 
 | Dashboard | BeeRank |
 |---|---|
-| ![Dashboard](docs/screenshots/dashboard.png) | ![BeeRank](docs/screenshots/ranking.png) |
+| ![Dashboard](docs/screenshots/figma-theme/dashboard.png) | ![BeeRank](docs/screenshots/figma-theme/ranking.png) |
 
-![Login](docs/screenshots/login.png)
+![Login](docs/screenshots/figma-theme/login.png)
+
+### Theme options
+
+The previous Warm Hive theme is preserved for comparison and rollback:
+
+- Old screenshots: `docs/screenshots/` (`marketplace.png`, `dashboard.png`, `ranking.png`, `login.png`)
+- Backup branch: `ui-backup/warm-hive` (tag `ui-warm-hive-2026-11-12`)
+- Token reference: `docs/archive/theme-warm-hive.md`
 
 ## Getting started
 
@@ -146,12 +154,13 @@ app/
 resources/views/pages/                           Livewire 4 single-file pages
 resources/views/livewire/storefront/             public component views
 resources/views/components/storefront/           storefront shell + cards
-resources/css/app.css                            Warm Hive design tokens
+resources/css/app.css                            deliBEE UI theme tokens
 database/migrations/                             schema, indexes, search columns
 tests/Feature/{Domain,Http,Admin,Seller,...}     domain, HTTP, command, auth and settings coverage
 scripts/backup/                                  verified backup and scheduling scripts
 docs/reports/                                    progress and submission reports
-docs/screenshots/                                README screenshots
+docs/screenshots/figma-theme/                    current theme screenshots
+docs/screenshots/                                previous Warm Hive screenshots
 docs/archive/                                    historical build notes
 .github/workflows/ci.yml                         CI pipeline
 ```

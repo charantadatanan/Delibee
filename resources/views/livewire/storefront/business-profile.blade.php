@@ -1,5 +1,5 @@
 <div>
-    <section class="relative overflow-hidden rounded-3xl border border-comb bg-[#f7edd5] dark:border-zinc-800 dark:bg-zinc-900">
+    <section class="relative overflow-hidden rounded-3xl border border-comb bg-[#FFF4C5] dark:border-zinc-800 dark:bg-zinc-900">
         <div class="absolute inset-0 bg-comb opacity-50 dark:opacity-10"></div>
 
         <div class="relative grid gap-6 p-6 sm:p-8 lg:grid-cols-[1fr_auto] lg:items-center">
