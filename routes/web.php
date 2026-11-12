@@ -47,6 +47,7 @@ Route::middleware(['auth', 'verified', 'seller'])->group(function () {
 // Hive Guard: admin-only business and review moderation.
 Route::middleware(['auth', 'verified', 'admin'])->group(function () {
     Route::livewire('admin/businesses', 'pages::admin.businesses')->name('admin.businesses');
+    Route::livewire('admin/orders', 'pages::admin.orders')->name('admin.orders');
     Route::livewire('admin/reviews', 'pages::admin.reviews')->name('admin.reviews');
 });
 

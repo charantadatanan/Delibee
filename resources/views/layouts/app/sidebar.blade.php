@@ -57,6 +57,10 @@
                         {{ __('Businesses') }}
                     </flux:sidebar.item>
 
+                    <flux:sidebar.item icon="cube" :href="route('admin.orders')" :current="request()->routeIs('admin.orders')" wire:navigate>
+                        {{ __('Orders') }}
+                    </flux:sidebar.item>
+
                     <flux:sidebar.item icon="star" :href="route('admin.reviews')" :current="request()->routeIs('admin.reviews')" wire:navigate>
                         {{ __('Reviews') }}
                     </flux:sidebar.item>
