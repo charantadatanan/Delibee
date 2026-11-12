@@ -1,4 +1,4 @@
-d# deliBEE
+# deliBEE
 
 A multi-vendor marketplace where sellers are ranked on **how they are performing now**, not on lifetime totals.
 
