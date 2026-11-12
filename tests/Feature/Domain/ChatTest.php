@@ -144,3 +144,20 @@ it('loads only the latest message for each conversation in the inbox', function 
         ->and($conversations->every(fn (Conversation $conversation): bool => ! $conversation->relationLoaded('messages')))->toBeTrue()
         ->and($conversations->every(fn (Conversation $conversation): bool => $conversation->latestMessage !== null))->toBeTrue();
 });
+
+it('rate limits messages sent in quick succession', function () {
+    config(['chat.rate_limit_per_minute' => 2]);
+
+    $customer = User::factory()->create();
+    $owner = User::factory()->create();
+    $business = Business::factory()->for($owner, 'owner')->create();
+    $conversation = Conversation::factory()->for($business)->for($customer)->create();
+
+    $component = Livewire::actingAs($customer)->test('pages::chat.show', ['conversation' => $conversation]);
+
+    $component->set('newMessage', 'First')->call('sendMessage')->assertHasNoErrors();
+    $component->set('newMessage', 'Second')->call('sendMessage')->assertHasNoErrors();
+    $component->set('newMessage', 'Third')->call('sendMessage');
+
+    expect(Message::where('conversation_id', $conversation->id)->count())->toBe(2);
+});

@@ -13,7 +13,7 @@ A multi-vendor marketplace where sellers are ranked on **how they are performing
 - **Honey Pot** — one cart across many sellers; checkout splits it into one order per seller. Product rows are locked during checkout so stock cannot oversell.
 - **Honey Points** — an append-only ledger (welcome bonus, purchases, reviews, refund reversals), never a stored balance.
 - **Verified reviews** — only delivered purchases can rate, one review per purchased item, and only verified ratings feed BeeRank.
-- **Bee Chat** — customer/seller messaging with per-conversation response tracking.
+- **Bee Chat** — customer/seller messaging with per-conversation response tracking and per-user rate limiting.
 - **Seller desk** — store onboarding and admin approval, product management, and an order-fulfilment timeline.
 - **Hive Guard** — admin approval and suspension of sellers, order oversight, and review moderation.
 - **Warm Hive design system** — Fraunces + Instrument Sans, a honeycomb-derived visual language, light/dark mode, responsive down to mobile.
@@ -166,10 +166,11 @@ See [`docs/README.md`](docs/README.md) for the documentation index.
 - BeeRank ignores businesses that have not reached the minimum order count; components without data are dropped and weights renormalised.
 - Publishing a ranking is transactional and replaces the whole period, so a business that drops out cannot keep a stale rank.
 - Suspended or pending businesses and their products are hidden from the storefront and rankings.
+- Chat messages are rate-limited per user (20 per minute by default, configurable via `CHAT_RATE_LIMIT_PER_MINUTE`).
 
 ## Status
 
-- 110 tests (109 passing, 1 skipped — two-factor authentication is disabled in this build), 260 assertions.
+- 111 tests (110 passing, 1 skipped — two-factor authentication is disabled in this build), 263 assertions.
 - PHPStan level 8: 0 errors. Pint: clean.
 - Storefront, customer, seller, admin and settings pages were audited with axe-core against WCAG 2.2 AA and report zero violations.
 - Payment is offline for now; launch currency, seller payout model and the payment gateway remain open product decisions.

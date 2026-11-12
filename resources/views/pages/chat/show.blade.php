@@ -2,6 +2,8 @@
 
 use App\Models\Conversation;
 use App\Models\Message;
+use Flux\Flux;
+use Illuminate\Support\Facades\RateLimiter;
 use Livewire\Attributes\Computed;
 use Livewire\Component;
 
@@ -33,6 +35,17 @@ new #[Livewire\Attributes\Title('Conversation')] class extends Component
         $this->validate([
             'newMessage' => ['required', 'string', 'max:4000'],
         ]);
+
+        $limit = (int) config('chat.rate_limit_per_minute', 20);
+        $key = 'chat-send:'.auth()->id();
+
+        if (RateLimiter::tooManyAttempts($key, $limit)) {
+            Flux::toast('You are sending messages too quickly. Please wait a moment.', variant: 'danger');
+
+            return;
+        }
+
+        RateLimiter::hit($key, 60);
 
         $message = $this->conversation->messages()->create([
             'sender_id' => auth()->id(),
