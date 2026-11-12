@@ -1,5 +1,7 @@
 # Documentation
 
+- `guides/` — developer guides.
+  - `code-map.md` — where every UI, theme, domain, route and test file lives, plus how to change the theme.
 - `reports/` — progress and submission reports.
   - `project-progress-report-2026-11-12.md` — the full build story from start to finish.
   - `database-progress-report-2026-11-09.md` — the database report (kept local until submitted).

@@ -170,6 +170,7 @@ resources/css/app.css                            deliBEE UI theme tokens
 database/migrations/                             schema, indexes, search columns
 tests/Feature/{Domain,Http,Admin,Seller,...}     domain, HTTP, command, auth and settings coverage
 scripts/backup/                                  verified backup and scheduling scripts
+docs/guides/                                     code map for UI, theme, domain and tests
 docs/reports/                                    progress and submission reports
 docs/screenshots/figma-theme/                    current theme screenshots
 docs/screenshots/                                previous Warm Hive screenshots
@@ -177,7 +178,7 @@ docs/archive/                                    historical build notes
 .github/workflows/ci.yml                         CI pipeline
 ```
 
-See [`docs/README.md`](docs/README.md) for the documentation index.
+See [`docs/README.md`](docs/README.md) for the documentation index and [`docs/guides/code-map.md`](docs/guides/code-map.md) for a file-by-file map of the UI, theme and domain code.
 
 ## Business rules worth knowing
 
