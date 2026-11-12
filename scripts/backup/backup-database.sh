@@ -3,13 +3,15 @@
 # Create a verified PostgreSQL custom-format backup of the deliBEE database.
 #
 # Reads DB_* from the project's .env, writes a timestamped dump into
-# storage/backups, verifies it with pg_restore --list, and removes dumps older
-# than --keep-days. Suitable for cron:
+# storage/backups, verifies it with pg_restore --list, copies it to
+# --offsite-dir when set, and removes dumps older than --keep-days. Suitable
+# for cron:
 #
-#   0 21 * * * cd /path/to/Delibee && ./scripts/backup-database.sh >> storage/logs/backup.log 2>&1
+#   0 21 * * * cd /path/to/Delibee && ./scripts/backup/backup-database.sh >> storage/logs/backup.log 2>&1
 #
-# Usage: ./scripts/backup-database.sh [options]
+# Usage: ./scripts/backup/backup-database.sh [options]
 #   --output-dir DIR    Where to write dumps (default: storage/backups)
+#   --offsite-dir DIR   Also copy the verified dump here (default: $OFFSITE_BACKUP_DIR)
 #   --keep-days N       Delete dumps older than N days (default: 14)
 #   --pg-dump PATH      pg_dump binary (default: pg_dump from PATH or $PG_DUMP)
 #   --pg-restore PATH   pg_restore binary (default: pg_restore from PATH or $PG_RESTORE)
@@ -21,6 +23,7 @@ script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 project_root="$(cd "$script_dir/../.." && pwd)"
 
 output_dir="$project_root/storage/backups"
+offsite_dir="${OFFSITE_BACKUP_DIR:-}"
 keep_days=14
 pg_dump_bin="${PG_DUMP:-pg_dump}"
 pg_restore_bin="${PG_RESTORE:-pg_restore}"
@@ -30,13 +33,15 @@ usage() {
 Create a verified PostgreSQL custom-format backup of the deliBEE database.
 
 Reads DB_* from the project's .env, writes a timestamped dump into
-storage/backups, verifies it with pg_restore --list, and removes dumps older
-than --keep-days. Suitable for cron:
+storage/backups, verifies it with pg_restore --list, copies it to
+--offsite-dir when set, and removes dumps older than --keep-days. Suitable
+for cron:
 
-  0 21 * * * cd /path/to/Delibee && ./scripts/backup-database.sh >> storage/logs/backup.log 2>&1
+  0 21 * * * cd /path/to/Delibee && ./scripts/backup/backup-database.sh >> storage/logs/backup.log 2>&1
 
-Usage: ./scripts/backup-database.sh [options]
+Usage: ./scripts/backup/backup-database.sh [options]
   --output-dir DIR    Where to write dumps (default: storage/backups)
+  --offsite-dir DIR   Also copy the verified dump here (default: $OFFSITE_BACKUP_DIR)
   --keep-days N       Delete dumps older than N days (default: 14)
   --pg-dump PATH      pg_dump binary (default: pg_dump from PATH or $PG_DUMP)
   --pg-restore PATH   pg_restore binary (default: pg_restore from PATH or $PG_RESTORE)
@@ -48,6 +53,10 @@ while [ $# -gt 0 ]; do
     case "$1" in
         --output-dir)
             output_dir="${2:?--output-dir requires a value}"
+            shift 2
+            ;;
+        --offsite-dir)
+            offsite_dir="${2:?--offsite-dir requires a value}"
             shift 2
             ;;
         --keep-days)
@@ -146,3 +155,26 @@ done < <(find "$output_dir" -maxdepth 1 -name 'delibee-*.dump' -type f -mtime +"
 size="$(du -h "$file" | cut -f1)"
 echo "Backup written: $file ($size)"
 echo "Removed $removed backup(s) older than $keep_days day(s)."
+
+if [ -n "$offsite_dir" ]; then
+    mkdir -p "$offsite_dir"
+
+    offsite_file="$offsite_dir/$(basename "$file")"
+    cp -f -- "$file" "$offsite_file"
+
+    if ! cmp -s -- "$file" "$offsite_file"; then
+        rm -f -- "$offsite_file"
+        echo "Off-site copy verification failed." >&2
+        exit 1
+    fi
+
+    offsite_removed=0
+    while IFS= read -r old_dump; do
+        [ -n "$old_dump" ] || continue
+        rm -f -- "$old_dump"
+        offsite_removed=$((offsite_removed + 1))
+    done < <(find "$offsite_dir" -maxdepth 1 -name 'delibee-*.dump' -type f -mtime +"$keep_days")
+
+    echo "Off-site copy: $offsite_file ($size)"
+    echo "Removed $offsite_removed off-site backup(s) older than $keep_days day(s)."
+fi

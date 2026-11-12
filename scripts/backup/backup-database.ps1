@@ -6,18 +6,23 @@
 .DESCRIPTION
     Reads the DB_* settings from the project's .env file, writes a timestamped
     custom-format dump into storage\backups, verifies the archive with
-    pg_restore --list, and removes dumps older than -KeepDays. Designed to be
-    run manually or from Windows Task Scheduler.
+    pg_restore --list, copies it to -OffsiteDir when set, and removes dumps
+    older than -KeepDays. Designed to be run manually or from Windows Task
+    Scheduler.
 
 .EXAMPLE
-    powershell -ExecutionPolicy Bypass -File scripts\backup-database.ps1
+    powershell -ExecutionPolicy Bypass -File scripts\backup\backup-database.ps1
 
 .EXAMPLE
-    powershell -ExecutionPolicy Bypass -File scripts\backup-database.ps1 -KeepDays 30
+    powershell -ExecutionPolicy Bypass -File scripts\backup\backup-database.ps1 -KeepDays 30
+
+.EXAMPLE
+    powershell -ExecutionPolicy Bypass -File scripts\backup\backup-database.ps1 -OffsiteDir "$env:USERPROFILE\OneDrive\delibee-backups"
 #>
 [CmdletBinding()]
 param(
     [string]$OutputDir,
+    [string]$OffsiteDir,
     [int]$KeepDays = 14,
     [string]$PgDump = "C:\Program Files\PostgreSQL\18\bin\pg_dump.exe",
     [string]$PgRestore
@@ -29,6 +34,10 @@ $projectRoot = Split-Path -Parent (Split-Path -Parent $PSScriptRoot)
 
 if (-not $OutputDir) {
     $OutputDir = Join-Path $projectRoot "storage\backups"
+}
+
+if (-not $OffsiteDir) {
+    $OffsiteDir = $env:BACKUP_OFFSITE_DIR
 }
 
 $envFile = Join-Path $projectRoot ".env"
@@ -94,6 +103,7 @@ finally {
     $env:PGPASSWORD = $previousPassword
 }
 
+$sizeMb = [math]::Round((Get-Item $file).Length / 1MB, 2)
 $cutoff = (Get-Date).AddDays(-$KeepDays)
 $removed = 0
 
@@ -104,6 +114,31 @@ Get-ChildItem -Path $OutputDir -Filter "delibee-*.dump" |
         $removed++
     }
 
-$sizeMb = [math]::Round((Get-Item $file).Length / 1MB, 2)
 Write-Host "Backup written: $file ($sizeMb MB)"
 Write-Host "Removed $removed backup(s) older than $KeepDays day(s)."
+
+if ($OffsiteDir) {
+    New-Item -ItemType Directory -Force -Path $OffsiteDir | Out-Null
+
+    $offsiteFile = Join-Path $OffsiteDir (Split-Path -Leaf $file)
+    Copy-Item -LiteralPath $file -Destination $offsiteFile -Force
+
+    $sourceHash = (Get-FileHash -LiteralPath $file -Algorithm SHA256).Hash
+    $copyHash = (Get-FileHash -LiteralPath $offsiteFile -Algorithm SHA256).Hash
+
+    if ($sourceHash -ne $copyHash) {
+        Remove-Item -LiteralPath $offsiteFile -Force
+        throw "Off-site copy verification failed."
+    }
+
+    $offsiteRemoved = 0
+    Get-ChildItem -Path $OffsiteDir -Filter "delibee-*.dump" |
+        Where-Object { $_.LastWriteTime -lt $cutoff } |
+        ForEach-Object {
+            Remove-Item $_.FullName -Force
+            $offsiteRemoved++
+        }
+
+    Write-Host "Off-site copy: $offsiteFile ($sizeMb MB)"
+    Write-Host "Removed $offsiteRemoved off-site backup(s) older than $KeepDays day(s)."
+}

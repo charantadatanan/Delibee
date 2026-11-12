@@ -4,18 +4,21 @@
     Register (or remove) a Windows Scheduled Task that runs the deliBEE database backup.
 
 .DESCRIPTION
-    Points Windows Task Scheduler at scripts\backup-database.ps1 and runs it daily
-    at -Time. The task runs as the current user and only while that user is logged
-    on. Re-running this script replaces the existing task.
+    Points Windows Task Scheduler at scripts\backup\backup-database.ps1 and runs
+    it daily at -Time. The task runs as the current user and only while that user
+    is logged on. Re-running this script replaces the existing task.
 
 .EXAMPLE
-    powershell -ExecutionPolicy Bypass -File scripts\register-backup-task.ps1
+    powershell -ExecutionPolicy Bypass -File scripts\backup\register-backup-task.ps1
 
 .EXAMPLE
-    powershell -ExecutionPolicy Bypass -File scripts\register-backup-task.ps1 -Time 22:00 -KeepDays 30
+    powershell -ExecutionPolicy Bypass -File scripts\backup\register-backup-task.ps1 -Time 22:00 -KeepDays 30
 
 .EXAMPLE
-    powershell -ExecutionPolicy Bypass -File scripts\register-backup-task.ps1 -Remove
+    powershell -ExecutionPolicy Bypass -File scripts\backup\register-backup-task.ps1 -OffsiteDir "$env:USERPROFILE\OneDrive\delibee-backups"
+
+.EXAMPLE
+    powershell -ExecutionPolicy Bypass -File scripts\backup\register-backup-task.ps1 -Remove
 #>
 [CmdletBinding()]
 param(
@@ -23,6 +26,7 @@ param(
     [string]$Time = "21:30",
     [int]$KeepDays = 14,
     [string]$OutputDir,
+    [string]$OffsiteDir,
     [string]$PgDump = "C:\Program Files\PostgreSQL\18\bin\pg_dump.exe",
     [switch]$Remove
 )
@@ -52,6 +56,10 @@ $arguments = "-NoProfile -ExecutionPolicy Bypass -File `"$backupScript`" -KeepDa
 
 if ($OutputDir) {
     $arguments += " -OutputDir `"$OutputDir`""
+}
+
+if ($OffsiteDir) {
+    $arguments += " -OffsiteDir `"$OffsiteDir`""
 }
 
 $action = New-ScheduledTaskAction `

@@ -307,7 +307,7 @@ docs/archive                                   historical notes and old theme re
 
 ## 12. Open items
 
-1. **Off-machine backup storage and point-in-time recovery** — the nightly task is registered locally; production needs a remote destination and WAL archiving.
+1. **Off-machine backup storage and point-in-time recovery** — both backup scripts now support a verified off-site copy (`-OffsiteDir` / `--offsite-dir` / `BACKUP_OFFSITE_DIR`) and the nightly task is registered locally. Choose the destination (OneDrive, NAS, external drive) and enable WAL archiving for production PITR; the runbook is in `docs/operations/database-operations.md`.
 2. **`listen_addresses = 'localhost'`** — defense in depth; requires an elevated PostgreSQL service restart.
 3. **Payment gateway** — checkout records orders without taking payment; the gateway and payout mechanics remain open.
 4. **Multi-business sellers** — possible later; the schema does not prevent it, but the seller UI assumes one business today.
