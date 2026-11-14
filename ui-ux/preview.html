@@ -50,7 +50,7 @@
                 <span class="hex hex-32" aria-hidden="true">d</span>
                 <span>
                     deliBEE UI/UX sampler
-                    <small>Static reference · theme snapshot 12 Nov 2026</small>
+                    <small>Static reference · theme snapshot 14 Nov 2026</small>
                 </span>
             </div>
 
@@ -750,27 +750,37 @@
             <div class="wrap">
                 <div class="sec-head"><span class="sec-num">12</span><h2>Pagination</h2></div>
                 <p class="sec-lead">
-                    The current build ships Laravel's packaged pagination views, so this block is still the
-                    default grey — it has not been brought into the honey theme yet.
+                    Themed with the same tokens as the rest of the system: 36px controls, comb borders and a
+                    honey current page. Previous and next are icon-only with screen-reader labels.
                 </p>
 
                 <div class="pg">
                     <p class="pg-summary">Showing <strong>1</strong> to <strong>8</strong> of <strong>24</strong> results</p>
                     <div class="pg-links">
-                        <span class="pg-btn is-disabled" aria-disabled="true">‹ Previous</span>
-                        <a class="pg-btn is-current" href="#pagination" aria-current="page">1</a>
-                        <a class="pg-btn" href="#pagination">2</a>
-                        <a class="pg-btn" href="#pagination">3</a>
-                        <a class="pg-btn" href="#pagination">Next ›</a>
+                        <span class="pg-btn is-disabled" aria-disabled="true">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <path d="M15 19l-7-7 7-7"/>
+                            </svg>
+                            <span class="sr-only">Previous page</span>
+                        </span>
+                        <span class="pg-btn is-current" aria-current="page">1</span>
+                        <a class="pg-btn" href="#pagination" aria-label="Go to page 2">2</a>
+                        <a class="pg-btn" href="#pagination" aria-label="Go to page 3">3</a>
+                        <a class="pg-btn" href="#pagination" aria-label="Go to page 4">4</a>
+                        <a class="pg-btn" href="#pagination" aria-label="Next page">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <path d="M9 5l7 7-7 7"/>
+                            </svg>
+                        </a>
                     </div>
                 </div>
 
                 <div class="note">
-                    <strong>A known gap and a good first task.</strong> Bring pagination onto the tokens above:
-                    comb borders, honey current page with ink text, zinc-500 summary text. The files are
-                    <span class="mono">resources/views/vendor/pagination/tailwind.blade.php</span> (and
-                    <span class="mono">simple-tailwind.blade.php</span>), copied into
-                    <span class="mono">samples/</span>.
+                    <strong>Implementation.</strong> The markup is published in
+                    <span class="mono">resources/views/vendor/livewire/tailwind.blade.php</span> for Livewire
+                    pages and <span class="mono">resources/views/vendor/pagination/tailwind.blade.php</span>
+                    for the category page. Keep <span class="mono">aria-current</span> and the
+                    screen-reader labels when restyling.
                 </div>
             </div>
         </section>

@@ -789,46 +789,56 @@ section[id] { scroll-margin-top: 84px; }
 .empty-state p { margin-top: 4px; font-size: 14px; color: var(--text-subtle); }
 .empty-state .btn { margin-top: 20px; }
 
-/* ---------- Pagination (Laravel defaults) ------------- */
+/* ---------- Pagination -------------------------------- */
 
 .pg {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
     justify-content: space-between;
-    gap: 16px;
+    gap: 12px;
     font-size: 14px;
 }
-.pg-summary { color: #374151; }
-.dark .pg-summary { color: #d1d5db; }
-.pg-links {
-    display: inline-flex;
-    overflow: hidden;
-    border-radius: 6px;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-}
+.pg-summary { color: var(--text-muted); }
+.pg-summary strong { color: var(--text-primary); font-weight: 500; }
+@media (max-width: 639px) { .pg-summary { display: none; } }
+.pg-links { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
 .pg-btn {
-    margin-inline-start: -1px;
-    border: 1px solid #d1d5db;
-    background: #fff;
-    color: #1f2937;
-    padding: 8px 12px;
+    display: inline-flex;
+    min-width: 36px;
+    min-height: 36px;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-lg);
+    background: var(--surface-raised);
+    color: var(--text-muted);
+    padding: 6px 12px;
     font-size: 14px;
+    font-weight: 500;
     text-decoration: none;
+    transition: border-color .15s ease, color .15s ease;
 }
-.pg-btn:first-child {
-    margin-inline-start: 0;
-    border-start-start-radius: 6px;
-    border-end-start-radius: 6px;
+.pg-btn:hover { border-color: rgba(107, 87, 69, 0.4); color: var(--ink); }
+.dark .pg-btn { border-color: var(--zinc-700); background: var(--zinc-900); color: var(--zinc-300); }
+.dark .pg-btn:hover { border-color: rgba(242, 201, 109, 0.4); color: var(--honey); }
+.pg-btn.is-current {
+    border-color: var(--honey);
+    background: var(--honey);
+    color: var(--ink);
+    cursor: default;
 }
-.pg-btn:last-child {
-    border-start-end-radius: 6px;
-    border-end-end-radius: 6px;
+.pg-btn.is-disabled {
+    border-color: var(--border-subtle);
+    background: rgba(255, 255, 255, 0.4);
+    color: var(--zinc-400);
+    cursor: not-allowed;
 }
-.pg-btn.is-current { background: #1f2937; border-color: #1f2937; color: #fff; }
-.pg-btn.is-disabled { background: #fff; color: #4b5563; cursor: not-allowed; }
-.dark .pg-btn { background: #374151; border-color: #4b5563; color: #e5e7eb; }
-.dark .pg-btn.is-current { background: #1f2937; border-color: #1f2937; color: #fff; }
+.dark .pg-btn.is-disabled {
+    border-color: var(--zinc-800);
+    background: rgba(30, 30, 30, 0.4);
+    color: var(--zinc-500);
+}
 
 /* ---------- Footer ------------------------------------ */
 

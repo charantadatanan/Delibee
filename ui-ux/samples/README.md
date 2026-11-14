@@ -1,7 +1,7 @@
 # Source samples
 
 Copies of the real files that produce the interface in `../preview.html`. They were
-copied from the app on 12 November 2026 and are here so the UI/UX team can read
+copied from the app on 14 November 2026 and are here so the UI/UX team can read
 and prototype against the actual markup.
 
 ## Manifest
@@ -17,8 +17,10 @@ and prototype against the actual markup.
 | `rewards.blade.php` | `resources/views/pages/rewards.blade.php` | Honey balance hero and ledger list |
 | `chat-index.blade.php` | `resources/views/pages/chat/index.blade.php` | Conversation rows, avatars, unread dot, empty state |
 | `auth-login.blade.php` | `resources/views/pages/auth/login.blade.php` | Auth card layout built on the Flux auth components |
-| `pagination-tailwind.blade.php` | `resources/views/vendor/pagination/tailwind.blade.php` | Laravel's default pagination markup — currently unthemed, a first task |
-| `pagination-simple.blade.php` | `resources/views/vendor/pagination/simple-tailwind.blade.php` | The simplified previous/next variant of the same |
+| `pagination-tailwind.blade.php` | `resources/views/vendor/pagination/tailwind.blade.php` | Themed full pagination for the non-Livewire category page: honey current page, 36px controls, screen-reader arrow labels |
+| `pagination-simple.blade.php` | `resources/views/vendor/pagination/simple-tailwind.blade.php` | The themed simple previous/next variant for non-Livewire paginators |
+| `livewire-pagination-tailwind.blade.php` | `resources/views/vendor/livewire/tailwind.blade.php` | Themed pagination used by every Livewire page; keeps `wire:click`, page keys and cursor support |
+| `livewire-pagination-simple.blade.php` | `resources/views/vendor/livewire/simple-tailwind.blade.php` | Themed simple variant with Livewire buttons and cursor support |
 
 ## How to read a Blade file
 

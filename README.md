@@ -196,7 +196,7 @@ See [`docs/README.md`](docs/README.md) for the documentation index and [`docs/gu
 
 ## Status
 
-- 116 tests (115 passing, 1 skipped — two-factor authentication is disabled in this build), 277 assertions.
+- 118 tests (117 passing, 1 skipped — two-factor authentication is disabled in this build), 287 assertions.
 - PHPStan level 8: 0 errors. Pint: clean.
 - Storefront, customer, seller, admin and settings pages were audited with axe-core against WCAG 2.2 AA and report zero violations.
 - Payment is offline for now; the payment gateway remains an open product decision.

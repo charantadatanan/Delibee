@@ -97,7 +97,7 @@ The same values are available as plain CSS custom properties in
 | Auth pages | `resources/views/pages/auth/` |
 | Seller pages | `resources/views/pages/seller/` |
 | Hive Guard (admin) pages | `resources/views/pages/admin/` |
-| Pagination overrides | `resources/views/vendor/pagination/` |
+| Pagination (Livewire + category page) | `resources/views/vendor/livewire/`, `resources/views/vendor/pagination/` |
 
 For a full file-by-file map (routes, domain services, tests, scripts), see
 [`docs/guides/code-map.md`](../docs/guides/code-map.md).
@@ -105,7 +105,7 @@ For a full file-by-file map (routes, domain services, tests, scripts), see
 ## Keeping the sampler honest
 
 `resources/css/app.css` is the **source of truth**. This folder is a snapshot
-taken on 12 November 2026. When a token or component changes in the app:
+taken on 14 November 2026. When a token or component changes in the app:
 
 1. update `theme/tokens.css` and the matching part of `preview.css` / `preview.html`;
 2. re-copy the changed Blade file into `samples/`;
@@ -117,15 +117,9 @@ no effect on the app.
 
 ## Known gaps
 
-- **Pagination is not themed yet.** It still uses Laravel's packaged grey views
-  (`resources/views/vendor/pagination/`). This is called out in section 12 of the
-  sampler as a first task.
 - **Flux-only surfaces are not reproduced:** auth pages, settings, toasts and the
   mobile slide-over menu come from Flux. Their look should be taken from the
   running app.
-- **Dark-mode focus outline** currently uses honey-deep in `app.css`, which is
-  below the 3:1 non-text contrast mark on zinc-950. Switching the dark outline to
-  honey is a sensible fix for the team to make in the real theme.
 - **Breakpoints are approximated** in the static preview; verify responsive
   behaviour in the app at 640 / 768 / 1024 / 1280px.
 - The cart icon is the same emoji the app uses; it is intentionally not an SVG.

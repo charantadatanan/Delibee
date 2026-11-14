@@ -17,7 +17,7 @@ By the finish line the project had:
 
 - **41 commits**, **246 tracked files** and **24 Livewire pages**.
 - **21 migrations** covering **28 tables**, **79 indexes** and **7 database CHECK constraints**.
-- **116 automated tests** (115 passing, 1 skipped) with **277 assertions**.
+- **118 automated tests** (117 passing, 1 skipped) with **287 assertions**.
 - **PHPStan level 8** with zero errors and a clean Pint run.
 - GitHub Actions running the full suite against a fresh PostgreSQL 18 service on every push.
 - Zero axe-core accessibility violations across the storefront, customer, seller, admin, auth and settings pages in both light and dark mode.
@@ -39,7 +39,7 @@ The build is complete for the MVP. The only remaining work is operational (off-m
 | Business tables | 28 (including framework tables) |
 | Indexes | 79 |
 | CHECK constraints | 7 |
-| Application tests | 116 (115 passed, 1 skipped, 277 assertions) |
+| Application tests | 118 (117 passed, 1 skipped, 287 assertions) |
 | Static analysis | PHPStan level 8 — 0 errors |
 | Code style | Pint — clean |
 | Accessibility | 0 axe violations (light and dark) |
@@ -174,7 +174,7 @@ The project was committed and shipped as a working application:
 
 | Verification | Result |
 |---|---|
-| Application tests | 116 — 115 passed, 1 skipped, 277 assertions |
+| Application tests | 118 — 117 passed, 1 skipped, 287 assertions |
 | Static analysis | PHPStan level 8 — 0 errors |
 | Coding style | Pint — clean |
 | PHP dependency audit | No security advisories |
@@ -242,6 +242,8 @@ Both themes were audited with axe-core; the current theme reports zero violation
 | Vite/Composer security advisories | Updated Pest, PHPUnit, Symfony, Vite+ and rebuild verified |
 | `ReviewPolicy` accidentally overwritten | Restored all original methods in `0f1192d` |
 | Per-currency config cast to `1` in the checkout summary | Centralized shipping in `CheckoutService::shippingForCurrency()` |
+| Unthemed Laravel pagination | Rewrote the published Livewire and plain pagination views on the honey tokens, with `aria-current` and screen-reader labels |
+| Low-contrast dark focus outline | Dark mode now uses the honey outline (honey-deep only on light surfaces) |
 
 ---
 

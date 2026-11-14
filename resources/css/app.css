@@ -102,6 +102,10 @@ select:focus[data-flux-control] {
         outline-offset: 2px;
     }
 
+    .dark :focus-visible {
+        outline-color: var(--color-honey);
+    }
+
     h1,
     h2 {
         font-family: var(--font-display);
