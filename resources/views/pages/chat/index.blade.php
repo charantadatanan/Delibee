@@ -60,7 +60,7 @@ new #[Livewire\Attributes\Title('Bee Chat')] class extends Component
             <p class="mt-2 text-sm text-zinc-600 dark:text-zinc-400">Messages with sellers and customers.</p>
         </div>
 
-        <div class="relative max-w-xs flex-1">
+        <div class="relative max-w-xs flex-1 basis-full sm:basis-auto">
             <flux:icon name="magnifying-glass" class="absolute left-3 top-1/2 -translate-y-1/2 size-5 text-zinc-400" />
             <input type="text"
                    wire:model.live.debounce.300ms="search"
