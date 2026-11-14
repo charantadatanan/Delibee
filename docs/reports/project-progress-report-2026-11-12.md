@@ -244,6 +244,8 @@ Both themes were audited with axe-core; the current theme reports zero violation
 | Per-currency config cast to `1` in the checkout summary | Centralized shipping in `CheckoutService::shippingForCurrency()` |
 | Unthemed Laravel pagination | Rewrote the published Livewire and plain pagination views on the honey tokens, with `aria-current` and screen-reader labels |
 | Low-contrast dark focus outline | Dark mode now uses the honey outline (honey-deep only on light surfaces) |
+| Bee Chat search squeezed on narrow screens | The search takes its own full-width row below the `sm` breakpoint |
+| Laravel advisory `CVE-2026-128083` | Framework updated `13.38` → `13.42`; `composer audit` clean |
 
 ---
 
