@@ -13,7 +13,7 @@
             <img src="{{ asset('images/mobile/bee-logo.png') }}"
                  alt="deliBEE"
                  width="147"
-                 height="70"
+                 height="56"
                  class="mobile-bee-logo h-14 w-[147px] object-cover dark:brightness-0 dark:invert">
         </a>
 
@@ -34,7 +34,7 @@
             @endauth
 
             <a href="{{ auth()->check() ? route('chat.index') : route('login') }}"
-               class="grid size-10 place-items-center rounded-full border border-ink/30 bg-white transition hover:border-honey-deep/40 dark:border-zinc-700 dark:bg-zinc-900"
+               class="grid size-10 place-items-center rounded-full border border-ink/50 bg-white transition hover:border-honey-deep/40 dark:border-zinc-700 dark:bg-zinc-900"
                aria-label="Bee Chat"
                wire:navigate>
                 <img src="{{ asset('images/mobile/chat.png') }}"

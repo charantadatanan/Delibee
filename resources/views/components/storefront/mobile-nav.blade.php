@@ -32,7 +32,7 @@
            aria-label="Home"
            @if (request()->routeIs('marketplace')) aria-current="page" @endif
            wire:navigate>
-            <span class="grid size-16 place-items-center rounded-full border-4 border-paper bg-honey shadow-lg transition-transform group-hover:-translate-y-0.5 group-active:scale-95 dark:border-zinc-950 dark:bg-honey-deep">
+            <span class="grid size-16 place-items-center rounded-full border-4 border-paper bg-honey shadow-lg transition-transform group-hover:-translate-y-0.5 group-active:scale-95 {{ request()->routeIs('marketplace') ? 'ring-4 ring-ink/20 dark:ring-honey/30' : '' }} dark:border-zinc-950 dark:bg-honey-deep">
                 <img src="{{ asset('images/mobile/hive.png') }}"
                      alt=""
                      width="36"

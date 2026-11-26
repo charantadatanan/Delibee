@@ -53,7 +53,8 @@
 @layer base {
 
     html {
-        scroll-padding-bottom: 6rem;
+        scroll-padding-top: 5.5rem;
+        scroll-padding-bottom: calc(8rem + env(safe-area-inset-bottom));
     }
 
     *,
@@ -221,7 +222,7 @@ html:not(.dark) [data-flux-subheading] {
 }
 
 .mobile-hive {
-    animation: mobile-hive-float 4.5s ease-in-out infinite;
+    animation: mobile-hive-float 4.5s ease-in-out 1;
 }
 
 .mobile-reveal {
@@ -274,11 +275,19 @@ html:not(.dark) [data-flux-subheading] {
     }
 
     .mobile-hive:hover > span {
-        transform: none !important;
+        scale: 1 !important;
+        translate: none !important;
     }
 
     .group:hover img {
-        transform: none !important;
+        scale: 1 !important;
+        translate: none !important;
+        transition: none !important;
+    }
+
+    .mobile-shop-logo {
+        scale: 1 !important;
+        transition: none !important;
     }
 
     .mobile-nav-item.is-active .nav-bubble {

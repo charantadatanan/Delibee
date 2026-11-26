@@ -34,10 +34,11 @@
                        wire:model.live.debounce.300ms="search"
                        placeholder="Search product, businesses"
                        aria-label="Search products and businesses"
-                       class="w-full rounded-[10px] border border-ink/70 bg-paper py-2.5 ps-11 pe-12 text-sm placeholder:text-zinc-500 focus:border-honey-deep focus:outline-none focus:ring-2 focus:ring-honey/40 dark:border-zinc-700 dark:bg-zinc-950 dark:placeholder:text-zinc-400">
+                       class="w-full rounded-[10px] border border-ink/70 bg-paper py-2.5 ps-11 pe-12 text-sm placeholder:text-zinc-500 focus:border-honey-deep focus:outline-none focus:ring-2 focus:ring-honey-deep dark:focus:ring-honey dark:border-zinc-700 dark:bg-zinc-950 dark:placeholder:text-zinc-400">
                 <button type="button"
                         @click="filters = !filters"
                         :aria-expanded="filters.toString()"
+                        aria-expanded="false"
                         aria-controls="mobile-filters"
                         aria-label="Filters and sorting"
                         class="absolute end-2 top-1/2 grid size-10 -translate-y-1/2 place-items-center rounded-lg text-ink transition hover:bg-comb/50 dark:text-zinc-100">
@@ -51,16 +52,22 @@
                 </button>
             </div>
 
+            <div wire:loading.delay.short
+                 wire:target="search,category,minPrice,maxPrice,sort,clearFilters"
+                 class="mt-1 h-1 overflow-hidden rounded-full bg-honey/20">
+                <div class="h-full w-1/2 animate-pulse rounded-full bg-honey"></div>
+            </div>
+
             <div id="mobile-filters"
                  x-show="filters"
                  x-cloak
-                 x-transition
+                 x-transition.origin.top.right
                  class="mobile-filters-panel mt-2 origin-top-right rounded-2xl border border-ink/30 bg-white p-3 dark:border-zinc-800 dark:bg-zinc-900/70">
-                <div class="no-scrollbar -mx-1 flex gap-2 overflow-x-auto px-1 pb-1">
+                <div class="no-scrollbar -mx-1 flex gap-2 overflow-x-auto px-1 pb-1" role="group" aria-label="Filter by category">
                     <button type="button"
                             wire:click="$set('category', '')"
                             aria-pressed="{{ $category === '' ? 'true' : 'false' }}"
-                            class="whitespace-nowrap rounded-full px-3 py-1.5 text-xs font-medium transition {{ $category === '' ? 'bg-ink text-paper dark:bg-zinc-100 dark:text-zinc-900' : 'border border-ink/40 bg-white text-zinc-600 hover:border-honey-deep/40 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-300' }}">
+                            class="whitespace-nowrap rounded-full px-3 py-1.5 text-xs font-medium transition active:scale-95 {{ $category === '' ? 'bg-ink text-paper dark:bg-zinc-100 dark:text-zinc-900' : 'border border-ink/60 bg-white text-zinc-600 hover:border-honey-deep/40 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-300' }}">
                         All
                     </button>
 
@@ -68,7 +75,7 @@
                         <button type="button"
                                 wire:click="$set('category', '{{ $option->slug }}')"
                                 aria-pressed="{{ $category === $option->slug ? 'true' : 'false' }}"
-                                class="whitespace-nowrap rounded-full px-3 py-1.5 text-xs font-medium transition {{ $category === $option->slug ? 'bg-ink text-paper dark:bg-zinc-100 dark:text-zinc-900' : 'border border-ink/40 bg-white text-zinc-600 hover:border-honey-deep/40 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-300' }}">
+                                class="whitespace-nowrap rounded-full px-3 py-1.5 text-xs font-medium transition active:scale-95 {{ $category === $option->slug ? 'bg-ink text-paper dark:bg-zinc-100 dark:text-zinc-900' : 'border border-ink/60 bg-white text-zinc-600 hover:border-honey-deep/40 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-300' }}">
                             {{ $option->name }}
                         </button>
                     @endforeach
@@ -78,19 +85,19 @@
                     <label class="block">
                         <span class="text-[11px] font-medium text-zinc-500 dark:text-zinc-400">Min price</span>
                         <input type="number" min="0" step="1" wire:model.live.debounce.500ms="minPrice"
-                               class="mt-1 w-full rounded-lg border border-ink/50 bg-white px-3 py-2 text-sm focus:border-honey-deep focus:outline-none focus:ring-2 focus:ring-honey/40 dark:border-zinc-700 dark:bg-zinc-950">
+                               class="mt-1 w-full rounded-lg border border-ink/50 bg-white px-3 py-2 text-sm focus:border-honey-deep focus:outline-none focus:ring-2 focus:ring-honey-deep dark:focus:ring-honey dark:border-zinc-700 dark:bg-zinc-950">
                     </label>
 
                     <label class="block">
                         <span class="text-[11px] font-medium text-zinc-500 dark:text-zinc-400">Max price</span>
                         <input type="number" min="0" step="1" wire:model.live.debounce.500ms="maxPrice"
-                               class="mt-1 w-full rounded-lg border border-ink/50 bg-white px-3 py-2 text-sm focus:border-honey-deep focus:outline-none focus:ring-2 focus:ring-honey/40 dark:border-zinc-700 dark:bg-zinc-950">
+                               class="mt-1 w-full rounded-lg border border-ink/50 bg-white px-3 py-2 text-sm focus:border-honey-deep focus:outline-none focus:ring-2 focus:ring-honey-deep dark:focus:ring-honey dark:border-zinc-700 dark:bg-zinc-950">
                     </label>
 
                     <label class="col-span-2 block">
                         <span class="text-[11px] font-medium text-zinc-500 dark:text-zinc-400">Sort by</span>
                         <select wire:model.live="sort"
-                                class="mt-1 w-full rounded-lg border border-ink/50 bg-white px-3 py-2 text-sm focus:border-honey-deep focus:outline-none focus:ring-2 focus:ring-honey/40 dark:border-zinc-700 dark:bg-zinc-950">
+                                class="mt-1 w-full rounded-lg border border-ink/50 bg-white px-3 py-2 text-sm focus:border-honey-deep focus:outline-none focus:ring-2 focus:ring-honey-deep dark:focus:ring-honey dark:border-zinc-700 dark:bg-zinc-950">
                             @foreach (\App\Livewire\Storefront\Marketplace::SORTS as $option)
                                 <option value="{{ $option['value'] }}">{{ $option['label'] }}</option>
                             @endforeach
@@ -99,8 +106,14 @@
 
                     <button type="button"
                             wire:click="clearFilters"
-                            class="col-span-2 rounded-lg border border-ink/40 px-3 py-2 text-xs font-semibold text-zinc-600 transition hover:border-honey-deep/40 hover:text-ink dark:border-zinc-700 dark:text-zinc-300 dark:hover:text-ink">
+                            class="col-span-2 rounded-lg border border-ink/60 px-3 py-2 text-xs font-semibold text-zinc-600 transition hover:border-honey-deep/40 hover:text-ink dark:border-zinc-700 dark:text-zinc-300 dark:hover:text-ink">
                         Clear filters
+                    </button>
+
+                    <button type="button"
+                            @click="filters = false"
+                            class="col-span-2 rounded-lg bg-ink px-3 py-2 text-xs font-semibold text-paper transition hover:bg-honey hover:text-ink">
+                        Show results
                     </button>
                 </div>
             </div>
@@ -199,7 +212,7 @@
                            style="--shop-index: {{ $loop->index }}"
                            class="mobile-shop-reveal group flex w-[60px] shrink-0 flex-col items-center gap-1 text-center transition-transform duration-200 hover:-translate-y-0.5 active:scale-95 motion-reduce:transition-none"
                            wire:navigate>
-                            <span class="grid size-[50px] place-items-center overflow-hidden rounded-full border border-ink/40 bg-white shadow-sm transition group-hover:scale-105 dark:border-zinc-700 dark:bg-zinc-900">
+                            <span class="mobile-shop-logo grid size-[50px] place-items-center overflow-hidden rounded-full border border-ink/40 bg-white shadow-sm transition group-hover:scale-105 dark:border-zinc-700 dark:bg-zinc-900">
                                 @if ($business->logo_path)
                                     <img src="{{ \Illuminate\Support\Facades\Storage::url($business->logo_path) }}"
                                          alt=""
@@ -212,8 +225,8 @@
                                     </span>
                                 @endif
                             </span>
-                            <span class="line-clamp-2 w-full text-[9px] font-semibold leading-tight">{{ $business->name }}</span>
-                            <span class="text-[8px] text-zinc-500 dark:text-zinc-400">{{ $business->products_count }} products</span>
+                            <span class="line-clamp-2 w-full text-[10px] font-semibold leading-tight">{{ $business->name }}</span>
+                            <span class="text-[9px] text-zinc-500 dark:text-zinc-400">{{ $business->products_count }} {{ \Illuminate\Support\Str::plural('product', $business->products_count) }}</span>
                         </a>
                     @endforeach
                 </div>
@@ -242,8 +255,8 @@
 
                         <a href="{{ route('products.show', [$product->business->slug, $product->slug]) }}"
                            wire:key="trend-{{ $product->id }}"
-                           style="--card-index: {{ $loop->index % 9 }}"
-                           class="mobile-card-reveal group overflow-hidden rounded-md border border-ink/40 bg-white transition duration-200 hover:-translate-y-0.5 hover:border-honey-deep/40 active:scale-[0.99] motion-reduce:transition-none dark:border-zinc-800 dark:bg-zinc-900/70 dark:hover:border-honey/40"
+                           style="--card-index: {{ min($loop->index, 8) }}"
+                           class="mobile-card-reveal group overflow-hidden rounded-md border border-ink/50 bg-white transition duration-200 hover:-translate-y-0.5 hover:border-honey-deep/40 active:scale-[0.99] motion-reduce:transition-none dark:border-zinc-800 dark:bg-zinc-900/70 dark:hover:border-honey/40"
                            wire:navigate>
                             <div class="relative aspect-square overflow-hidden bg-hero dark:bg-zinc-800">
                                 <div class="absolute inset-0 bg-comb opacity-50 dark:opacity-10"></div>
@@ -261,30 +274,32 @@
                                 @endif
                             </div>
 
-                            <p class="truncate bg-honey px-1.5 py-1 text-[8px] font-semibold leading-tight text-ink">
+                            <p class="truncate bg-honey px-1.5 py-1 text-[9px] font-semibold leading-tight text-ink">
                                 {{ $product->category?->name ?? 'Marketplace' }}
                             </p>
 
                             <div class="p-1.5">
-                                <p class="line-clamp-2 text-[10px] font-medium leading-tight">{{ $product->name }}</p>
+                                <p class="line-clamp-2 text-[11px] font-medium leading-tight">{{ $product->name }}</p>
                                 <div class="mt-1 flex items-baseline justify-between gap-1">
                                     <p class="truncate text-[9px] font-semibold">{{ $product->formattedPrice() }}</p>
-                                    <p class="shrink-0 text-[8px] text-zinc-500 dark:text-zinc-400">{{ $product->stock }} left</p>
+                                    <p class="shrink-0 text-[9px] text-zinc-500 dark:text-zinc-400">{{ $product->stock }} left</p>
                                 </div>
                             </div>
                         </a>
                     @endforeach
                 </div>
 
-                <div class="mt-5">{{ $products->links() }}</div>
+                <div class="mt-5">{{ $products->links(data: ['scrollTo' => false]) }}</div>
             @endif
         </section>
 
-        <div class="mobile-reveal mt-8 flex flex-col items-center gap-2 pb-4 text-center">
-            <span class="clip-hex grid size-10 place-items-center bg-honey font-display text-lg font-bold text-ink">d</span>
-            <p class="font-display text-lg font-semibold">Good sellers rise. The hive decides.</p>
-            <p class="text-xs text-zinc-500 dark:text-zinc-400">You have reached the end of the hive.</p>
-        </div>
+        @if ($products->isNotEmpty() && $products->currentPage() === $products->lastPage())
+            <div class="mobile-reveal mt-8 flex flex-col items-center gap-2 pb-4 text-center">
+                <span class="clip-hex grid size-10 place-items-center bg-honey font-display text-lg font-bold text-ink">d</span>
+                <p class="font-display text-lg font-semibold">Good sellers rise. The hive decides.</p>
+                <p class="text-xs text-zinc-500 dark:text-zinc-400">You have reached the end of the hive.</p>
+            </div>
+        @endif
     </div>
 
     {{-- Desktop marketplace --}}
@@ -355,13 +370,13 @@
                 <input type="search"
                        wire:model.live.debounce.400ms="search"
                        placeholder="Search products"
-                       class="mt-1.5 w-full rounded-lg border border-ink/50 bg-white px-3 py-2 text-sm placeholder:text-zinc-500 focus:border-honey-deep focus:outline-none focus:ring-2 focus:ring-honey/40 dark:border-zinc-700 dark:bg-zinc-950 dark:placeholder:text-zinc-400">
+                       class="mt-1.5 w-full rounded-lg border border-ink/50 bg-white px-3 py-2 text-sm placeholder:text-zinc-500 focus:border-honey-deep focus:outline-none focus:ring-2 focus:ring-honey-deep dark:focus:ring-honey dark:border-zinc-700 dark:bg-zinc-950 dark:placeholder:text-zinc-400">
             </label>
 
             <label class="block">
                 <span class="text-xs font-medium text-zinc-500 dark:text-zinc-400">Category</span>
                 <select wire:model.live="category"
-                        class="mt-1.5 w-full rounded-lg border border-ink/50 bg-white px-3 py-2 text-sm focus:border-honey-deep focus:outline-none focus:ring-2 focus:ring-honey/40 dark:border-zinc-700 dark:bg-zinc-950">
+                        class="mt-1.5 w-full rounded-lg border border-ink/50 bg-white px-3 py-2 text-sm focus:border-honey-deep focus:outline-none focus:ring-2 focus:ring-honey-deep dark:focus:ring-honey dark:border-zinc-700 dark:bg-zinc-950">
                     <option value="">All categories</option>
                     @foreach ($categories as $option)
                         <option value="{{ $option->slug }}">{{ $option->name }}</option>
@@ -372,19 +387,19 @@
             <label class="block">
                 <span class="text-xs font-medium text-zinc-500 dark:text-zinc-400">Min price</span>
                 <input type="number" min="0" step="1" wire:model.live.debounce.500ms="minPrice"
-                       class="mt-1.5 w-full rounded-lg border border-ink/50 bg-white px-3 py-2 text-sm focus:border-honey-deep focus:outline-none focus:ring-2 focus:ring-honey/40 dark:border-zinc-700 dark:bg-zinc-950">
+                       class="mt-1.5 w-full rounded-lg border border-ink/50 bg-white px-3 py-2 text-sm focus:border-honey-deep focus:outline-none focus:ring-2 focus:ring-honey-deep dark:focus:ring-honey dark:border-zinc-700 dark:bg-zinc-950">
             </label>
 
             <label class="block">
                 <span class="text-xs font-medium text-zinc-500 dark:text-zinc-400">Max price</span>
                 <input type="number" min="0" step="1" wire:model.live.debounce.500ms="maxPrice"
-                       class="mt-1.5 w-full rounded-lg border border-ink/50 bg-white px-3 py-2 text-sm focus:border-honey-deep focus:outline-none focus:ring-2 focus:ring-honey/40 dark:border-zinc-700 dark:bg-zinc-950">
+                       class="mt-1.5 w-full rounded-lg border border-ink/50 bg-white px-3 py-2 text-sm focus:border-honey-deep focus:outline-none focus:ring-2 focus:ring-honey-deep dark:focus:ring-honey dark:border-zinc-700 dark:bg-zinc-950">
             </label>
 
             <label class="block">
                 <span class="text-xs font-medium text-zinc-500 dark:text-zinc-400">Sort by</span>
                 <select wire:model.live="sort"
-                        class="mt-1.5 w-full rounded-lg border border-ink/50 bg-white px-3 py-2 text-sm focus:border-honey-deep focus:outline-none focus:ring-2 focus:ring-honey/40 dark:border-zinc-700 dark:bg-zinc-950">
+                        class="mt-1.5 w-full rounded-lg border border-ink/50 bg-white px-3 py-2 text-sm focus:border-honey-deep focus:outline-none focus:ring-2 focus:ring-honey-deep dark:focus:ring-honey dark:border-zinc-700 dark:bg-zinc-950">
                     @foreach (\App\Livewire\Storefront\Marketplace::SORTS as $option)
                         <option value="{{ $option['value'] }}">{{ $option['label'] }}</option>
                     @endforeach
@@ -409,7 +424,7 @@
                 @endforeach
             </div>
 
-            <div class="mt-8">{{ $products->links() }}</div>
+            <div class="mt-8">{{ $products->links(data: ['scrollTo' => false]) }}</div>
         @endif
     </div>
 </div>
