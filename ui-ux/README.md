@@ -44,7 +44,7 @@ python -m http.server 8080 --directory ui-ux
 | Paper | `#FFF8E7` | `bg-paper` | page background |
 | Hero | `#FFF4C5` | `bg-[#FFF4C5]` | hero and product-media surfaces |
 | Ink | `#1E1E1E` | `bg-ink` / `text-ink` | text, primary buttons |
-| Honey | `#F2C96D` | `bg-honey` | accent, hex marks, badges |
+| Honey | `#FFC233` | `bg-honey` | accent, hex marks, badges |
 | Honey deep | `#6B5745` | `text-honey-deep` | links, muted headings |
 | Comb | `#E6DCC4` | `border-comb` | borders, dividers |
 | Leaf | `#5B6B2E` | `text-leaf` | delivered / success |
@@ -54,7 +54,7 @@ python -m http.server 8080 --directory ui-ux
 
 - **Display font:** Fredoka, weights 400–700. Used automatically for `h1`/`h2` and
   explicitly via `font-display` for product names and big numbers.
-- **Body font:** Inter, weights 400–600.
+- **Body font:** Poppins, weights 400–700.
 - **Radius scale:** `15px` buttons/inputs, `20px` small panels, `24px` cards,
   `32px` heroes.
 - **Texture:** `bg-comb` is a honeycomb SVG at 18% fill; use it behind heroes and
@@ -72,7 +72,7 @@ The same values are available as plain CSS custom properties in
 3. **Honey is not text.** Honey sits under ink. For honey-coloured text on dark
    surfaces, use `dark:text-honey`; on light surfaces use `text-honey-deep`.
 4. **One display voice.** Fredoka for headings, product names and stat numbers;
-   Inter for everything else. Do not set body copy in Fredoka.
+   Poppins for everything else. Do not set body copy in Fredoka.
 5. **Borders are comb.** Cards use `border-comb/90`; on hover they warm to
    `border-honey-deep/40`. Dark mode swaps to `zinc-800` / `honey/40`.
 6. **Focus stays visible.** Controls use the honey ring, page links use the
@@ -105,7 +105,7 @@ For a full file-by-file map (routes, domain services, tests, scripts), see
 ## Keeping the sampler honest
 
 `resources/css/app.css` is the **source of truth**. This folder is a snapshot
-taken on 14 November 2026. When a token or component changes in the app:
+taken on 26 November 2026. When a token or component changes in the app:
 
 1. update `theme/tokens.css` and the matching part of `preview.css` / `preview.html`;
 2. re-copy the changed Blade file into `samples/`;

@@ -5,19 +5,19 @@
    which is the source of truth. If a token changes there,
    update this file and ui-ux/preview.css to match.
 
-   Values verified 2026-11-12.
+   Values verified 2026-11-26.
    ============================================================ */
 
 :root {
     /* Type */
-    --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+    --font-sans: 'Poppins', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
     --font-display: 'Fredoka', ui-sans-serif, system-ui, sans-serif;
 
     /* Brand palette */
     --paper: #fff8e7;
     --hero: #fff4c5;          /* hero and media surfaces, one step above paper */
     --ink: #1e1e1e;
-    --honey: #f2c96d;
+    --honey: #ffc233;
     --honey-deep: #6b5745;
     --comb: #e6dcc4;
     --leaf: #5b6b2e;
@@ -59,7 +59,7 @@
     --border-default: var(--comb);
     --border-strong: var(--zinc-300);
     --divider: rgba(230, 220, 196, 0.7);
-    --focus-ring: rgba(242, 201, 109, 0.4);
+    --focus-ring: rgba(255, 194, 51, 0.4);
 }
 
 .dark {
@@ -76,5 +76,5 @@
     --border-default: var(--zinc-800);
     --border-strong: var(--zinc-700);
     --divider: var(--zinc-800);
-    --focus-ring: rgba(242, 201, 109, 0.35);
+    --focus-ring: rgba(255, 194, 51, 0.35);
 }

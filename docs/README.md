@@ -3,6 +3,7 @@
 - [UI/UX starter kit](../ui-ux/README.md) — a static sampler (`preview.html`) plus copies of the real theme and Blade source, for sharing with the design team.
 - `guides/` — developer guides.
   - `code-map.md` — where every UI, theme, domain, route and test file lives, plus how to change the theme.
+  - `mobile-motion.md` — motion, game-feel and UX principles mapped to the mobile storefront, with accessibility rules, a manual test checklist and known limitations.
 - `reports/` — progress and submission reports.
   - `project-progress-report-2026-11-12.md` — the full build story from start to finish.
   - `database-progress-report-2026-11-09.md` — the database report (kept local until submitted).
