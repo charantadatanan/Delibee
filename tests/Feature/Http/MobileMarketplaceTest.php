@@ -36,5 +36,6 @@ it('shows featured shop product counts and the guest join call to action', funct
         ->assertSee('Featured Shops')
         ->assertSee('Sunrise Orchard')
         ->assertSee('1 product', escape: false)
+        ->assertDontSee('1 products', escape: false)
         ->assertSee('Join deliBEE', escape: false);
 });

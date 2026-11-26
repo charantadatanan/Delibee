@@ -299,7 +299,7 @@ html:not(.dark) [data-flux-subheading] {
     }
 }
 
-@media (max-width: 360px) {
+@media (max-width: 380px) {
     .mobile-nav-row {
         gap: 0.125rem;
         padding-inline: 0.25rem;

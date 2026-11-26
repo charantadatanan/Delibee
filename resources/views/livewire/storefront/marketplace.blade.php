@@ -55,7 +55,7 @@
             <div wire:loading.delay.short
                  wire:target="search,category,minPrice,maxPrice,sort,clearFilters"
                  class="mt-1 h-1 overflow-hidden rounded-full bg-honey/20">
-                <div class="h-full w-1/2 animate-pulse rounded-full bg-honey"></div>
+                <div class="h-full w-1/2 animate-pulse rounded-full bg-honey motion-reduce:animate-none"></div>
             </div>
 
             <div id="mobile-filters"
