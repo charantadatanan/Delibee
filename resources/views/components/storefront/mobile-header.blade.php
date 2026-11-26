@@ -12,36 +12,32 @@
            wire:navigate>
             <img src="{{ asset('images/mobile/bee-logo.png') }}"
                  alt="deliBEE"
-                 width="147"
-                 height="56"
-                 class="mobile-bee-logo h-14 w-[147px] object-cover dark:brightness-0 dark:invert">
+                 width="834"
+                 height="388"
+                 class="mobile-bee-logo h-14 w-auto object-contain dark:brightness-0 dark:invert">
         </a>
 
         <div class="ms-auto flex items-center gap-2">
             @auth
                 <a href="{{ route('rewards') }}"
-                   class="inline-flex min-h-9 items-center gap-1 rounded-full bg-[#30200e] px-3 py-1.5 text-[10px] font-semibold text-paper transition hover:bg-honey-deep dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-honey"
+                   class="inline-flex min-h-10 items-center gap-1 rounded-full bg-[#30200e] px-3 py-1.5 text-[10px] font-semibold text-paper transition hover:bg-honey-deep dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-honey"
                    wire:navigate>
                     <span aria-hidden="true">♛</span>
                     <span class="max-w-24 truncate">{{ $tier }} Tier</span>
                 </a>
             @else
                 <a href="{{ route('register') }}"
-                   class="rounded-full bg-[#30200e] px-3 py-1.5 text-[10px] font-semibold text-paper transition hover:bg-honey-deep dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-honey"
+                   class="inline-flex min-h-10 items-center rounded-full bg-[#30200e] px-3 py-1.5 text-[10px] font-semibold text-paper transition hover:bg-honey-deep dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-honey"
                    wire:navigate>
                     Join deliBEE
                 </a>
             @endauth
 
             <a href="{{ auth()->check() ? route('chat.index') : route('login') }}"
-               class="grid size-10 place-items-center rounded-full border border-ink/50 bg-white transition hover:border-honey-deep/40 dark:border-zinc-700 dark:bg-zinc-900"
+               class="grid size-11 place-items-center rounded-full border border-ink/50 bg-white transition hover:border-honey-deep/40 dark:border-zinc-700 dark:bg-zinc-900"
                aria-label="Bee Chat"
                wire:navigate>
-                <img src="{{ asset('images/mobile/chat.png') }}"
-                     alt=""
-                     width="22"
-                     height="22"
-                     class="size-[22px] object-contain dark:brightness-0 dark:invert">
+                <flux:icon name="chat-bubble-left-right" class="size-[22px]" />
             </a>
         </div>
     </div>

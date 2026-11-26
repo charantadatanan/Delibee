@@ -25,23 +25,19 @@
 
         <div class="mobile-reveal mt-3" x-data="{ filters: false }">
             <div class="relative">
-                <img src="{{ asset('images/mobile/search.png') }}"
-                     alt=""
-                     width="20"
-                     height="20"
-                     class="pointer-events-none absolute left-3.5 top-1/2 size-5 -translate-y-1/2 object-contain dark:brightness-0 dark:invert">
+                <flux:icon name="magnifying-glass" class="pointer-events-none absolute left-3.5 top-1/2 size-5 -translate-y-1/2 text-zinc-500 dark:text-zinc-400" />
                 <input type="search"
                        wire:model.live.debounce.300ms="search"
                        placeholder="Search product, businesses"
                        aria-label="Search products and businesses"
-                       class="w-full rounded-[10px] border border-ink/70 bg-paper py-2.5 ps-11 pe-12 text-sm placeholder:text-zinc-500 focus:border-honey-deep focus:outline-none focus:ring-2 focus:ring-honey-deep dark:focus:ring-honey dark:border-zinc-700 dark:bg-zinc-950 dark:placeholder:text-zinc-400">
+                       class="min-h-11 w-full rounded-[10px] border border-ink/70 bg-paper py-3 ps-11 pe-14 text-base placeholder:text-zinc-500 focus:border-honey-deep focus:outline-none focus:ring-2 focus:ring-honey-deep dark:border-zinc-700 dark:bg-zinc-950 dark:placeholder:text-zinc-400 dark:focus:ring-honey">
                 <button type="button"
                         @click="filters = !filters"
                         :aria-expanded="filters.toString()"
                         aria-expanded="false"
                         aria-controls="mobile-filters"
                         aria-label="Filters and sorting"
-                        class="absolute end-2 top-1/2 grid size-10 -translate-y-1/2 place-items-center rounded-lg text-ink transition hover:bg-comb/50 dark:text-zinc-100">
+                        class="absolute end-1.5 top-1/2 grid size-11 -translate-y-1/2 place-items-center rounded-lg text-ink transition hover:bg-comb/50 dark:text-zinc-100">
                     <flux:icon name="funnel" class="size-5" />
 
                     @if ($activeFilters > 0)
@@ -67,7 +63,7 @@
                     <button type="button"
                             wire:click="$set('category', '')"
                             aria-pressed="{{ $category === '' ? 'true' : 'false' }}"
-                            class="whitespace-nowrap rounded-full px-3 py-1.5 text-xs font-medium transition active:scale-95 {{ $category === '' ? 'bg-ink text-paper dark:bg-zinc-100 dark:text-zinc-900' : 'border border-ink/60 bg-white text-zinc-600 hover:border-honey-deep/40 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-300' }}">
+                            class="min-h-9 whitespace-nowrap rounded-full px-3.5 py-1.5 text-xs font-medium transition active:scale-95 {{ $category === '' ? 'bg-ink text-paper dark:bg-zinc-100 dark:text-zinc-900' : 'border border-ink/60 bg-white text-zinc-600 hover:border-honey-deep/40 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-300' }}">
                         All
                     </button>
 
@@ -75,7 +71,7 @@
                         <button type="button"
                                 wire:click="$set('category', '{{ $option->slug }}')"
                                 aria-pressed="{{ $category === $option->slug ? 'true' : 'false' }}"
-                                class="whitespace-nowrap rounded-full px-3 py-1.5 text-xs font-medium transition active:scale-95 {{ $category === $option->slug ? 'bg-ink text-paper dark:bg-zinc-100 dark:text-zinc-900' : 'border border-ink/60 bg-white text-zinc-600 hover:border-honey-deep/40 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-300' }}">
+                                class="min-h-9 whitespace-nowrap rounded-full px-3.5 py-1.5 text-xs font-medium transition active:scale-95 {{ $category === $option->slug ? 'bg-ink text-paper dark:bg-zinc-100 dark:text-zinc-900' : 'border border-ink/60 bg-white text-zinc-600 hover:border-honey-deep/40 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-300' }}">
                             {{ $option->name }}
                         </button>
                     @endforeach
@@ -85,19 +81,19 @@
                     <label class="block">
                         <span class="text-[11px] font-medium text-zinc-500 dark:text-zinc-400">Min price</span>
                         <input type="number" min="0" step="1" wire:model.live.debounce.500ms="minPrice"
-                               class="mt-1 w-full rounded-lg border border-ink/50 bg-white px-3 py-2 text-sm focus:border-honey-deep focus:outline-none focus:ring-2 focus:ring-honey-deep dark:focus:ring-honey dark:border-zinc-700 dark:bg-zinc-950">
+                               class="mt-1 min-h-11 w-full rounded-lg border border-ink/50 bg-white px-3 py-2.5 text-base focus:border-honey-deep focus:outline-none focus:ring-2 focus:ring-honey-deep dark:border-zinc-700 dark:bg-zinc-950 dark:focus:ring-honey">
                     </label>
 
                     <label class="block">
                         <span class="text-[11px] font-medium text-zinc-500 dark:text-zinc-400">Max price</span>
                         <input type="number" min="0" step="1" wire:model.live.debounce.500ms="maxPrice"
-                               class="mt-1 w-full rounded-lg border border-ink/50 bg-white px-3 py-2 text-sm focus:border-honey-deep focus:outline-none focus:ring-2 focus:ring-honey-deep dark:focus:ring-honey dark:border-zinc-700 dark:bg-zinc-950">
+                               class="mt-1 min-h-11 w-full rounded-lg border border-ink/50 bg-white px-3 py-2.5 text-base focus:border-honey-deep focus:outline-none focus:ring-2 focus:ring-honey-deep dark:border-zinc-700 dark:bg-zinc-950 dark:focus:ring-honey">
                     </label>
 
                     <label class="col-span-2 block">
                         <span class="text-[11px] font-medium text-zinc-500 dark:text-zinc-400">Sort by</span>
                         <select wire:model.live="sort"
-                                class="mt-1 w-full rounded-lg border border-ink/50 bg-white px-3 py-2 text-sm focus:border-honey-deep focus:outline-none focus:ring-2 focus:ring-honey-deep dark:focus:ring-honey dark:border-zinc-700 dark:bg-zinc-950">
+                                class="mt-1 min-h-11 w-full rounded-lg border border-ink/50 bg-white px-3 py-2.5 text-base focus:border-honey-deep focus:outline-none focus:ring-2 focus:ring-honey-deep dark:border-zinc-700 dark:bg-zinc-950 dark:focus:ring-honey">
                             @foreach (\App\Livewire\Storefront\Marketplace::SORTS as $option)
                                 <option value="{{ $option['value'] }}">{{ $option['label'] }}</option>
                             @endforeach
@@ -106,14 +102,14 @@
 
                     <button type="button"
                             wire:click="clearFilters"
-                            class="col-span-2 rounded-lg border border-ink/60 px-3 py-2 text-xs font-semibold text-zinc-600 transition hover:border-honey-deep/40 hover:text-ink dark:border-zinc-700 dark:text-zinc-300 dark:hover:text-ink">
+                            class="col-span-2 min-h-11 rounded-lg border border-ink/60 px-3 py-2.5 text-sm font-semibold text-zinc-600 transition hover:border-honey-deep/40 hover:text-ink dark:border-zinc-700 dark:text-zinc-300 dark:hover:text-ink">
                         Clear filters
                     </button>
 
                     <button type="button"
                             @click="filters = false"
-                            class="col-span-2 rounded-lg bg-ink px-3 py-2 text-xs font-semibold text-paper transition hover:bg-honey hover:text-ink">
-                        Show results
+                            class="col-span-2 min-h-11 rounded-lg bg-ink px-3 py-2.5 text-sm font-semibold text-paper transition hover:bg-honey hover:text-ink">
+                        Show {{ $products->total() }} {{ \Illuminate\Support\Str::plural('result', $products->total()) }}
                     </button>
                 </div>
             </div>
@@ -135,13 +131,13 @@
                     <button type="button"
                             @click="slide(-1)"
                             aria-label="Previous top products"
-                            class="mobile-carousel-button pointer-events-auto grid size-10 place-items-center rounded-full bg-paper/90 text-ink shadow-sm transition hover:bg-paper active:scale-95">
+                            class="mobile-carousel-button pointer-events-auto grid size-11 place-items-center rounded-full bg-paper/90 text-ink shadow-sm transition hover:bg-paper active:scale-95">
                         <span aria-hidden="true">←</span>
                     </button>
                     <button type="button"
                             @click="slide(1)"
                             aria-label="Next top products"
-                            class="mobile-carousel-button pointer-events-auto grid size-10 place-items-center rounded-full bg-paper/90 text-ink shadow-sm transition hover:bg-paper active:scale-95">
+                            class="mobile-carousel-button pointer-events-auto grid size-11 place-items-center rounded-full bg-paper/90 text-ink shadow-sm transition hover:bg-paper active:scale-95">
                         <span aria-hidden="true">→</span>
                     </button>
                 </div>
@@ -244,7 +240,7 @@
                     <p class="mt-1 text-xs text-zinc-500 dark:text-zinc-400">Try another search or clear the filters.</p>
                     <button type="button"
                             wire:click="clearFilters"
-                            class="mt-4 rounded-lg bg-ink px-4 py-2 text-sm font-semibold text-paper transition hover:bg-honey hover:text-ink dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-honey">
+                            class="mt-4 min-h-11 rounded-lg bg-ink px-5 py-2.5 text-sm font-semibold text-paper transition hover:bg-honey hover:text-ink dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-honey">
                         Clear filters
                     </button>
                 </div>

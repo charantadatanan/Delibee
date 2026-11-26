@@ -9,11 +9,11 @@ $scrollIntoViewJsSnippet = ($scrollTo !== false)
     JS
     : '';
 
-$pageLinkClasses = 'inline-flex size-9 items-center justify-center rounded-lg border text-sm font-medium transition';
+$pageLinkClasses = 'inline-flex size-11 items-center justify-center rounded-lg border text-sm font-medium transition';
 $pageLinkAvailable = 'border-comb bg-white/70 text-zinc-600 hover:border-honey-deep/40 hover:text-ink dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:border-honey/40 dark:hover:text-honey';
 $pageLinkCurrent = 'border-honey bg-honey text-ink';
 $pageLinkDisabled = 'border-comb/70 bg-white/40 text-zinc-400 dark:border-zinc-800 dark:bg-zinc-900/40 dark:text-zinc-500';
-$arrowClasses = 'inline-flex min-h-9 items-center justify-center gap-1.5 rounded-lg border px-3 py-1.5 text-sm font-medium transition';
+$arrowClasses = 'inline-flex min-h-11 items-center justify-center gap-1.5 rounded-lg border px-3 py-2 text-sm font-medium transition';
 @endphp
 
 <div>
