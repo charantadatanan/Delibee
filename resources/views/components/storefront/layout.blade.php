@@ -6,7 +6,9 @@
         @include('partials.head')
     </head>
     <body class="min-h-screen bg-paper font-sans text-ink antialiased dark:bg-zinc-950 dark:text-zinc-100">
-        <header class="sticky top-0 z-40 border-b border-comb/80 bg-paper/85 backdrop-blur-md dark:border-zinc-800 dark:bg-zinc-950/85">
+        <x-storefront.mobile-header />
+
+        <header class="sticky top-0 z-40 hidden border-b border-ink/10 bg-white/95 backdrop-blur-md lg:block dark:border-zinc-800 dark:bg-zinc-950/85">
             <div class="mx-auto flex max-w-7xl items-center gap-5 px-4 py-3">
                 <a href="{{ route('marketplace') }}" class="flex items-center gap-2.5" wire:navigate>
                     <span class="clip-hex grid size-9 place-items-center bg-honey font-display text-lg font-bold text-ink">d</span>
@@ -71,11 +73,11 @@
             </div>
         </header>
 
-        <main class="mx-auto max-w-7xl px-4 py-8 sm:py-10">
+        <main class="mx-auto max-w-7xl px-4 pt-3 pb-32 sm:pt-4 lg:pt-10 lg:pb-10">
             {{ $slot }}
         </main>
 
-        <footer class="mt-8 border-t border-comb/80 bg-ink text-paper/70 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-400">
+        <footer class="mt-8 hidden border-t border-comb/80 bg-ink text-paper/70 lg:block dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-400">
             <div class="mx-auto flex max-w-7xl flex-col gap-4 px-4 py-8 sm:flex-row sm:items-center sm:justify-between">
                 <div class="flex items-center gap-2.5">
                     <span class="clip-hex grid size-8 place-items-center bg-honey font-display text-base font-bold text-ink">d</span>
@@ -92,6 +94,8 @@
                 </nav>
             </div>
         </footer>
+
+        <x-storefront.mobile-nav />
 
         @persist('toast')
             <flux:toast.group>

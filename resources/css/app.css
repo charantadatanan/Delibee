@@ -9,12 +9,13 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
-    --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+    --font-sans: 'Poppins', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
     --font-display: 'Fredoka', ui-sans-serif, system-ui, sans-serif;
 
     --color-paper: #fff8e7;
+    --color-hero: #fff4c5;
     --color-ink: #1e1e1e;
-    --color-honey: #f2c96d;
+    --color-honey: #ffc233;
     --color-honey-deep: #6b5745;
     --color-comb: #e6dcc4;
     --color-leaf: #5b6b2e;
@@ -50,6 +51,10 @@
 }
 
 @layer base {
+
+    html {
+        scroll-padding-bottom: 6rem;
+    }
 
     *,
     ::after,
@@ -137,4 +142,170 @@ html:not(.dark) [data-flux-sidebar-profile]:not(:hover) span {
 
 html:not(.dark) [data-flux-subheading] {
     color: var(--color-zinc-600);
+}
+
+/* Mobile storefront motion — adapted from the Figma mobile frames. */
+[x-cloak] {
+    display: none !important;
+}
+
+@layer utilities {
+    .no-scrollbar {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+
+    .no-scrollbar::-webkit-scrollbar {
+        display: none;
+    }
+}
+
+:root {
+    --mobile-ease-soft: cubic-bezier(.22, .8, .24, 1);
+    --mobile-ease-overshoot: cubic-bezier(.34, 1.56, .64, 1);
+}
+
+@keyframes mobile-bee-arrive {
+    from { opacity: 0; transform: translateY(-8px) scale(0.94); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes mobile-nav-rise {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes mobile-reveal-up {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes mobile-hive-float {
+    0%, 100% { transform: translateY(0) rotate(-1deg); }
+    50% { transform: translateY(-5px) rotate(1deg); }
+}
+
+/* Anticipation → squash → stretch → rubber-band settle. */
+@keyframes mobile-splash-pop {
+    0% { opacity: 0; transform: scale(0.82, 0.88) rotate(-4deg); }
+    18% { opacity: 1; transform: scale(0.96, 1.04) rotate(-1deg); }
+    55% { opacity: 1; transform: scale(1.08, 0.94) rotate(1.5deg); }
+    78% { opacity: 1; transform: scale(0.98, 1.02) rotate(-0.5deg); }
+    100% { opacity: 1; transform: scale(1) rotate(0); }
+}
+
+@keyframes mobile-card-in {
+    from { opacity: 0; transform: translateY(10px) scale(0.98); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.mobile-bee-logo {
+    animation: mobile-bee-arrive .55s var(--mobile-ease-soft) both;
+}
+
+.mobile-nav-bar {
+    animation: mobile-nav-rise .5s var(--mobile-ease-soft) both;
+}
+
+.mobile-nav-item {
+    animation: mobile-nav-rise .5s var(--mobile-ease-overshoot) both;
+    animation-delay: calc(160ms + var(--nav-index, 0) * 55ms);
+}
+
+.mobile-nav-item .nav-bubble {
+    transition-timing-function: var(--mobile-ease-overshoot);
+}
+
+.mobile-nav-item.is-active .nav-bubble {
+    transform: translateY(-3px) scale(1.06);
+}
+
+.mobile-hive {
+    animation: mobile-hive-float 4.5s ease-in-out infinite;
+}
+
+.mobile-reveal {
+    animation: mobile-reveal-up .55s var(--mobile-ease-soft) both;
+}
+
+.mobile-reveal-delay-1 { animation-delay: .08s; }
+.mobile-reveal-delay-2 { animation-delay: .16s; }
+.mobile-reveal-delay-3 { animation-delay: .24s; }
+
+.mobile-splash-bee {
+    animation: mobile-splash-pop .85s var(--mobile-ease-soft) both;
+}
+
+.mobile-card-reveal {
+    animation: mobile-card-in .45s var(--mobile-ease-soft) backwards;
+    animation-delay: calc(var(--card-index, 0) * 30ms);
+}
+
+.mobile-shop-reveal {
+    animation: mobile-card-in .45s var(--mobile-ease-soft) backwards;
+    animation-delay: calc(var(--shop-index, 0) * 40ms);
+}
+
+.mobile-carousel {
+    -webkit-overflow-scrolling: touch;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .mobile-bee-logo,
+    .mobile-nav-bar,
+    .mobile-nav-item,
+    .mobile-hive,
+    .mobile-reveal,
+    .mobile-splash-bee,
+    .mobile-card-reveal,
+    .mobile-shop-reveal {
+        animation: none !important;
+    }
+
+    .mobile-nav-item,
+    .mobile-nav-item .nav-bubble,
+    .mobile-hive,
+    .mobile-hive > span,
+    .mobile-carousel-button,
+    .mobile-card-reveal,
+    .mobile-shop-reveal,
+    .mobile-filters-panel {
+        transition: none !important;
+    }
+
+    .mobile-hive:hover > span {
+        transform: none !important;
+    }
+
+    .group:hover img {
+        transform: none !important;
+    }
+
+    .mobile-nav-item.is-active .nav-bubble {
+        transform: none;
+    }
+
+    .mobile-carousel {
+        scroll-behavior: auto;
+    }
+}
+
+@media (max-width: 360px) {
+    .mobile-nav-row {
+        gap: 0.125rem;
+        padding-inline: 0.25rem;
+    }
+
+    .mobile-nav-spacer {
+        width: 3.5rem;
+    }
+
+    .mobile-nav-item {
+        margin-top: 0 !important;
+    }
+
+    .mobile-nav-item .nav-bubble {
+        width: 2.5rem;
+        height: 2.5rem;
+    }
 }

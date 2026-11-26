@@ -2,6 +2,8 @@
 
 namespace App\Livewire\Storefront;
 
+use App\Enums\ProductStatus;
+use App\Models\Business;
 use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Contracts\View\View;
@@ -57,6 +59,14 @@ class Marketplace extends Component
     {
         $categories = Category::query()->active()->orderBy('position')->get();
 
+        $featuredBusinesses = Business::query()
+            ->active()
+            ->whereHas('products', fn (Builder $query) => $query->where('status', ProductStatus::Active))
+            ->withCount(['products' => fn (Builder $query) => $query->where('status', ProductStatus::Active)])
+            ->orderByDesc('products_count')
+            ->take(8)
+            ->get();
+
         $products = Product::query()
             ->active()
             ->with(['business', 'category', 'images'])
@@ -73,6 +83,7 @@ class Marketplace extends Component
         return view('livewire.storefront.marketplace', [
             'products' => $products->paginate(12),
             'categories' => $categories,
+            'featuredBusinesses' => $featuredBusinesses,
         ]);
     }
 

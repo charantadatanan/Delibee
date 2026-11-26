@@ -1,7 +1,7 @@
 @props(['product'])
 
 <a href="{{ route('products.show', [$product->business->slug, $product->slug]) }}"
-   class="group flex flex-col overflow-hidden rounded-2xl border border-comb/90 bg-white/70 transition-colors hover:border-honey-deep/40 dark:border-zinc-800 dark:bg-zinc-900 dark:hover:border-honey/40"
+   class="group flex flex-col overflow-hidden rounded-2xl border border-ink/30 bg-white transition-colors hover:border-honey-deep/40 dark:border-zinc-800 dark:bg-zinc-900 dark:hover:border-honey/40"
    wire:navigate>
     <div class="relative grid aspect-[4/3] place-items-center overflow-hidden bg-[#FFF4C5] dark:bg-zinc-800">
         <div class="absolute inset-0 bg-comb opacity-70 dark:opacity-15"></div>
@@ -9,6 +9,8 @@
         @if ($product->images->isNotEmpty())
             <img src="{{ \Illuminate\Support\Facades\Storage::url($product->images->first()->path) }}"
                  alt="{{ $product->images->first()->alt_text ?? $product->name }}"
+                 loading="lazy"
+                 decoding="async"
                  class="relative size-full object-cover transition-transform duration-500 group-hover:scale-[1.03]">
         @else
             <span class="clip-hex relative grid size-16 place-items-center bg-white/85 font-display text-2xl font-semibold text-honey-deep shadow-sm dark:bg-zinc-900/80 dark:text-honey">

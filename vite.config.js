@@ -12,8 +12,8 @@ export default defineConfig({
             ],
             refresh: true,
             fonts: [
-                bunny('Inter', {
-                    weights: [400, 500, 600],
+                bunny('Poppins', {
+                    weights: [400, 500, 600, 700],
                 }),
                 bunny('Fredoka', {
                     weights: [400, 500, 600, 700],
