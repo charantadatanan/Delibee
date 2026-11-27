@@ -4,7 +4,7 @@ A multi-vendor marketplace where sellers are ranked on **how they are performing
 
 [![CI](https://github.com/charantadatanan/Delibee/actions/workflows/ci.yml/badge.svg)](https://github.com/charantadatanan/Delibee/actions/workflows/ci.yml)
 
-![deliBEE marketplace](docs/screenshots/figma-theme/marketplace.png)
+![deliBEE marketplace](screens/final-desktop-home.png)
 
 ## What it does
 
@@ -16,7 +16,7 @@ A multi-vendor marketplace where sellers are ranked on **how they are performing
 - **Bee Chat** — customer/seller messaging with per-conversation response tracking and per-user rate limiting.
 - **Seller desk** — store onboarding and admin approval, product management, and an order-fulfilment timeline.
 - **Hive Guard** — admin approval and suspension of sellers, order oversight, and review moderation.
-- **deliBEE UI theme** — Fredoka + Inter, a cream-and-honey palette drawn from the Figma UI project, honeycomb motifs, light/dark mode, responsive down to mobile.
+- **deliBEE UI theme** — Fredoka + Poppins, a cream-and-honey palette drawn from the Figma UI project, honeycomb motifs, light/dark mode, responsive down to mobile.
 
 ## Stack
 
@@ -25,22 +25,35 @@ A multi-vendor marketplace where sellers are ranked on **how they are performing
 | Backend | Laravel 13, PHP 8.4 |
 | UI | Livewire 4 single-file components, Flux, Tailwind CSS 4 |
 | Database | PostgreSQL 18 (search via `tsvector`, `pg_trgm`) |
-| Assets | Vite 8, Bunny-hosted Inter + Fredoka |
+| Assets | Vite 8, Bunny-hosted Poppins + Fredoka |
 | Quality | Pest 5, Larastan (level 8), Pint |
 
 ## Screenshots
 
-| Dashboard | BeeRank |
-|---|---|
-| ![Dashboard](docs/screenshots/figma-theme/dashboard.png) | ![BeeRank](docs/screenshots/figma-theme/ranking.png) |
+### Web
 
-![Login](docs/screenshots/figma-theme/login.png)
+| Marketplace | Login | Seller desk |
+|---|---|---|
+| ![Marketplace](screens/final-desktop-home.png) | ![Login](screens/final-desktop-login.png) | ![Seller dashboard](screens/final-desktop-seller-dashboard.png) |
 
-### Theme options
+### Mobile
+
+| Marketplace | Orders | Product |
+|---|---|---|
+| ![Mobile marketplace](screens/final-mobile-home.png) | ![Mobile orders](screens/final-mobile-orders.png) | ![Mobile product](screens/final-mobile-product.png) |
+
+| Hive menu | Profile | Seller inventory |
+|---|---|---|
+| ![Mobile hive menu](screens/mobile-hive-menu-member.png) | ![Mobile profile](screens/final-mobile-profile.png) | ![Mobile seller inventory](screens/final-mobile-seller-inventory.png) |
+
+The full set is in [`screens/`](screens). Screenshots from earlier themes remain in `docs/screenshots/`.
+
+### Theme history
 
 The previous Warm Hive theme is preserved for comparison and rollback:
 
-- Old screenshots: `docs/screenshots/` (`marketplace.png`, `dashboard.png`, `ranking.png`, `login.png`)
+- Previous Figma-theme screenshots: `docs/screenshots/figma-theme/`
+- Warm Hive screenshots: `docs/screenshots/`
 - Backup branch: `ui-backup/warm-hive` (tag `ui-warm-hive-2026-11-12`)
 - Token reference: `docs/archive/theme-warm-hive.md`
 
@@ -172,8 +185,8 @@ tests/Feature/{Domain,Http,Admin,Seller,...}     domain, HTTP, command, auth and
 scripts/backup/                                  verified backup and scheduling scripts
 docs/guides/                                     code map for UI, theme, domain and tests
 docs/reports/                                    progress and submission reports
-docs/screenshots/figma-theme/                    current theme screenshots
-docs/screenshots/                                previous Warm Hive screenshots
+screens/                                         current desktop and mobile screenshots
+docs/screenshots/                                earlier Figma-theme and Warm Hive screenshots
 docs/archive/                                    historical build notes
 ui-ux/                                           static UI/UX sampler and sampled source for the design team
 .github/workflows/ci.yml                         CI pipeline
@@ -196,7 +209,7 @@ See [`docs/README.md`](docs/README.md) for the documentation index and [`docs/gu
 
 ## Status
 
-- 118 tests (117 passing, 1 skipped — two-factor authentication is disabled in this build), 287 assertions.
+- 123 tests (122 passing, 1 skipped — two-factor authentication is disabled in this build), 315 assertions.
 - PHPStan level 8: 0 errors. Pint: clean.
 - Storefront, customer, seller, admin and settings pages were audited with axe-core against WCAG 2.2 AA and report zero violations.
 - Payment is offline for now; the payment gateway remains an open product decision.

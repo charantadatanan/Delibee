@@ -98,7 +98,7 @@
                         x-data
                         x-on:click="$dispatch('flux-sidebar-toggle')"
                         data-flux-sidebar-toggle
-                        class="grid size-10 place-items-center justify-self-start rounded-full border border-ink/50 bg-honey transition active:scale-95 dark:border-zinc-700 dark:bg-honey-deep"
+                        class="grid size-10 place-items-center justify-self-start rounded-full border border-ink/50 bg-honey transition focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink active:scale-95 dark:border-zinc-700 dark:bg-honey-deep dark:focus-visible:outline-honey"
                         aria-label="{{ __('Open menu') }}">
                     <img src="{{ asset('images/mobile/hive.png') }}"
                          alt=""

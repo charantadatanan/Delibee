@@ -1,15 +1,15 @@
 <div x-data="{ tab: 'products' }">
-    {{-- Store hero, matching the blue storefront banner in the Figma profile. --}}
-    <section class="relative -mx-4 overflow-hidden bg-[#2B2BD6] text-white lg:mx-0 lg:rounded-[32px]">
-        <div class="absolute inset-0 bg-comb opacity-15"></div>
+    {{-- Store hero in the hive's own leaf-and-honey palette. --}}
+    <section class="relative -mx-4 overflow-hidden bg-leaf text-paper lg:mx-0 lg:rounded-[32px]">
+        <div class="absolute inset-0 bg-comb opacity-10"></div>
 
         <div class="relative px-4 pb-24 pt-4 lg:px-8 lg:pb-16 lg:pt-8">
             <div class="flex items-center justify-between lg:hidden">
-                <a href="{{ route('marketplace') }}" class="ui-back size-9" aria-label="Back to marketplace" wire:navigate>
+                <a href="{{ route('marketplace') }}" class="ui-back size-9 border-paper/50 bg-paper/10 text-paper" aria-label="Back to marketplace" wire:navigate>
                     <flux:icon name="chevron-left" class="size-5" />
                 </a>
 
-                <button type="button" wire:click="startChat" class="grid size-9 place-items-center rounded-full border border-white/50 bg-white/10 text-white backdrop-blur" aria-label="Message {{ $business->name }}">
+                <button type="button" wire:click="startChat" class="grid size-9 place-items-center rounded-full border border-paper/50 bg-paper/10 text-paper backdrop-blur" aria-label="Message {{ $business->name }}">
                     <flux:icon name="chat-bubble-left-right" class="size-4" />
                 </button>
             </div>
@@ -17,8 +17,11 @@
             <p class="mt-7 text-center font-display text-2xl font-semibold leading-tight lg:mt-0 lg:text-4xl">
                 {{ \Illuminate\Support\Str::upper($business->name) }}
             </p>
-            <p class="mt-1 text-center text-[11px] font-medium uppercase tracking-[0.18em] text-white/65">
-                {{ $business->isRising() ? 'Rising local business' : 'Verified local business' }}
+            <p class="mt-2 flex justify-center">
+                <span class="inline-flex items-center gap-1.5 rounded-full border border-paper/25 bg-paper/10 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-paper/90">
+                    <span class="size-1.5 rounded-full bg-honey" aria-hidden="true"></span>
+                    {{ $business->isRising() ? 'Rising local business' : 'Verified local business' }}
+                </span>
             </p>
         </div>
     </section>

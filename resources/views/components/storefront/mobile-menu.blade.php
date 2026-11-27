@@ -62,7 +62,7 @@
 
                 <button type="button"
                         onclick="this.closest('dialog').close()"
-                        class="ui-back size-9 shrink-0"
+                        class="ui-back size-9 shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink dark:focus-visible:outline-honey"
                         aria-label="{{ __('Close menu') }}">
                     <flux:icon name="x-mark" class="size-5" />
                 </button>
@@ -80,7 +80,7 @@
                         <div class="mt-2 space-y-1.5">
                             @foreach ($group['links'] as $link)
                                 <a href="{{ route($link['route']) }}"
-                                   class="group flex min-h-14 items-center gap-3 rounded-2xl border border-ink/10 bg-white/75 px-3 py-2.5 transition hover:border-ink/30 hover:bg-white active:scale-[0.99] dark:border-zinc-800 dark:bg-zinc-900 dark:hover:border-zinc-600"
+                                   class="group flex min-h-14 items-center gap-3 rounded-2xl border border-ink/10 bg-white/75 px-3 py-2.5 transition hover:border-ink/30 hover:bg-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink active:scale-[0.99] dark:border-zinc-800 dark:bg-zinc-900 dark:hover:border-zinc-600 dark:focus-visible:outline-honey"
                                    wire:navigate>
                                     <span class="grid size-9 shrink-0 place-items-center rounded-full bg-honey/30 text-ink transition group-hover:bg-honey dark:bg-honey/15 dark:text-honey">
                                         <flux:icon :name="$link['icon']" class="size-[18px]" />
@@ -104,7 +104,7 @@
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
                         <button type="submit"
-                                class="flex min-h-12 w-full items-center justify-center gap-2 rounded-full border border-ink/20 px-4 text-sm font-semibold transition hover:border-ink/50 active:scale-[0.99] dark:border-zinc-700 dark:hover:border-zinc-500">
+                                class="flex min-h-12 w-full items-center justify-center gap-2 rounded-full border border-ink/20 px-4 text-sm font-semibold transition hover:border-ink/50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink active:scale-[0.99] dark:border-zinc-700 dark:hover:border-zinc-500 dark:focus-visible:outline-honey">
                             <flux:icon name="arrow-right-start-on-rectangle" class="size-4" />
                             {{ __('Log out') }}
                         </button>
@@ -112,12 +112,12 @@
                 @else
                     <div class="grid grid-cols-2 gap-2">
                         <a href="{{ route('login') }}"
-                           class="flex min-h-12 items-center justify-center rounded-full border border-ink/25 px-4 text-sm font-semibold transition hover:border-ink/60 active:scale-[0.99] dark:border-zinc-700 dark:hover:border-zinc-500"
+                           class="flex min-h-12 items-center justify-center rounded-full border border-ink/25 px-4 text-sm font-semibold transition hover:border-ink/60 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink active:scale-[0.99] dark:border-zinc-700 dark:hover:border-zinc-500 dark:focus-visible:outline-honey"
                            wire:navigate>
                             {{ __('Sign in') }}
                         </a>
                         <a href="{{ route('register') }}"
-                           class="flex min-h-12 items-center justify-center rounded-full bg-ink px-4 text-sm font-semibold text-paper transition hover:bg-honey-deep active:scale-[0.99] dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-honey"
+                           class="flex min-h-12 items-center justify-center rounded-full bg-ink px-4 text-sm font-semibold text-paper transition hover:bg-honey-deep focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink active:scale-[0.99] dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-honey dark:focus-visible:outline-honey"
                            wire:navigate>
                             {{ __('Join deliBEE') }}
                         </a>

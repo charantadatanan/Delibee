@@ -29,7 +29,7 @@
 
         <button type="button"
                 onclick="document.getElementById('mobile-hive-menu').showModal(); document.documentElement.classList.add('overflow-hidden')"
-                class="mobile-hive group absolute bottom-14 left-1/2 z-10 flex -translate-x-1/2 flex-col items-center"
+                class="mobile-hive group absolute bottom-14 left-1/2 z-10 flex -translate-x-1/2 flex-col items-center rounded-full focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ink dark:focus-visible:outline-honey"
                 aria-label="{{ __('Open menu') }}"
                 aria-haspopup="dialog"
                 aria-controls="mobile-hive-menu">
