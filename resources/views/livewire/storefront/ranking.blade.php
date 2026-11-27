@@ -9,7 +9,7 @@
         <div class="absolute inset-0 bg-comb opacity-50 dark:opacity-10"></div>
 
         <div class="relative mx-auto max-w-3xl text-center">
-            <p class="inline-flex items-center gap-2 rounded-full border border-ink/40 bg-paper/80 px-3 py-1 text-[11px] font-semibold">
+            <p class="inline-flex items-center gap-2 rounded-full border border-ink/40 bg-paper/80 px-3 py-1 text-[11px] font-semibold text-ink">
                 <span class="size-1.5 rounded-full bg-leaf" aria-hidden="true"></span>
                 {{ $periodStart->format('F Y') }} leaderboard
             </p>
