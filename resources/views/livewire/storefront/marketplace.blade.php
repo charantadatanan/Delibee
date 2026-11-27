@@ -30,7 +30,7 @@
                        wire:model.live.debounce.300ms="search"
                        placeholder="Search product, businesses"
                        aria-label="Search products and businesses"
-                       class="min-h-11 w-full rounded-[10px] border border-ink/70 bg-paper py-3 ps-11 pe-14 text-base placeholder:text-zinc-500 focus:border-honey-deep focus:outline-none focus:ring-2 focus:ring-honey-deep dark:border-zinc-700 dark:bg-zinc-950 dark:placeholder:text-zinc-400 dark:focus:ring-honey">
+                       class="min-h-11 w-full rounded-lg border border-ink/70 bg-paper py-3 ps-11 pe-14 text-base placeholder:text-zinc-500 focus:border-honey-deep focus:outline-none focus:ring-2 focus:ring-honey-deep dark:border-zinc-700 dark:bg-zinc-950 dark:placeholder:text-zinc-400 dark:focus:ring-honey">
                 <button type="button"
                         @click="filters = !filters"
                         :aria-expanded="filters.toString()"
@@ -201,12 +201,12 @@
                     </a>
                 </div>
 
-                <div class="no-scrollbar mt-3 flex gap-2.5 overflow-x-auto pb-1">
+                <div class="no-scrollbar mt-3 flex gap-3 overflow-x-auto pb-1">
                     @foreach ($featuredBusinesses as $business)
                         <a href="{{ route('businesses.show', $business) }}"
                            wire:key="shop-{{ $business->id }}"
                            style="--shop-index: {{ $loop->index }}"
-                           class="mobile-shop-reveal group flex w-[60px] shrink-0 flex-col items-center gap-1 text-center transition-transform duration-200 hover:-translate-y-0.5 active:scale-95 motion-reduce:transition-none"
+                           class="mobile-shop-reveal group flex w-16 shrink-0 flex-col items-center gap-1.5 text-center transition-transform duration-200 hover:-translate-y-0.5 active:scale-95 motion-reduce:transition-none"
                            wire:navigate>
                             <span class="mobile-shop-logo grid size-[50px] place-items-center overflow-hidden rounded-full border border-ink/40 bg-white shadow-sm transition group-hover:scale-105 dark:border-zinc-700 dark:bg-zinc-900">
                                 @if ($business->logo_path)
@@ -221,8 +221,8 @@
                                     </span>
                                 @endif
                             </span>
-                            <span class="line-clamp-2 w-full text-[10px] font-semibold leading-tight">{{ $business->name }}</span>
-                            <span class="text-[9px] text-zinc-500 dark:text-zinc-400">{{ $business->products_count }} {{ \Illuminate\Support\Str::plural('product', $business->products_count) }}</span>
+                            <span class="line-clamp-2 w-full text-[11px] font-semibold leading-tight">{{ $business->name }}</span>
+                            <span class="text-[10px] text-zinc-500 dark:text-zinc-400">{{ $business->products_count }} {{ \Illuminate\Support\Str::plural('product', $business->products_count) }}</span>
                         </a>
                     @endforeach
                 </div>
@@ -245,7 +245,7 @@
                     </button>
                 </div>
             @else
-                <div class="mt-3 grid grid-cols-2 gap-3 min-[380px]:grid-cols-3 min-[380px]:gap-4">
+                <div class="mt-3 grid grid-cols-2 gap-3 min-[480px]:grid-cols-3 min-[480px]:gap-4">
                     @foreach ($products as $product)
                         @php($image = $product->images->first())
 
@@ -270,15 +270,15 @@
                                 @endif
                             </div>
 
-                            <p class="truncate bg-honey px-1.5 py-1 text-[9px] font-semibold leading-tight text-ink">
+                            <p class="truncate bg-honey px-2.5 py-1.5 text-[10px] font-semibold leading-tight text-ink">
                                 {{ $product->category?->name ?? 'Marketplace' }}
                             </p>
 
-                            <div class="p-1.5">
-                                <p class="line-clamp-2 text-[11px] font-medium leading-tight">{{ $product->name }}</p>
-                                <div class="mt-1 flex items-baseline justify-between gap-1">
-                                    <p class="truncate text-[9px] font-semibold">{{ $product->formattedPrice() }}</p>
-                                    <p class="shrink-0 text-[9px] text-zinc-500 dark:text-zinc-400">{{ $product->stock }} left</p>
+                            <div class="p-2.5">
+                                <p class="line-clamp-2 text-[13px] font-medium leading-snug">{{ $product->name }}</p>
+                                <div class="mt-1.5 flex items-baseline justify-between gap-1.5">
+                                    <p class="truncate text-xs font-semibold">{{ $product->formattedPrice() }}</p>
+                                    <p class="shrink-0 text-[10px] text-zinc-500 dark:text-zinc-400">{{ $product->stock }} left</p>
                                 </div>
                             </div>
                         </a>
@@ -359,7 +359,7 @@
                                 <p class="truncate font-semibold">Sunrise Orchard</p>
                                 <p class="text-xs text-zinc-500 dark:text-zinc-400">Fresh fruit & cold-pressed juice</p>
                             </div>
-                            <span class="rounded-full bg-leaf/10 px-2.5 py-1 text-xs font-semibold text-leaf dark:text-emerald-300">Rising</span>
+                            <span class="rounded-full bg-leaf/10 px-2.5 py-1 text-xs font-semibold text-leaf dark:text-emerald-300">Top rated</span>
                         </div>
 
                         <div class="mt-4 grid grid-cols-3 gap-2 text-center text-[11px]">

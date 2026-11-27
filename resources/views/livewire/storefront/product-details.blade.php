@@ -42,7 +42,7 @@
     </div>
 
     <div class="lg:sticky lg:top-24 lg:h-fit">
-        <div class="ui-card bg-paper p-4 dark:bg-zinc-900 sm:p-6">
+        <div class="ui-card bg-paper p-5 dark:bg-zinc-900 sm:p-6">
             <div class="flex flex-wrap items-center gap-2 text-xs">
                 <a href="{{ route('businesses.show', $business->slug) }}"
                    class="inline-flex min-h-8 items-center gap-2 rounded-full border border-ink/40 bg-white px-3 py-1 font-medium transition hover:border-ink dark:border-zinc-700 dark:bg-zinc-950"

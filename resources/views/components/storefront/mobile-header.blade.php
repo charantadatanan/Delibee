@@ -13,17 +13,17 @@
             <x-ui.bee-logo class="mobile-bee-logo h-auto w-28 max-[340px]:w-20 sm:w-32" />
         </a>
 
-        <div class="ms-auto flex items-center gap-2">
+        <div class="ms-auto flex items-center gap-2 max-[340px]:gap-1.5">
             @auth
                 <a href="{{ route('rewards') }}"
-                   class="inline-flex min-h-10 items-center gap-1.5 rounded-full border border-ink bg-[#30200e] px-3 py-1.5 text-[10px] font-semibold text-paper transition hover:bg-honey-deep dark:border-zinc-700 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-honey"
+                   class="inline-flex min-h-11 items-center gap-1.5 rounded-full border border-ink bg-[#30200e] px-3 py-1.5 text-[11px] font-semibold text-paper transition hover:bg-honey-deep max-[340px]:text-[10px] dark:border-zinc-700 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-honey"
                    wire:navigate>
                     <span aria-hidden="true">♛</span>
                     <span class="max-w-24 truncate">{{ $tier['name'] }} Tier</span>
                 </a>
             @else
                 <a href="{{ route('register') }}"
-                   class="inline-flex min-h-10 items-center rounded-full bg-[#30200e] px-3 py-1.5 text-[10px] font-semibold text-paper transition hover:bg-honey-deep dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-honey"
+                   class="inline-flex min-h-11 items-center rounded-full bg-[#30200e] px-3 py-1.5 text-[11px] font-semibold text-paper transition hover:bg-honey-deep max-[340px]:text-[10px] dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-honey"
                    wire:navigate>
                     Join deliBEE
                 </a>
