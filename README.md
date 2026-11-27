@@ -4,6 +4,8 @@ A multi-vendor marketplace where sellers are ranked on **how they are performing
 
 [![CI](https://github.com/charantadatanan/Delibee/actions/workflows/ci.yml/badge.svg)](https://github.com/charantadatanan/Delibee/actions/workflows/ci.yml)
 
+**Live:** https://delibee-production-6l26tu.laravel.cloud
+
 ![deliBEE marketplace](screens/final-desktop-home.png)
 
 ## What it does
@@ -206,6 +208,12 @@ See [`docs/README.md`](docs/README.md) for the documentation index and [`docs/gu
 - Review submissions are rate-limited per user (10 per minute by default, configurable via `REVIEW_RATE_LIMIT_PER_MINUTE`).
 - Each order is settled in the seller's currency; flat shipping is configured per currency and the platform does not convert between currencies.
 - One seller account owns one business in this build; onboarding redirects sellers who already have a business.
+
+## Hosting
+
+Production runs on **Laravel Cloud** in Singapore (`ap-southeast-1`), deployed automatically from
+`main` with Serverless Postgres, public object storage, the scheduler and production environment
+variables. Infrastructure and deploy details: [`docs/guides/laravel-cloud.md`](docs/guides/laravel-cloud.md).
 
 ## Status
 
