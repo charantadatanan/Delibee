@@ -226,20 +226,44 @@ html:not(.dark) [data-flux-subheading] {
 }
 
 .mobile-nav {
-    --mobile-nav-bar-height: 3.5rem;
+    --mobile-nav-hive-bottom: 1.25rem;
+    pointer-events: none;
 }
 
-.mobile-nav.is-labels-open {
-    --mobile-nav-bar-height: 4.5rem;
+.mobile-nav.is-open {
+    --mobile-nav-hive-bottom: 4.5rem;
 }
 
 .mobile-nav .mobile-nav-bar {
-    height: var(--mobile-nav-bar-height);
-    transition: height .32s var(--mobile-ease-soft);
+    height: 4.5rem;
+    animation: none;
+    opacity: 0;
+    transform: translateY(0.75rem);
+    pointer-events: none;
+    transition: opacity .22s ease-out, transform .32s var(--mobile-ease-soft);
+}
+
+.mobile-nav.is-open .mobile-nav-bar {
+    opacity: 1;
+    transform: none;
+}
+
+.mobile-nav-row {
+    opacity: 0;
+    transform: translateY(0.75rem);
+    pointer-events: none;
+    transition: opacity .22s ease-out, transform .32s var(--mobile-ease-soft);
+}
+
+.mobile-nav.is-open .mobile-nav-row {
+    opacity: 1;
+    transform: none;
+    pointer-events: auto;
 }
 
 .mobile-nav .mobile-hive {
-    bottom: var(--mobile-nav-bar-height);
+    bottom: var(--mobile-nav-hive-bottom);
+    pointer-events: auto;
     transition: bottom .32s var(--mobile-ease-soft);
 }
 
@@ -257,7 +281,7 @@ html:not(.dark) [data-flux-subheading] {
     transition-delay: calc(var(--nav-index, 0) * 18ms);
 }
 
-.mobile-nav.is-labels-open .mobile-nav-label {
+.mobile-nav.is-open .mobile-nav-label {
     max-height: 0.875rem;
     margin-top: 2px;
     opacity: 1;
@@ -307,6 +331,7 @@ html:not(.dark) [data-flux-subheading] {
     .mobile-hive,
     .mobile-hive > span,
     .mobile-nav .mobile-nav-bar,
+    .mobile-nav-row,
     .mobile-nav .mobile-hive,
     .mobile-nav-label,
     .mobile-carousel-button,

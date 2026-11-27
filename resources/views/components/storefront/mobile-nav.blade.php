@@ -13,12 +13,17 @@
 
 <nav aria-label="Mobile navigation"
      x-data="{ navOpen: false }"
-     x-bind:class="{ 'is-labels-open': navOpen }"
+     x-bind:class="{ 'is-open': navOpen }"
      class="mobile-nav fixed inset-x-0 bottom-0 z-50 lg:hidden">
     <div class="relative mx-auto max-w-md px-3 pb-[max(8px,env(safe-area-inset-bottom))]">
         <div class="mobile-nav-bar absolute inset-x-3 bottom-0 rounded-t-[34px] border border-ink/10 bg-honey/95 shadow-[0_-10px_30px_rgba(30,30,30,0.14)] backdrop-blur dark:border-zinc-700 dark:bg-[#4a3c2f]/95"></div>
 
-        <div id="mobile-nav-labels" class="mobile-nav-row relative flex items-end justify-between gap-1 px-3 pb-2 pt-3">
+        <div id="mobile-nav-labels"
+             class="mobile-nav-row relative flex items-end justify-between gap-1 px-3 pb-2 pt-3"
+             x-bind:inert="!navOpen"
+             x-bind:aria-hidden="(!navOpen).toString()"
+             inert
+             aria-hidden="true">
             @foreach (array_slice($items, 0, 2) as $index => $item)
                 @include('components.storefront.mobile-nav-item', ['item' => $item, 'index' => $index])
             @endforeach
@@ -33,8 +38,8 @@
         <button type="button"
                 x-on:click="navOpen = !navOpen"
                 x-bind:aria-expanded="navOpen.toString()"
+                x-bind:aria-label="navOpen ? '{{ __('Hide navigation') }}' : '{{ __('Show navigation') }}'"
                 class="mobile-hive group absolute left-1/2 z-10 flex -translate-x-1/2 flex-col items-center rounded-full focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ink dark:focus-visible:outline-honey"
-                aria-label="{{ __('Navigation labels') }}"
                 aria-controls="mobile-nav-labels">
             <span class="grid size-16 place-items-center rounded-full border-4 border-paper bg-honey shadow-lg transition-transform group-hover:-translate-y-0.5 group-active:scale-95 dark:border-zinc-950 dark:bg-honey-deep">
                 <img src="{{ asset('images/mobile/hive.png') }}"
