@@ -353,7 +353,7 @@
                             <span class="grid size-12 place-items-center rounded-full border border-ink/60 bg-honey font-display text-lg font-bold">1</span>
                         </div>
 
-                        <div class="mt-4 flex items-center gap-3 rounded-xl border border-ink/40 bg-white/80 p-3 dark:bg-zinc-900">
+                        <div class="mt-4 flex items-center gap-3 rounded-xl border border-ink/40 bg-white/80 p-3 dark:border-zinc-700 dark:bg-zinc-900">
                             <span class="clip-hex grid size-10 place-items-center bg-honey font-display font-bold">S</span>
                             <div class="min-w-0 flex-1">
                                 <p class="truncate font-semibold">Sunrise Orchard</p>
@@ -363,15 +363,15 @@
                         </div>
 
                         <div class="mt-4 grid grid-cols-3 gap-2 text-center text-[11px]">
-                            <div class="rounded-xl border border-ink/20 bg-white/60 p-2 dark:bg-zinc-900">
+                            <div class="rounded-xl border border-ink/20 bg-white/60 p-2 dark:border-zinc-700 dark:bg-zinc-900">
                                 <p class="font-display text-lg font-semibold">30</p>
                                 <p class="text-zinc-500 dark:text-zinc-400">day window</p>
                             </div>
-                            <div class="rounded-xl border border-ink/20 bg-white/60 p-2 dark:bg-zinc-900">
+                            <div class="rounded-xl border border-ink/20 bg-white/60 p-2 dark:border-zinc-700 dark:bg-zinc-900">
                                 <p class="font-display text-lg font-semibold">4.8</p>
                                 <p class="text-zinc-500 dark:text-zinc-400">verified ★</p>
                             </div>
-                            <div class="rounded-xl border border-ink/20 bg-white/60 p-2 dark:bg-zinc-900">
+                            <div class="rounded-xl border border-ink/20 bg-white/60 p-2 dark:border-zinc-700 dark:bg-zinc-900">
                                 <p class="font-display text-lg font-semibold">5+</p>
                                 <p class="text-zinc-500 dark:text-zinc-400">orders</p>
                             </div>
