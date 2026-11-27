@@ -42,9 +42,9 @@ A multi-vendor marketplace where sellers are ranked on **how they are performing
 |---|---|---|
 | ![Mobile marketplace](screens/final-mobile-home.png) | ![Mobile orders](screens/final-mobile-orders.png) | ![Mobile product](screens/final-mobile-product.png) |
 
-| Navigation labels | Profile | Seller inventory |
+| Radial navigation | Profile | Seller inventory |
 |---|---|---|
-| ![Mobile navigation labels](screens/mobile-nav-expanded.png) | ![Mobile profile](screens/final-mobile-profile.png) | ![Mobile seller inventory](screens/final-mobile-seller-inventory.png) |
+| ![Mobile radial navigation](screens/mobile-radial-open.png) | ![Mobile profile](screens/final-mobile-profile.png) | ![Mobile seller inventory](screens/final-mobile-seller-inventory.png) |
 
 The full set is in [`screens/`](screens). Screenshots from earlier themes remain in `docs/screenshots/`.
 

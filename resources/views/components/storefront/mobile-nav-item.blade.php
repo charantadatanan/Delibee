@@ -18,5 +18,5 @@
         @endif
     </span>
 
-    <span class="mobile-nav-label text-[11px] font-semibold leading-[14px] text-ink/80 dark:text-paper/85">{{ $item['label'] }}</span>
+    <span class="text-[11px] font-semibold leading-[14px] text-ink/80 dark:text-paper/85">{{ $item['label'] }}</span>
 </a>
