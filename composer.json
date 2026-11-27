@@ -14,6 +14,7 @@
         "laravel/framework": "^13.23",
         "laravel/socialite": "^5.33",
         "laravel/tinker": "^3.0",
+        "league/flysystem-aws-s3-v3": "^3.0",
         "livewire/blaze": "^1.0",
         "livewire/flux": "^2.13.1",
         "livewire/livewire": "^4.1",
@@ -22,15 +23,16 @@
     "require-dev": {
         "fakerphp/faker": "^1.24",
         "larastan/larastan": "^3.9",
+        "laravel/cloud-cli": "^0.7.10",
         "laravel/pail": "^1.2.5",
         "laravel/pao": "^1.0.6",
         "laravel/pint": "^1.27",
         "laravel/sail": "^1.53",
         "mockery/mockery": "^1.6",
         "nunomaduro/collision": "^8.9.3",
-        "phpunit/phpunit": "^13.0",
         "pestphp/pest": "^5.0.1",
-        "pestphp/pest-plugin-laravel": "^5.0"
+        "pestphp/pest-plugin-laravel": "^5.0",
+        "phpunit/phpunit": "^13.0"
     },
     "autoload": {
         "psr-4": {
