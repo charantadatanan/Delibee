@@ -90,7 +90,7 @@ php artisan serve
 - `customer@delibee.test` — customer with order history
 - `test@example.com` — plain verified user
 
-Seller accounts are generated with fake emails; use the admin account to approve sellers or create one through the onboarding flow.
+Seller accounts use the shop slug as their address (for example `sunrise-orchard@delibee.test`); use the admin account to approve sellers or create one through the onboarding flow.
 
 ## Admin operations
 

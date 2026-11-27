@@ -27,17 +27,8 @@ class DemoSeeder extends Seeder
 {
     public function run(): void
     {
-        $admin = User::factory()->create([
-            'name' => 'Hive Admin',
-            'email' => 'admin@delibee.test',
-        ]);
-        $admin->assignRole('admin');
-
-        $customer = User::factory()->create([
-            'name' => 'Cora Customer',
-            'email' => 'customer@delibee.test',
-        ]);
-        $customer->assignRole('customer');
+        $admin = $this->demoUser('Hive Admin', 'admin@delibee.test', 'admin');
+        $customer = $this->demoUser('Cora Customer', 'customer@delibee.test', 'customer');
 
         $categories = Category::orderBy('position')->get();
 
@@ -109,6 +100,28 @@ class DemoSeeder extends Seeder
     }
 
     /**
+     * Create a demo user without the dev-only model factory, so this seeder
+     * also runs in a production build that omits Faker.
+     */
+    private function demoUser(string $name, string $email, string $role): User
+    {
+        $user = User::firstOrNew(['email' => $email]);
+
+        if (! $user->exists) {
+            $user->forceFill([
+                'name' => $name,
+                'password' => 'password',
+                'email_verified_at' => now(),
+            ])->save();
+        }
+
+        $user->assignRole($role);
+        $user->profile()->firstOrCreate([]);
+
+        return $user;
+    }
+
+    /**
      * @param  Collection<int, Category>  $categories
      */
     private function business(
@@ -121,8 +134,7 @@ class DemoSeeder extends Seeder
         int $cancelled = 0,
         BusinessStatus $status = BusinessStatus::Active,
     ): Business {
-        $owner = User::factory()->create(['name' => $name.' Owner']);
-        $owner->assignRole('seller');
+        $owner = $this->demoUser($name.' Owner', Str::slug($name).'@delibee.test', 'seller');
 
         $business = Business::create([
             'owner_id' => $owner->id,
