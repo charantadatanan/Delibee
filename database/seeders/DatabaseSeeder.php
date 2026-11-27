@@ -27,9 +27,13 @@ class DatabaseSeeder extends Seeder
 
         $this->call(DemoSeeder::class);
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
+        // `db:seed --force` runs on every deploy, so this fixture must not
+        // trip the unique email index on the second run.
+        if (! User::query()->where('email', 'test@example.com')->exists()) {
+            User::factory()->create([
+                'name' => 'Test User',
+                'email' => 'test@example.com',
+            ]);
+        }
     }
 }
