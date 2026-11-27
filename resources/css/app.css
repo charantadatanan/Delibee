@@ -225,27 +225,43 @@ html:not(.dark) [data-flux-subheading] {
     animation: mobile-hive-float 4.5s ease-in-out 1;
 }
 
-.mobile-hive-menu[open] {
-    animation: mobile-sheet-in .3s var(--mobile-ease-soft) both;
+.mobile-nav {
+    --mobile-nav-bar-height: 3.5rem;
 }
 
-.mobile-hive-menu::backdrop {
-    background: rgb(30 30 30 / 0.45);
-    backdrop-filter: blur(4px);
+.mobile-nav.is-labels-open {
+    --mobile-nav-bar-height: 4.5rem;
 }
 
-.mobile-hive-menu[open]::backdrop {
-    animation: mobile-backdrop-in .2s ease-out both;
+.mobile-nav .mobile-nav-bar {
+    height: var(--mobile-nav-bar-height);
+    transition: height .32s var(--mobile-ease-soft);
 }
 
-@keyframes mobile-sheet-in {
-    from { opacity: 0; transform: translateY(28px); }
-    to { opacity: 1; transform: translateY(0); }
+.mobile-nav .mobile-hive {
+    bottom: var(--mobile-nav-bar-height);
+    transition: bottom .32s var(--mobile-ease-soft);
 }
 
-@keyframes mobile-backdrop-in {
-    from { opacity: 0; }
-    to { opacity: 1; }
+.mobile-nav-label {
+    max-height: 0;
+    margin-top: 0;
+    opacity: 0;
+    overflow: hidden;
+    transform: translateY(-3px);
+    transition:
+        max-height .3s var(--mobile-ease-soft),
+        margin-top .3s var(--mobile-ease-soft),
+        opacity .2s ease-out,
+        transform .3s var(--mobile-ease-soft);
+    transition-delay: calc(var(--nav-index, 0) * 18ms);
+}
+
+.mobile-nav.is-labels-open .mobile-nav-label {
+    max-height: 0.875rem;
+    margin-top: 2px;
+    opacity: 1;
+    transform: translateY(0);
 }
 
 .mobile-reveal {
@@ -279,8 +295,6 @@ html:not(.dark) [data-flux-subheading] {
     .mobile-nav-bar,
     .mobile-nav-item,
     .mobile-hive,
-    .mobile-hive-menu[open],
-    .mobile-hive-menu[open]::backdrop,
     .mobile-reveal,
     .mobile-splash-bee,
     .mobile-card-reveal,
@@ -292,6 +306,9 @@ html:not(.dark) [data-flux-subheading] {
     .mobile-nav-item .nav-bubble,
     .mobile-hive,
     .mobile-hive > span,
+    .mobile-nav .mobile-nav-bar,
+    .mobile-nav .mobile-hive,
+    .mobile-nav-label,
     .mobile-carousel-button,
     .mobile-card-reveal,
     .mobile-shop-reveal,
