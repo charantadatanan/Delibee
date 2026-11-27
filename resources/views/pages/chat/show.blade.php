@@ -83,11 +83,13 @@ new #[Livewire\Attributes\Title('Conversation')] class extends Component
 };
 ?>
 
-<div class="space-y-6">
+<div class="space-y-5">
     @php($isCustomer = $conversation->user_id === auth()->id())
     @php($otherParty = $isCustomer ? $conversation->business : $conversation->user)
 
-    <div class="flex flex-wrap items-center justify-between gap-4">
+    <x-ui.mobile-header :title="$otherParty->name" :back="route('chat.index')" />
+
+    <div class="hidden flex-wrap items-center justify-between gap-4 lg:flex">
         <div class="flex items-center gap-3 min-w-0">
             <a href="{{ $isCustomer ? route('businesses.show', $otherParty->slug) : route('dashboard') }}"
                wire:navigate>
@@ -109,14 +111,14 @@ new #[Livewire\Attributes\Title('Conversation')] class extends Component
         </div>
 
         <a href="{{ route('chat.index') }}"
-           class="rounded-lg border border-comb bg-white/60 px-4 py-2 text-sm font-medium text-zinc-700 transition hover:border-honey-deep/40 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:border-honey/40"
+           class="ui-btn ui-btn-ghost ui-btn-sm"
            wire:navigate>
             Back to conversations
         </a>
     </div>
 
-    <div wire:poll.5s class="overflow-hidden rounded-2xl border border-comb/90 bg-white/70 dark:border-zinc-800 dark:bg-zinc-900/70">
-        <div class="h-[400px] overflow-y-auto p-4 space-y-4" wire:scroll.near.bottom="$refresh">
+    <div wire:poll.5s class="ui-card overflow-hidden bg-paper dark:bg-zinc-900">
+        <div class="h-[55svh] min-h-[320px] overflow-y-auto p-4 space-y-4" wire:scroll.near.bottom="$refresh">
             @if ($this->conversation->messages->isEmpty())
                 <p class="text-center text-zinc-500 py-8">No messages yet. Start the conversation.</p>
             @else
@@ -129,8 +131,8 @@ new #[Livewire\Attributes\Title('Conversation')] class extends Component
                             class="size-8 shrink-0 mt-1" />
 
                         <div class="max-w-[70%] {{ $isOwn ? 'text-right' : '' }}">
-                            <div class="{{ $isOwn ? 'bg-honey text-ink' : 'bg-comb/50 text-ink dark:bg-zinc-800 dark:text-zinc-100' }}
-                                        rounded-2xl px-4 py-2 {{ $isOwn ? 'rounded-tr-sm' : 'rounded-tl-sm' }}">
+                            <div class="{{ $isOwn ? 'border-ink bg-honey text-ink' : 'border-ink/20 bg-white text-ink dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100' }}
+                                        rounded-2xl border px-4 py-2 {{ $isOwn ? 'rounded-tr-sm' : 'rounded-tl-sm' }}">
                                 <p class="text-sm">{{ $message->body }}</p>
                             </div>
                             <p class="mt-1 text-xs text-zinc-600 dark:text-zinc-400">
@@ -145,17 +147,18 @@ new #[Livewire\Attributes\Title('Conversation')] class extends Component
             @endif
         </div>
 
-        <form wire:submit="sendMessage" class="border-t border-comb/70 p-4 dark:border-zinc-800">
-            <div class="flex items-center gap-3">
+        <form wire:submit="sendMessage" class="border-t border-ink/15 p-3 dark:border-zinc-800 sm:p-4">
+            <div class="flex items-center gap-2">
                 <input type="text"
                        wire:model="newMessage"
                        placeholder="Type a message..."
-                       class="flex-1 rounded-lg border border-comb bg-paper/60 px-4 py-2 text-sm placeholder:text-zinc-400 focus:border-honey-deep focus:outline-none focus:ring-2 focus:ring-honey/40 dark:border-zinc-700 dark:bg-zinc-950 dark:placeholder:text-zinc-500"
+                       aria-label="Message"
+                       class="ui-field min-h-11 flex-1 py-2.5"
                        wire:keydown.enter="sendMessage">
 
                 <button type="submit"
                         wire:loading.attr="disabled"
-                        class="rounded-lg bg-ink px-4 py-2 text-sm font-semibold text-paper transition hover:bg-honey hover:text-ink disabled:opacity-50 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-honey dark:hover:text-ink">
+                        class="ui-btn ui-btn-sm shrink-0">
                     Send
                 </button>
             </div>

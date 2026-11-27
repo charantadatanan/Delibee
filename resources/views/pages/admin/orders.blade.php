@@ -60,7 +60,7 @@ new #[Title('Hive Guard — Orders')] class extends Component
             <label class="block">
                 <span class="text-xs font-medium text-zinc-600 dark:text-zinc-400">Status</span>
                 <select wire:model.live="statusFilter"
-                        class="mt-1.5 rounded-lg border border-comb bg-paper/60 px-3 py-2 text-sm focus:border-honey-deep focus:outline-none focus:ring-2 focus:ring-honey/40 dark:border-zinc-700 dark:bg-zinc-950">
+                        class="ui-field mt-1.5">
                     <option value="all">All statuses</option>
                     @foreach (OrderStatus::cases() as $status)
                         <option value="{{ $status->value }}">{{ $status->label() }}</option>
@@ -71,7 +71,7 @@ new #[Title('Hive Guard — Orders')] class extends Component
             <label class="block">
                 <span class="text-xs font-medium text-zinc-600 dark:text-zinc-400">Business</span>
                 <select wire:model.live="businessFilter"
-                        class="mt-1.5 rounded-lg border border-comb bg-paper/60 px-3 py-2 text-sm focus:border-honey-deep focus:outline-none focus:ring-2 focus:ring-honey/40 dark:border-zinc-700 dark:bg-zinc-950">
+                        class="ui-field mt-1.5">
                     <option value="all">All businesses</option>
                     @foreach ($this->businesses() as $business)
                         <option value="{{ $business->id }}">{{ $business->name }}</option>
@@ -87,7 +87,7 @@ new #[Title('Hive Guard — Orders')] class extends Component
             <p class="mt-1 text-sm text-zinc-600 dark:text-zinc-400">Try another status or business.</p>
         </div>
     @else
-        <div class="overflow-x-auto rounded-2xl border border-comb/90 dark:border-zinc-800">
+        <div class="ui-card overflow-x-auto bg-paper dark:bg-zinc-900">
             <table class="w-full text-left text-sm">
                 <thead class="bg-comb/40 dark:bg-zinc-800">
                     <tr class="text-xs font-semibold text-zinc-600 dark:text-zinc-400">

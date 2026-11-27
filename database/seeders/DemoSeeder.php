@@ -103,7 +103,9 @@ class DemoSeeder extends Seeder
             $customer->id,
         );
 
-        $this->command?->info('Seeded demo marketplace with 4 active businesses and 1 pending.');
+        $this->call(DemoPhotoSeeder::class);
+
+        $this->command?->info('Seeded demo marketplace with 4 active businesses and 1 pending, including demo product photography.');
     }
 
     /**

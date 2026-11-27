@@ -85,7 +85,14 @@
 
         <!-- Mobile User Menu -->
         <flux:header class="border-b border-comb/70 bg-paper/90 backdrop-blur lg:hidden dark:border-zinc-800 dark:bg-zinc-950/90">
-            <flux:sidebar.toggle class="lg:hidden" icon="bars-2" inset="left" />
+            <button type="button"
+                    x-data
+                    x-on:click="$dispatch('flux-sidebar-toggle')"
+                    data-flux-sidebar-toggle
+                    class="grid size-10 place-items-center rounded-full border border-ink/50 bg-honey transition active:scale-95 dark:border-zinc-700 dark:bg-honey-deep"
+                    aria-label="{{ __('Open menu') }}">
+                <img src="{{ asset('images/mobile/hive.png') }}" alt="" width="22" height="22" class="size-[22px] object-contain dark:brightness-0 dark:invert">
+            </button>
 
             <a href="{{ route('dashboard') }}" class="ms-2 flex items-center gap-2 font-display text-sm font-semibold" wire:navigate>
                 <span class="clip-hex grid size-7 place-items-center bg-honey text-sm font-bold text-ink">d</span>

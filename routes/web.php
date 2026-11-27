@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Auth\EmailVerificationCodeController;
+use App\Http\Controllers\Auth\SocialAuthController;
 use App\Http\Controllers\StorefrontController;
 use Illuminate\Support\Facades\Route;
 
@@ -13,8 +15,26 @@ Route::get('businesses/{business}', [StorefrontController::class, 'business'])->
 Route::get('businesses/{business}/products/{product}', [StorefrontController::class, 'product'])->name('products.show');
 Route::get('ranking', [StorefrontController::class, 'ranking'])->name('ranking');
 
+Route::view('help', 'pages.help')->name('help');
+Route::view('terms', 'pages.legal.terms')->name('legal.terms');
+Route::view('privacy', 'pages.legal.privacy')->name('legal.privacy');
+Route::view('credits', 'pages.credits')->name('credits');
+
+Route::post('email/verify-code', [EmailVerificationCodeController::class, 'store'])
+    ->middleware(['auth', 'throttle:6,1'])
+    ->name('verification.code');
+
+Route::get('auth/{provider}/redirect', [SocialAuthController::class, 'redirect'])
+    ->middleware(['guest', 'throttle:20,1'])
+    ->name('social.redirect');
+
+Route::get('auth/{provider}/callback', [SocialAuthController::class, 'callback'])
+    ->middleware(['guest', 'throttle:20,1'])
+    ->name('social.callback');
+
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::view('dashboard', 'pages.dashboard')->name('dashboard');
+    Route::livewire('reviews', 'pages::reviews')->name('reviews.index');
 
     // Honey Pot and checkout.
     Route::livewire('cart', 'pages::cart')->name('cart.index');
@@ -40,6 +60,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
 });
 
 Route::middleware(['auth', 'verified', 'seller'])->group(function () {
+    Route::livewire('seller/dashboard', 'pages::seller.dashboard')->name('seller.dashboard');
+    Route::livewire('seller/analytics', 'pages::seller.analytics')->name('seller.analytics');
     Route::livewire('seller/products', 'pages::seller.products')->name('seller.products');
     Route::livewire('seller/orders', 'pages::seller.orders')->name('seller.orders');
 });

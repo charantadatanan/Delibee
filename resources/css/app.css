@@ -225,6 +225,29 @@ html:not(.dark) [data-flux-subheading] {
     animation: mobile-hive-float 4.5s ease-in-out 1;
 }
 
+.mobile-hive-menu[open] {
+    animation: mobile-sheet-in .3s var(--mobile-ease-soft) both;
+}
+
+.mobile-hive-menu::backdrop {
+    background: rgb(30 30 30 / 0.45);
+    backdrop-filter: blur(4px);
+}
+
+.mobile-hive-menu[open]::backdrop {
+    animation: mobile-backdrop-in .2s ease-out both;
+}
+
+@keyframes mobile-sheet-in {
+    from { opacity: 0; transform: translateY(28px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes mobile-backdrop-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
 .mobile-reveal {
     animation: mobile-reveal-up .55s var(--mobile-ease-soft) both;
 }
@@ -256,6 +279,8 @@ html:not(.dark) [data-flux-subheading] {
     .mobile-nav-bar,
     .mobile-nav-item,
     .mobile-hive,
+    .mobile-hive-menu[open],
+    .mobile-hive-menu[open]::backdrop,
     .mobile-reveal,
     .mobile-splash-bee,
     .mobile-card-reveal,
@@ -316,5 +341,194 @@ html:not(.dark) [data-flux-subheading] {
     .mobile-nav-item .nav-bubble {
         width: 2.5rem;
         height: 2.5rem;
+    }
+}
+
+/* deliBEE mobile UI kit — the cream card, ink outline and honey pill
+   language used across the Figma app screens. */
+@layer components {
+    .ui-card {
+        @apply rounded-2xl border border-ink/70 bg-white/85;
+    }
+
+    .ui-card-cream {
+        @apply rounded-2xl border border-ink/70 bg-paper;
+    }
+
+    .ui-card-honey {
+        @apply rounded-2xl border border-ink/70 bg-hero;
+    }
+
+    .ui-btn {
+        @apply inline-flex min-h-11 items-center justify-center gap-2 rounded-full border border-ink bg-honey px-5 py-2.5 text-sm font-semibold text-ink transition duration-200 ease-out disabled:pointer-events-none disabled:opacity-50;
+        box-shadow: 0 3px 0 0 var(--color-ink);
+    }
+
+    .ui-btn:hover {
+        background-color: #ffcf55;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 0 0 var(--color-ink);
+    }
+
+    .ui-btn:active {
+        transform: translateY(1px);
+        box-shadow: 0 1px 0 0 var(--color-ink);
+    }
+
+    .ui-btn-ghost {
+        @apply bg-white;
+    }
+
+    .ui-btn-ghost:hover {
+        background-color: var(--color-paper);
+    }
+
+    .ui-btn-ink {
+        @apply bg-ink text-paper;
+    }
+
+    .ui-btn-ink:hover {
+        @apply bg-honey text-ink;
+    }
+
+    .ui-btn-sm {
+        @apply min-h-9 px-3.5 py-1.5 text-xs;
+        box-shadow: 0 2px 0 0 var(--color-ink);
+    }
+
+    .ui-field {
+        @apply w-full rounded-xl border border-ink/60 bg-white px-4 py-3 text-sm text-ink placeholder:text-zinc-500 focus:border-ink focus:outline-none focus:ring-2 focus:ring-honey;
+    }
+
+    .ui-label {
+        @apply text-[11px] font-semibold uppercase tracking-[0.08em] text-zinc-600;
+    }
+
+    .ui-chip {
+        @apply inline-flex items-center gap-1 rounded-full border border-ink/30 bg-paper px-3 py-1 text-xs font-medium text-ink;
+    }
+
+    .ui-back {
+        @apply grid size-10 shrink-0 place-items-center rounded-full border border-ink/70 bg-honey text-ink transition duration-200 ease-out;
+        box-shadow: 0 2px 0 0 var(--color-ink);
+    }
+
+    .ui-back:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 0 0 var(--color-ink);
+    }
+
+    .ui-back:active {
+        transform: translateY(1px);
+        box-shadow: none;
+    }
+
+    .ui-row {
+        @apply flex w-full items-center justify-between gap-3 rounded-xl border border-ink/70 bg-honey px-4 py-3 text-sm font-medium text-ink transition;
+    }
+
+    .ui-row:hover {
+        background-color: #ffcf55;
+        transform: translateX(2px);
+    }
+
+    .ui-note {
+        @apply rounded-xl border border-ink/25 bg-paper px-4 py-3 text-sm text-zinc-600;
+    }
+
+    .ui-price {
+        @apply font-display font-semibold text-ink;
+    }
+
+    .ui-sheet {
+        @apply rounded-t-[28px] border border-ink/60 bg-paper;
+        box-shadow: 0 -12px 30px -18px rgb(30 30 30 / 0.45);
+    }
+
+    .ui-hills {
+        @apply pointer-events-none block w-full;
+    }
+}
+
+/* Flux fields inherit the outlined Figma treatment. */
+[data-flux-control] {
+    border-color: rgb(30 30 30 / 0.6);
+    border-radius: var(--radius-xl);
+    background-color: #fff;
+    color: var(--color-ink);
+}
+
+/* Keep browser autofill on the cream design instead of Chrome's blue. */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0 1000px #fff inset;
+    -webkit-text-fill-color: var(--color-ink);
+    caret-color: var(--color-ink);
+    transition: background-color 5000s ease-in-out 0s;
+}
+
+.dark input:-webkit-autofill,
+.dark input:-webkit-autofill:hover,
+.dark input:-webkit-autofill:focus,
+.dark textarea:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0 1000px var(--color-zinc-900) inset;
+    -webkit-text-fill-color: var(--color-zinc-100);
+}
+
+[data-flux-control]:focus {
+    border-color: var(--color-ink);
+}
+
+.dark .ui-card,
+.dark .ui-card-cream,
+.dark .ui-field {
+    border-color: rgb(255 255 255 / 0.18);
+    background-color: var(--color-zinc-900);
+    color: var(--color-zinc-100);
+}
+
+.dark .ui-btn-ghost {
+    background-color: var(--color-zinc-900);
+    color: var(--color-zinc-100);
+}
+
+.dark .ui-note {
+    border-color: rgb(255 255 255 / 0.15);
+    background-color: var(--color-zinc-900);
+    color: var(--color-zinc-400);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .ui-btn,
+    .ui-btn:hover,
+    .ui-btn:active,
+    .ui-back,
+    .ui-back:hover,
+    .ui-back:active,
+    .ui-row,
+    .ui-row:hover {
+        transform: none !important;
+        transition: none !important;
+    }
+}
+
+/* Flux's sidebar shell reserves a column even when the sidebar is an
+   off-canvas sheet on phones. The app shell uses a normal top bar plus the
+   bottom honey nav there, so the rail collapses to zero. */
+@media (max-width: 1023px) {
+    body:has(> [data-flux-sidebar]) {
+        grid-template-columns: 0 minmax(0, 1fr) 0 !important;
+    }
+
+    body:has(> [data-flux-sidebar]) > [data-mobile-app-bar] {
+        grid-area: header;
+    }
+
+    /* Touch targets stay at least 44px outside running text. */
+    .ui-btn-sm {
+        min-height: 2.75rem;
+        padding-inline: 1rem;
     }
 }

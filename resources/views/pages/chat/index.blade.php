@@ -53,7 +53,9 @@ new #[Livewire\Attributes\Title('Bee Chat')] class extends Component
 };
 ?>
 
-<div class="space-y-6">
+<div class="space-y-5">
+    <x-ui.mobile-header :title="__('Bee Chat')" :back="route('dashboard')" />
+
     <div class="flex flex-wrap items-center justify-between gap-4">
         <div>
             <h1 class="font-display text-3xl font-semibold tracking-tight sm:text-4xl">Bee Chat</h1>
@@ -65,20 +67,17 @@ new #[Livewire\Attributes\Title('Bee Chat')] class extends Component
             <input type="text"
                    wire:model.live.debounce.300ms="search"
                    placeholder="Search conversations"
-                   class="w-full rounded-lg border border-comb bg-paper/60 pl-10 pr-4 py-2 text-sm placeholder:text-zinc-400 focus:border-honey-deep focus:outline-none focus:ring-2 focus:ring-honey/40 dark:border-zinc-700 dark:bg-zinc-950 dark:placeholder:text-zinc-500">
+                   class="ui-field pl-10 pr-4 py-2">
         </div>
     </div>
 
     @if ($this->conversations()->isEmpty())
-        <div class="rounded-2xl border border-dashed border-comb bg-white/50 p-12 text-center dark:border-zinc-700 dark:bg-zinc-900/50">
-            <p class="font-display text-xl font-semibold">No conversations yet.</p>
-            <p class="mt-1 text-sm text-zinc-500 dark:text-zinc-400">Start chatting with a seller from their product page.</p>
-            <a href="{{ route('marketplace') }}"
-               class="mt-5 inline-block rounded-lg bg-ink px-4 py-2 font-semibold text-paper transition hover:bg-honey hover:text-ink dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-honey dark:hover:text-ink"
-               wire:navigate>
-                Browse the marketplace
-            </a>
-        </div>
+        <x-ui.empty-state
+            title="No conversations yet"
+            description="Start chatting with a seller from their product page."
+            icon="chat-bubble-left-right">
+            <a href="{{ route('marketplace') }}" class="ui-btn" wire:navigate>Browse the marketplace</a>
+        </x-ui.empty-state>
     @else
         <ul class="space-y-3">
             @foreach ($this->conversations() as $conversation)
@@ -88,7 +87,7 @@ new #[Livewire\Attributes\Title('Bee Chat')] class extends Component
                     $lastMessage = $conversation->latestMessage;
                 @endphp
                 <li><a href="{{ route('chat.show', $conversation) }}"
-                   class="block rounded-2xl border border-comb/90 bg-white/70 p-4 transition-colors hover:border-honey-deep/40 dark:border-zinc-800 dark:bg-zinc-900/70 dark:hover:border-honey/40"
+                   class="ui-card block bg-paper p-4 transition duration-200 hover:-translate-y-0.5 hover:border-ink dark:bg-zinc-900"
                    wire:navigate>
                     <div class="flex flex-wrap items-center justify-between gap-3">
                         <div class="flex items-center gap-3 min-w-0">

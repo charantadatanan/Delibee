@@ -1,7 +1,7 @@
 @php
     $user = auth()->user();
     $points = $user?->pointsBalance() ?? 0;
-    $tier = $points >= 1000 ? 'Queen bee' : ($points >= 300 ? 'Worker bee' : 'New bee');
+    $tier = \App\Support\BeeTier::for($points);
 @endphp
 
 <header class="sticky top-0 z-40 border-b border-transparent bg-paper/95 backdrop-blur-md lg:hidden dark:border-zinc-800 dark:bg-zinc-950/90">
@@ -10,20 +10,16 @@
            class="flex min-w-0 items-center"
            aria-label="deliBEE marketplace"
            wire:navigate>
-            <img src="{{ asset('images/mobile/bee-logo.png') }}"
-                 alt="deliBEE"
-                 width="834"
-                 height="388"
-                 class="mobile-bee-logo h-14 w-auto object-contain dark:brightness-0 dark:invert">
+            <x-ui.bee-logo class="mobile-bee-logo h-auto w-28 sm:w-32" />
         </a>
 
         <div class="ms-auto flex items-center gap-2">
             @auth
                 <a href="{{ route('rewards') }}"
-                   class="inline-flex min-h-10 items-center gap-1 rounded-full bg-[#30200e] px-3 py-1.5 text-[10px] font-semibold text-paper transition hover:bg-honey-deep dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-honey"
+                   class="inline-flex min-h-10 items-center gap-1.5 rounded-full border border-ink bg-[#30200e] px-3 py-1.5 text-[10px] font-semibold text-paper transition hover:bg-honey-deep dark:border-zinc-700 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-honey"
                    wire:navigate>
                     <span aria-hidden="true">♛</span>
-                    <span class="max-w-24 truncate">{{ $tier }} Tier</span>
+                    <span class="max-w-24 truncate">{{ $tier['name'] }} Tier</span>
                 </a>
             @else
                 <a href="{{ route('register') }}"

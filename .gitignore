@@ -27,6 +27,7 @@ yarn-error.log
 /.amp
 /.claude
 /.playwright-mcp
+/.playwright-cli
 /.cursor
 /.factory
 /.grok

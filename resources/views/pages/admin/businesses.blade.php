@@ -101,7 +101,7 @@ new #[Title('Hive Guard — Businesses')] class extends Component
         <label class="block">
             <span class="text-xs font-medium text-zinc-600 dark:text-zinc-400">Status</span>
             <select wire:model.live="statusFilter"
-                    class="mt-1.5 rounded-lg border border-comb bg-paper/60 px-3 py-2 text-sm focus:border-honey-deep focus:outline-none focus:ring-2 focus:ring-honey/40 dark:border-zinc-700 dark:bg-zinc-950">
+                    class="ui-field mt-1.5">
                 <option value="all">All statuses</option>
                 <option value="pending">Pending</option>
                 <option value="active">Active</option>
@@ -116,7 +116,7 @@ new #[Title('Hive Guard — Businesses')] class extends Component
             <p class="mt-1 text-sm text-zinc-500 dark:text-zinc-400">Try another status.</p>
         </div>
     @else
-        <div class="overflow-hidden rounded-2xl border border-comb/90 dark:border-zinc-800">
+        <div class="ui-card overflow-hidden bg-paper dark:bg-zinc-900">
             <ul class="divide-y divide-comb/70 dark:divide-zinc-800">
                 @foreach ($this->businesses() as $business)
                     @php($statusClasses = match ($business->status) {
@@ -154,24 +154,24 @@ new #[Title('Hive Guard — Businesses')] class extends Component
                             </p>
                         </div>
 
-                        <div class="flex items-center gap-2">
+                        <div class="flex w-full items-center gap-2 sm:w-auto">
                             @if ($business->status === BusinessStatus::Pending)
                                 <button type="button"
                                         wire:click="approve({{ $business->id }})"
-                                        class="rounded-lg bg-ink px-4 py-2 text-sm font-semibold text-paper transition hover:bg-honey hover:text-ink dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-honey dark:hover:text-ink">
+                                        class="ui-btn ui-btn-sm">
                                     Approve
                                 </button>
                             @elseif ($business->status === BusinessStatus::Active)
                                 <button type="button"
                                         wire:click="suspend({{ $business->id }})"
                                         wire:confirm="Suspend {{ $business->name }}? Their products will be hidden from the marketplace."
-                                        class="rounded-lg border border-red-300 px-4 py-2 text-sm font-medium text-red-700 transition hover:bg-red-50 dark:border-red-900 dark:text-red-400 dark:hover:bg-red-500/10">
+                                        class="ui-btn ui-btn-ghost ui-btn-sm border-red-300 text-red-700 dark:border-red-900 dark:text-red-400">
                                     Suspend
                                 </button>
                             @else
                                 <button type="button"
                                         wire:click="reactivate({{ $business->id }})"
-                                        class="rounded-lg bg-ink px-4 py-2 text-sm font-semibold text-paper transition hover:bg-honey hover:text-ink dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-honey dark:hover:text-ink">
+                                        class="ui-btn ui-btn-sm">
                                     Reactivate
                                 </button>
                             @endif

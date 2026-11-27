@@ -21,6 +21,20 @@ it('allows users to authenticate', function () {
     $this->assertAuthenticated();
 });
 
+it('allows users to authenticate with a username', function () {
+    $user = User::factory()->create(['username' => 'uniquejavier']);
+
+    $response = $this->post(route('login.store'), [
+        'email' => 'uniquejavier',
+        'password' => 'password',
+    ]);
+
+    $response->assertSessionHasNoErrors()
+        ->assertRedirect(route('dashboard', absolute: false));
+
+    $this->assertAuthenticatedAs($user);
+});
+
 it('does not allow users to authenticate with an invalid password', function () {
     $user = User::factory()->create();
 

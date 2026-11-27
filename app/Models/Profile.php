@@ -13,12 +13,13 @@ use Illuminate\Support\Carbon;
  * @property int $id
  * @property int $user_id
  * @property string|null $phone
+ * @property string|null $phone_country
  * @property string|null $bio
  * @property string|null $avatar_path
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  */
-#[Fillable(['user_id', 'phone', 'bio', 'avatar_path'])]
+#[Fillable(['user_id', 'phone', 'phone_country', 'bio', 'avatar_path'])]
 class Profile extends Model
 {
     /** @use HasFactory<ProfileFactory> */

@@ -96,117 +96,195 @@ new #[Livewire\Attributes\Title('Checkout')] class extends Component
             return;
         }
 
-        $this->redirect(route('orders.index'), navigate: true);
+        $this->redirect(route('orders.index', array_filter([
+            'placed' => 1,
+            'order' => $orders->first()?->number,
+        ])), navigate: true);
     }
 };
 ?>
 
-<div class="space-y-6">
-    <div>
-        <h1 class="font-display text-3xl font-semibold tracking-tight sm:text-4xl">Checkout</h1>
+<div class="space-y-5">
+    <x-ui.mobile-header :title="__('Checkout')" :back="route('cart.index')" />
+
+    <div class="hidden lg:block">
+        <p class="text-[11px] font-semibold uppercase tracking-[0.16em] text-honey-deep dark:text-honey">Secure checkout</p>
+        <h1 class="mt-1 font-display text-4xl font-semibold tracking-tight">One basket, {{ $this->groups()->count() }} {{ \Illuminate\Support\Str::plural('seller', $this->groups()->count()) }}</h1>
         <p class="mt-2 max-w-2xl text-sm text-zinc-600 dark:text-zinc-400">
-            Your cart will be split into {{ $this->groups()->count() }} {{ \Illuminate\Support\Str::plural('order', $this->groups()->count()) }},
-            one per seller, each shipped separately.
+            Your cart is split into one order per seller. Each shop confirms, packs and ships its own parcel.
         </p>
     </div>
 
     @if ($this->groups()->isEmpty())
-        <div class="rounded-2xl border border-dashed border-comb bg-white/50 p-12 text-center dark:border-zinc-700 dark:bg-zinc-900/50">
-            <p class="font-display text-xl font-semibold">There is nothing to check out.</p>
-            <a href="{{ route('marketplace') }}"
-               class="mt-5 inline-block rounded-lg bg-ink px-4 py-2 font-semibold text-paper transition hover:bg-honey hover:text-ink dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-honey dark:hover:text-ink"
-               wire:navigate>
-                Browse the marketplace
-            </a>
-        </div>
+        <x-ui.empty-state
+            class="mx-auto mt-4 max-w-xl"
+            title="There is nothing to check out"
+            description="Your Honey Pot is empty. Find something from a local seller first."
+            icon="shopping-bag">
+            <a href="{{ route('marketplace') }}" class="ui-btn" wire:navigate>Browse the marketplace</a>
+        </x-ui.empty-state>
     @else
-        <form wire:submit="placeOrder" class="grid gap-6 lg:grid-cols-[2fr_1fr]">
-            <section class="rounded-2xl border border-comb/90 bg-white/70 p-5 dark:border-zinc-800 dark:bg-zinc-900/70">
-                <h2 class="font-semibold">Delivery address</h2>
+        <form wire:submit="placeOrder" class="grid gap-5 lg:grid-cols-[1fr_360px] lg:items-start">
+            <div class="space-y-4">
+                <section class="ui-card bg-paper p-4 dark:bg-zinc-900 sm:p-5">
+                    <div class="flex items-center gap-3">
+                        <span class="grid size-10 place-items-center rounded-full border border-ink/50 bg-honey">
+                            <flux:icon name="map-pin" class="size-5 text-ink" />
+                        </span>
+                        <div>
+                            <h2 class="font-display text-xl font-semibold">Delivery Address</h2>
+                            <p class="text-xs text-zinc-500 dark:text-zinc-400">Where should the hive deliver?</p>
+                        </div>
+                    </div>
 
-                <div class="mt-4 grid gap-4 sm:grid-cols-2">
-                    <label class="block sm:col-span-2">
-                        <span class="text-xs font-medium text-zinc-500 dark:text-zinc-400">Full name</span>
-                        <input type="text" wire:model="name"
-                               class="mt-1.5 w-full rounded-lg border border-comb bg-paper/60 px-3 py-2 text-sm focus:border-honey-deep focus:outline-none focus:ring-2 focus:ring-honey/40 dark:border-zinc-700 dark:bg-zinc-950">
-                    </label>
+                    <div class="mt-4 grid gap-3 sm:grid-cols-2">
+                        <label class="block sm:col-span-2">
+                            <span class="ui-label">Full name</span>
+                            <input type="text" wire:model="name" autocomplete="name" class="ui-field mt-1.5" @error('name') aria-invalid="true" @enderror>
+                            @error('name') <p class="mt-1 text-xs font-medium text-red-700 dark:text-red-400">{{ $message }}</p> @enderror
+                        </label>
 
-                    <label class="block sm:col-span-2">
-                        <span class="text-xs font-medium text-zinc-500 dark:text-zinc-400">Street address</span>
-                        <input type="text" wire:model="line1"
-                               class="mt-1.5 w-full rounded-lg border border-comb bg-paper/60 px-3 py-2 text-sm focus:border-honey-deep focus:outline-none focus:ring-2 focus:ring-honey/40 dark:border-zinc-700 dark:bg-zinc-950">
-                    </label>
+                        <label class="block sm:col-span-2">
+                            <span class="ui-label">Street address</span>
+                            <input type="text" wire:model="line1" autocomplete="street-address" class="ui-field mt-1.5" @error('line1') aria-invalid="true" @enderror>
+                            @error('line1') <p class="mt-1 text-xs font-medium text-red-700 dark:text-red-400">{{ $message }}</p> @enderror
+                        </label>
 
-                    <label class="block">
-                        <span class="text-xs font-medium text-zinc-500 dark:text-zinc-400">City</span>
-                        <input type="text" wire:model="city"
-                               class="mt-1.5 w-full rounded-lg border border-comb bg-paper/60 px-3 py-2 text-sm focus:border-honey-deep focus:outline-none focus:ring-2 focus:ring-honey/40 dark:border-zinc-700 dark:bg-zinc-950">
-                    </label>
+                        <label class="block">
+                            <span class="ui-label">City</span>
+                            <input type="text" wire:model="city" autocomplete="address-level2" class="ui-field mt-1.5" @error('city') aria-invalid="true" @enderror>
+                            @error('city') <p class="mt-1 text-xs font-medium text-red-700 dark:text-red-400">{{ $message }}</p> @enderror
+                        </label>
 
-                    <label class="block">
-                        <span class="text-xs font-medium text-zinc-500 dark:text-zinc-400">Postal code</span>
-                        <input type="text" wire:model="postalCode"
-                               class="mt-1.5 w-full rounded-lg border border-comb bg-paper/60 px-3 py-2 text-sm focus:border-honey-deep focus:outline-none focus:ring-2 focus:ring-honey/40 dark:border-zinc-700 dark:bg-zinc-950">
-                    </label>
+                        <label class="block">
+                            <span class="ui-label">Postal code</span>
+                            <input type="text" wire:model="postalCode" autocomplete="postal-code" class="ui-field mt-1.5" @error('postalCode') aria-invalid="true" @enderror>
+                            @error('postalCode') <p class="mt-1 text-xs font-medium text-red-700 dark:text-red-400">{{ $message }}</p> @enderror
+                        </label>
 
-                    <label class="block">
-                        <span class="text-xs font-medium text-zinc-500 dark:text-zinc-400">Contact number</span>
-                        <input type="tel" wire:model="phone"
-                               class="mt-1.5 w-full rounded-lg border border-comb bg-paper/60 px-3 py-2 text-sm focus:border-honey-deep focus:outline-none focus:ring-2 focus:ring-honey/40 dark:border-zinc-700 dark:bg-zinc-950">
-                    </label>
+                        <label class="block sm:col-span-2">
+                            <span class="ui-label">Contact number</span>
+                            <input type="tel" wire:model="phone" autocomplete="tel" class="ui-field mt-1.5" @error('phone') aria-invalid="true" @enderror>
+                            @error('phone') <p class="mt-1 text-xs font-medium text-red-700 dark:text-red-400">{{ $message }}</p> @enderror
+                        </label>
 
-                    <label class="block sm:col-span-2">
-                        <span class="text-xs font-medium text-zinc-500 dark:text-zinc-400">Note for the sellers (optional)</span>
-                        <textarea wire:model="note" rows="3"
-                                  class="mt-1.5 w-full rounded-lg border border-comb bg-paper/60 px-3 py-2 text-sm focus:border-honey-deep focus:outline-none focus:ring-2 focus:ring-honey/40 dark:border-zinc-700 dark:bg-zinc-950"></textarea>
-                    </label>
+                        <label class="block sm:col-span-2">
+                            <span class="ui-label">Note for the sellers (optional)</span>
+                            <textarea wire:model="note" rows="3" class="ui-field mt-1.5" placeholder="Gate code, delivery instructions, a gift note…"></textarea>
+                            @error('note') <p class="mt-1 text-xs font-medium text-red-700 dark:text-red-400">{{ $message }}</p> @enderror
+                        </label>
+                    </div>
+                </section>
+
+                <section class="ui-card bg-paper dark:bg-zinc-900">
+                    <header class="flex items-center justify-between gap-3 border-b border-ink/15 p-4 dark:border-zinc-800">
+                        <div>
+                            <h2 class="font-display text-xl font-semibold">Order Items</h2>
+                            <p class="text-xs text-zinc-500 dark:text-zinc-400">Split automatically by seller</p>
+                        </div>
+                        <a href="{{ route('cart.index') }}" class="text-xs font-semibold text-honey-deep underline-offset-4 hover:underline dark:text-honey" wire:navigate>Edit</a>
+                    </header>
+
+                    <div class="divide-y divide-ink/10 dark:divide-zinc-800">
+                        @foreach ($this->groups() as $items)
+                            @php($business = $items->first()->product->business)
+
+                            <div class="p-4">
+                                <div class="flex items-center gap-2 text-xs font-semibold">
+                                    <span class="grid size-6 place-items-center rounded-full border border-ink/40 bg-honey text-[9px] font-bold text-ink">
+                                        {{ \Illuminate\Support\Str::upper(\Illuminate\Support\Str::substr($business->name, 0, 1)) }}
+                                    </span>
+                                    {{ $business->name }}
+                                    <span class="ms-auto font-normal text-zinc-500 dark:text-zinc-400">Ships separately</span>
+                                </div>
+
+                                <ul class="mt-3 space-y-3">
+                                    @foreach ($items as $item)
+                                        <li class="flex items-center gap-3">
+                                            <span class="relative grid size-14 shrink-0 place-items-center overflow-hidden rounded-xl border border-ink/40 bg-hero dark:border-zinc-700 dark:bg-zinc-950">
+                                                @if ($item->product->images->isNotEmpty())
+                                                    <img src="{{ \Illuminate\Support\Facades\Storage::url($item->product->images->first()->path) }}" alt="" loading="lazy" class="size-full object-cover">
+                                                @else
+                                                    <span class="font-display text-lg font-semibold text-honey-deep dark:text-honey">
+                                                        {{ \Illuminate\Support\Str::upper(\Illuminate\Support\Str::substr($item->product->name, 0, 1)) }}
+                                                    </span>
+                                                @endif
+                                            </span>
+
+                                            <div class="min-w-0 flex-1">
+                                                <p class="line-clamp-2 text-sm font-medium leading-tight">{{ $item->product->name }}</p>
+                                                <p class="mt-1 text-xs text-zinc-500 dark:text-zinc-400">
+                                                    Qty {{ $item->quantity }} · {{ $item->product->formattedPrice() }} each
+                                                </p>
+                                            </div>
+
+                                            <p class="ui-price shrink-0 text-sm">
+                                                {{ \App\Support\Money::format($item->subtotalMinor(), $item->product->currency) }}
+                                            </p>
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endforeach
+                    </div>
+                </section>
+
+                <div class="ui-card-honey flex items-start gap-3 p-4">
+                    <span class="grid size-10 shrink-0 place-items-center rounded-full border border-ink/40 bg-white/70">
+                        <flux:icon name="wallet" class="size-5 text-ink" />
+                    </span>
+                    <div>
+                        <p class="font-semibold">Payment Method</p>
+                        <p class="mt-1 text-sm text-zinc-700">
+                            Payment is on hold while the gateway is connected. Your order is recorded now and each
+                            seller is paid directly once payments go live.
+                        </p>
+                    </div>
                 </div>
+            </div>
 
-                <div class="mt-6 rounded-xl bg-comb/40 p-4 text-sm dark:bg-zinc-950/60">
-                    <p class="font-medium">Payment</p>
-                    <p class="mt-1 text-zinc-600 dark:text-zinc-400">
-                        The payment method is not set up yet. Each order is settled in the seller's currency,
-                        recorded now, and paid to the seller directly once the gateway is connected.
-                    </p>
-                </div>
-            </section>
-
-            <aside class="h-fit rounded-2xl border border-comb/90 bg-white/70 p-5 dark:border-zinc-800 dark:bg-zinc-900/70">
-                <h2 class="font-semibold">Order summary</h2>
+            <aside class="ui-card bg-paper p-4 dark:bg-zinc-900 lg:sticky lg:top-24">
+                <h2 class="font-display text-xl font-semibold">Payment Details</h2>
 
                 <ul class="mt-4 space-y-2 text-sm">
                     @foreach ($this->groups() as $items)
                         @php($business = $items->first()->product->business)
-                        <li class="flex justify-between gap-3">
-                            <span class="text-zinc-600 dark:text-zinc-400">{{ $business->name }}</span>
-                            <span>{{ $items->sum(fn ($item) => $item->subtotalMinor()) ? \App\Support\Money::format($items->sum(fn ($item) => $item->subtotalMinor()), $business->currency) : '—' }}</span>
+                        <li class="flex items-center justify-between gap-3">
+                            <span class="truncate text-zinc-600 dark:text-zinc-400">{{ $business->name }}</span>
+                            <span class="shrink-0 font-medium">
+                                {{ \App\Support\Money::format($items->sum(fn ($item) => $item->subtotalMinor()), $business->currency) }}
+                            </span>
                         </li>
                     @endforeach
                 </ul>
 
-                <dl class="mt-4 space-y-1 border-t border-comb/70 pt-4 text-sm dark:border-zinc-700">
+                <dl class="mt-4 space-y-2 border-t border-ink/15 pt-4 text-sm dark:border-zinc-800">
                     @foreach ($this->totalsByCurrency() as $currency => $totals)
-                        <div class="flex justify-between">
+                        <div class="flex justify-between gap-3">
                             <dt class="text-zinc-500 dark:text-zinc-400">Subtotal ({{ $currency }})</dt>
                             <dd>{{ \App\Support\Money::format($totals['subtotal'], $currency) }}</dd>
                         </div>
-                        <div class="flex justify-between">
+                        <div class="flex justify-between gap-3">
                             <dt class="text-zinc-500 dark:text-zinc-400">Shipping ({{ $currency }})</dt>
                             <dd>{{ \App\Support\Money::format($totals['shipping'], $currency) }}</dd>
                         </div>
-                        <div class="flex justify-between pt-1 text-base font-semibold">
+                        <div class="flex justify-between gap-3 pt-1 text-base font-semibold">
                             <dt>Total ({{ $currency }})</dt>
-                            <dd>{{ \App\Support\Money::format($totals['total'], $currency) }}</dd>
+                            <dd class="ui-price">{{ \App\Support\Money::format($totals['total'], $currency) }}</dd>
                         </div>
                     @endforeach
                 </dl>
 
                 <button type="submit"
                         wire:loading.attr="disabled"
-                        class="mt-5 w-full rounded-lg bg-ink px-4 py-2.5 font-semibold text-paper transition hover:bg-honey hover:text-ink disabled:opacity-50 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-honey dark:hover:text-ink">
-                    <span wire:loading.remove wire:target="placeOrder">Place order</span>
+                        class="ui-btn mt-5 w-full">
+                    <span wire:loading.remove wire:target="placeOrder">Place Order</span>
                     <span wire:loading wire:target="placeOrder">Placing…</span>
                 </button>
+
+                <p class="mt-3 text-center text-[10px] leading-relaxed text-zinc-500 dark:text-zinc-400">
+                    By placing this order you agree to the deliBEE terms. Payment is not collected yet.
+                </p>
             </aside>
         </form>
     @endif

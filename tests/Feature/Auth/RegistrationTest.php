@@ -14,6 +14,8 @@ it('allows new users to register', function () {
     $response = $this->post(route('register.store'), [
         'name' => 'John Doe',
         'email' => 'test@example.com',
+        'phone_country' => 'PH',
+        'phone' => '9171234567',
         'password' => 'password',
         'password_confirmation' => 'password',
     ]);

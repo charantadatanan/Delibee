@@ -13,6 +13,12 @@ new #[Livewire\Attributes\Title('Seller Orders')] class extends Component
 
     public string $statusFilter = 'all';
 
+    public function setFilter(string $filter): void
+    {
+        $this->statusFilter = $filter;
+        $this->resetPage();
+    }
+
     #[Computed]
     public function business()
     {
@@ -22,7 +28,7 @@ new #[Livewire\Attributes\Title('Seller Orders')] class extends Component
     #[Computed]
     public function orders()
     {
-        $query = $this->business()->orders()->with(['user', 'items'])->orderByDesc('created_at');
+        $query = $this->business()->orders()->with(['user', 'items.product'])->orderByDesc('created_at');
 
         if ($this->statusFilter !== 'all') {
             $query->where('status', $this->statusFilter);
@@ -35,7 +41,6 @@ new #[Livewire\Attributes\Title('Seller Orders')] class extends Component
     {
         Gate::authorize('updateStatus', [$order, $newStatus]);
 
-        // Sellers may only advance one step along the delivery timeline.
         if ($newStatus !== $this->nextStatus($order)) {
             return;
         }
@@ -86,99 +91,96 @@ new #[Livewire\Attributes\Title('Seller Orders')] class extends Component
 };
 ?>
 
-<div class="space-y-6">
-    <div class="flex flex-wrap items-center justify-between gap-4">
-        <div>
-            <h1 class="font-display text-3xl font-semibold tracking-tight sm:text-4xl">Orders</h1>
-            <p class="mt-2 text-sm text-zinc-600 dark:text-zinc-400">Manage orders for {{ $this->business()->name }}.</p>
-        </div>
+<div class="space-y-5">
+    <x-ui.mobile-header :title="__('Orders')" :back="route('seller.dashboard')">
+        <x-slot:actions>
+            <span class="rounded-full border border-ink/30 bg-white px-2 py-1 text-[9px] font-semibold dark:border-zinc-700 dark:bg-zinc-900">
+                {{ $this->orders()->total() }}
+            </span>
+        </x-slot:actions>
+    </x-ui.mobile-header>
 
-        <select wire:model="statusFilter"
-                aria-label="Filter orders by status"
-                class="rounded-lg border border-comb bg-paper/60 px-3 py-2 text-sm focus:border-honey-deep focus:outline-none focus:ring-2 focus:ring-honey/40 dark:border-zinc-700 dark:bg-zinc-950">
-            <option value="all">All statuses</option>
-            @foreach (App\Enums\OrderStatus::cases() as $status)
-                <option value="{{ $status->value }}">{{ $status->label() }}</option>
-            @endforeach
-        </select>
+    <div class="hidden lg:flex lg:items-end lg:justify-between lg:gap-4">
+        <div>
+            <p class="text-[11px] font-semibold uppercase tracking-[0.16em] text-honey-deep dark:text-honey">Seller desk</p>
+            <h1 class="mt-1 font-display text-4xl font-semibold tracking-tight">Orders</h1>
+            <p class="mt-2 text-sm text-zinc-600 dark:text-zinc-400">Move each order one step along its flight path.</p>
+        </div>
+    </div>
+
+    <div class="no-scrollbar -mx-4 flex gap-2 overflow-x-auto px-4 lg:mx-0 lg:px-0" role="group" aria-label="Filter orders by status">
+        <button type="button"
+                wire:click="setFilter('all')"
+                aria-pressed="{{ $statusFilter === 'all' ? 'true' : 'false' }}"
+                class="min-h-9 shrink-0 rounded-full border px-3.5 py-1.5 text-xs font-semibold transition {{ $statusFilter === 'all' ? 'border-ink bg-honey text-ink' : 'border-ink/40 bg-white text-zinc-600 hover:border-ink dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-300' }}">
+            All
+        </button>
+
+        @foreach (App\Enums\OrderStatus::cases() as $status)
+            <button type="button"
+                    wire:click="setFilter('{{ $status->value }}')"
+                    aria-pressed="{{ $statusFilter === $status->value ? 'true' : 'false' }}"
+                    class="min-h-9 shrink-0 rounded-full border px-3.5 py-1.5 text-xs font-semibold transition {{ $statusFilter === $status->value ? 'border-ink bg-honey text-ink' : 'border-ink/40 bg-white text-zinc-600 hover:border-ink dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-300' }}">
+                {{ $status->label() }}
+            </button>
+        @endforeach
     </div>
 
     @if ($this->orders()->isEmpty())
-        <div class="rounded-2xl border border-dashed border-comb bg-white/50 p-12 text-center dark:border-zinc-700 dark:bg-zinc-900/50">
-            <p class="font-display text-xl font-semibold">No orders yet.</p>
-            @if ($this->statusFilter !== 'all')
-                <a href="{{ route('seller.orders') }}" class="mt-4 inline-block text-sm font-medium text-honey-deep hover:underline dark:text-honey" wire:navigate>
-                    View all statuses
-                </a>
+        <x-ui.empty-state
+            title="No orders in this nest"
+            description="Orders appear here as soon as a customer checks out."
+            icon="cube">
+            @if ($statusFilter !== 'all')
+                <button type="button" wire:click="setFilter('all')" class="ui-btn">View all statuses</button>
             @endif
-        </div>
+        </x-ui.empty-state>
     @else
-        <div class="overflow-x-auto rounded-2xl border border-comb/90 dark:border-zinc-800">
-            <table class="w-full">
-                <thead class="bg-comb/40 dark:bg-zinc-800">
-                    <tr class="text-left text-xs font-semibold text-zinc-600 dark:text-zinc-400">
-                        <th class="px-4 py-3">Order</th>
-                        <th class="px-4 py-3">Customer</th>
-                        <th class="px-4 py-3">Items</th>
-                        <th class="px-4 py-3">Total</th>
-                        <th class="px-4 py-3">Status</th>
-                        <th class="px-4 py-3">Action</th>
-                        <th class="px-4 py-3">Ordered</th>
-                    </tr>
-                </thead>
-                <tbody class="divide-y divide-comb/70 dark:divide-zinc-800">
-                    @foreach ($this->orders() as $order)
-                        <tr class="transition-colors hover:bg-comb/30 dark:hover:bg-zinc-800/50">
-                            <td class="px-4 py-3">
-                                <a href="{{ route('seller.orders') }}#order-{{ $order->number }}"
-                                   class="font-medium text-honey-deep hover:underline dark:text-honey">
-                                    {{ $order->number }}
-                                </a>
-                            </td>
-                            <td class="px-4 py-3">
-                                <p class="font-medium">{{ $order->user->name }}</p>
-                                <p class="text-xs text-zinc-600 dark:text-zinc-400">{{ $order->user->email }}</p>
-                            </td>
-                            <td class="px-4 py-3">
-                                {{ $order->items->count() }} {{ \Illuminate\Support\Str::plural('item', $order->items->count()) }}
-                            </td>
-                            <td class="px-4 py-3 font-semibold">
-                                {{ \App\Support\Money::format($order->total_minor, $order->currency) }}
-                            </td>
-                            <td class="px-4 py-3">
-                                @php($statusClasses = match ($order->status) {
-                                    OrderStatus::Delivered => 'bg-leaf/10 text-leaf dark:bg-leaf/20 dark:text-emerald-300',
-                                    OrderStatus::Cancelled => 'bg-zinc-200 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400',
-                                    OrderStatus::Shipped, OrderStatus::OutForDelivery => 'bg-sky-100 text-sky-800 dark:bg-sky-500/20 dark:text-sky-300',
-                                    default => 'bg-honey/15 text-honey-deep dark:bg-honey/15 dark:text-honey',
-                                })
-                                <span class="rounded-full px-2.5 py-1 text-xs font-semibold {{ $statusClasses }}">
-                                    {{ $order->status->label() }}
-                                </span>
-                            </td>
-                            <td class="px-4 py-3">
-                                @php($next = $this->nextStatus($order))
-                                @if ($next)
-                                    <button type="button"
-                                            wire:click="updateStatus('{{ $order->number }}', '{{ $next->value }}')"
-                                            wire:confirm="Move order to {{ $next->label() }}?"
-                                            class="rounded-lg bg-ink px-3 py-1.5 text-xs font-semibold text-paper transition hover:bg-honey hover:text-ink disabled:opacity-50 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-honey dark:hover:text-ink"
-                                            wire:loading.attr="disabled">
-                                        {{ $next->label() }}
-                                    </button>
-                                @else
-                                    <span class="text-xs text-zinc-600 dark:text-zinc-400">Complete</span>
-                                @endif
-                            </td>
-                            <td class="px-4 py-3 text-sm text-zinc-600 dark:text-zinc-400">
-                                {{ $order->ordered_at?->format('j M Y, g:i a') }}
-                            </td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        </div>
+        <ul class="space-y-3">
+            @foreach ($this->orders() as $order)
+                <li class="ui-card bg-paper p-4 dark:bg-zinc-900">
+                    <div class="flex flex-wrap items-start justify-between gap-2">
+                        <div class="min-w-0">
+                            <div class="flex flex-wrap items-center gap-2">
+                                <p class="font-display text-lg font-semibold">{{ $order->number }}</p>
+                                <x-ui.order-status :status="$order->status" />
+                            </div>
+                            <p class="mt-1 text-sm font-medium">{{ $order->user->name }}</p>
+                            <p class="text-[11px] text-zinc-500 dark:text-zinc-400">{{ $order->user->email }}</p>
+                        </div>
 
-        <div class="mt-6">{{ $this->orders()->links() }}</div>
+                        <div class="text-end">
+                            <p class="ui-price text-lg">{{ \App\Support\Money::format($order->total_minor, $order->currency) }}</p>
+                            <p class="text-[11px] text-zinc-500 dark:text-zinc-400">
+                                {{ $order->items->count() }} {{ \Illuminate\Support\Str::plural('item', $order->items->count()) }}
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="mt-3 flex flex-wrap items-center justify-between gap-2 border-t border-ink/10 pt-3 dark:border-zinc-800">
+                        <p class="text-[11px] text-zinc-500 dark:text-zinc-400">
+                            Ordered {{ $order->ordered_at?->format('M j, Y · g:i a') }}
+                        </p>
+
+                        <div class="flex items-center gap-2">
+                            @php($next = $this->nextStatus($order))
+                            @if ($next)
+                                <button type="button"
+                                        wire:click="updateStatus('{{ $order->number }}', '{{ $next->value }}')"
+                                        wire:confirm="Move order to {{ $next->label() }}?"
+                                        wire:loading.attr="disabled"
+                                        class="ui-btn ui-btn-sm">
+                                    Mark {{ $next->label() }}
+                                </button>
+                            @else
+                                <span class="text-[11px] font-medium text-zinc-500 dark:text-zinc-400">Flight complete</span>
+                            @endif
+                        </div>
+                    </div>
+                </li>
+            @endforeach
+        </ul>
+
+        <div class="mt-5">{{ $this->orders()->links() }}</div>
     @endif
 </div>

@@ -3,6 +3,7 @@
 use App\Models\User;
 use Illuminate\Auth\Events\Verified;
 use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\URL;
 use Laravel\Fortify\Features;
 
@@ -40,6 +41,37 @@ it('can verify an email address', function () {
 
     expect($user->fresh()->hasVerifiedEmail())->toBeTrue();
     $response->assertRedirect(route('dashboard', absolute: false).'?verified=1');
+});
+
+it('can verify an email address with a six-digit code', function () {
+    $user = User::factory()->unverified()->create([
+        'email_verification_code_hash' => Hash::make('123456'),
+        'email_verification_code_expires_at' => now()->addMinutes(10),
+    ]);
+
+    Event::fake();
+
+    $response = $this->actingAs($user)->post(route('verification.code'), [
+        'code' => '123456',
+    ]);
+
+    $response->assertRedirect(route('dashboard', absolute: false).'?verified=1');
+
+    Event::assertDispatched(Verified::class);
+    expect($user->fresh()->hasVerifiedEmail())->toBeTrue();
+});
+
+it('does not verify an email address with an expired code', function () {
+    $user = User::factory()->unverified()->create([
+        'email_verification_code_hash' => Hash::make('123456'),
+        'email_verification_code_expires_at' => now()->subMinute(),
+    ]);
+
+    $this->actingAs($user)->post(route('verification.code'), [
+        'code' => '123456',
+    ])->assertSessionHasErrors('code');
+
+    expect($user->fresh()->hasVerifiedEmail())->toBeFalse();
 });
 
 it('does not verify an email address with an invalid hash', function () {

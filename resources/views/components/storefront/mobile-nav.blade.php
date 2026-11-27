@@ -27,18 +27,21 @@
             @endforeach
         </div>
 
-        <a href="{{ route('marketplace') }}"
-           class="mobile-hive group absolute bottom-14 left-1/2 z-10 flex -translate-x-1/2 flex-col items-center"
-           aria-label="Home"
-           @if (request()->routeIs('marketplace')) aria-current="page" @endif
-           wire:navigate>
-            <span class="grid size-16 place-items-center rounded-full border-4 border-paper bg-honey shadow-lg transition-transform group-hover:-translate-y-0.5 group-active:scale-95 {{ request()->routeIs('marketplace') ? 'ring-2 ring-honey-deep dark:ring-honey' : '' }} dark:border-zinc-950 dark:bg-honey-deep">
+        <button type="button"
+                onclick="document.getElementById('mobile-hive-menu').showModal(); document.documentElement.classList.add('overflow-hidden')"
+                class="mobile-hive group absolute bottom-14 left-1/2 z-10 flex -translate-x-1/2 flex-col items-center"
+                aria-label="{{ __('Open menu') }}"
+                aria-haspopup="dialog"
+                aria-controls="mobile-hive-menu">
+            <span class="grid size-16 place-items-center rounded-full border-4 border-paper bg-honey shadow-lg transition-transform group-hover:-translate-y-0.5 group-active:scale-95 dark:border-zinc-950 dark:bg-honey-deep">
                 <img src="{{ asset('images/mobile/hive.png') }}"
                      alt=""
                      width="36"
                      height="36"
                      class="size-9 object-contain dark:brightness-0 dark:invert">
             </span>
-        </a>
+        </button>
     </div>
 </nav>
+
+<x-storefront.mobile-menu />

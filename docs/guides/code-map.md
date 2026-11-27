@@ -25,11 +25,13 @@ The app has two UI styles:
 | Signed-in app shell | `resources/views/layouts/app.blade.php` |
 | App sidebar (all nav items) | `resources/views/layouts/app/sidebar.blade.php` |
 | Auth shell | `resources/views/layouts/auth.blade.php` → `layouts/auth/simple.blade.php` |
+| RAFS auth port / provider setup | `docs/guides/rafs-auth.md` |
 | `<head>`, fonts, Vite and Flux includes | `resources/views/partials/head.blade.php` |
 | Settings page heading | `resources/views/partials/settings-heading.blade.php` |
 | Pagination look | `resources/views/vendor/livewire/tailwind.blade.php`, `resources/views/vendor/pagination/tailwind.blade.php` |
 | Flux icon override | `resources/views/flux/icon/chevrons-up-down.blade.php` |
 | Current screenshots | `docs/screenshots/figma-theme/` |
+| Figma screen coverage / route map | `docs/guides/figma-122-screens.md` |
 | Previous theme screenshots | `docs/screenshots/` |
 | Previous theme tokens and restore steps | `docs/archive/theme-warm-hive.md` |
 

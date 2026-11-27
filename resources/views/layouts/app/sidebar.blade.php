@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="dark">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
         @include('partials.head')
     </head>
     <body class="min-h-screen bg-paper text-ink dark:bg-zinc-950 dark:text-zinc-100">
-        <flux:sidebar sticky collapsible="mobile" role="complementary" aria-label="Sidebar" class="border-e border-comb/80 bg-[#FFF4C5]/50 dark:border-zinc-800 dark:bg-zinc-900">
+        <flux:sidebar sticky collapsible="mobile" role="complementary" aria-label="Sidebar" class="border-e border-comb/80 bg-[#FFF4C5] dark:border-zinc-800 dark:bg-zinc-900 lg:bg-[#FFF4C5]/50">
             <flux:sidebar.header>
                 <x-app-logo :sidebar="true" href="{{ route('dashboard') }}" wire:navigate />
                 <flux:sidebar.collapse class="lg:hidden" />
@@ -39,8 +39,16 @@
             @if (auth()->check() && auth()->user()->hasRole('seller'))
             <flux:sidebar.nav aria-label="Seller">
                 <flux:sidebar.group :heading="__('Seller')" class="grid">
-                    <flux:sidebar.item icon="shopping-bag" :href="route('seller.products')" :current="request()->routeIs('seller.products')" wire:navigate>
-                        {{ __('Your products') }}
+                    <flux:sidebar.item icon="home" :href="route('seller.dashboard')" :current="request()->routeIs('seller.dashboard')" wire:navigate>
+                        {{ __('Overview') }}
+                    </flux:sidebar.item>
+
+                    <flux:sidebar.item icon="chart-bar" :href="route('seller.analytics')" :current="request()->routeIs('seller.analytics')" wire:navigate>
+                        {{ __('Analytics') }}
+                    </flux:sidebar.item>
+
+                    <flux:sidebar.item icon="archive-box" :href="route('seller.products')" :current="request()->routeIs('seller.products')" wire:navigate>
+                        {{ __('Inventory') }}
                     </flux:sidebar.item>
 
                     <flux:sidebar.item icon="cube" :href="route('seller.orders')" :current="request()->routeIs('seller.orders')" wire:navigate>
@@ -83,67 +91,46 @@
             <x-desktop-user-menu class="hidden lg:block" :name="auth()->user()->name" />
         </flux:sidebar>
 
-        <!-- Mobile User Menu -->
-        <flux:header class="border-b border-comb/70 bg-paper/90 backdrop-blur lg:hidden dark:border-zinc-800 dark:bg-zinc-950/90">
-            <flux:sidebar.toggle class="lg:hidden" icon="bars-2" inset="left" />
+        @if (request()->routeIs('admin.*'))
+            <!-- Admin-only mobile app bar; customer and seller pages carry their own header. -->
+            <header data-mobile-app-bar class="sticky top-0 z-40 grid grid-cols-[2.5rem_1fr_2.5rem] items-center gap-2 border-b border-ink/10 bg-paper/95 px-4 py-2.5 backdrop-blur-md lg:hidden dark:border-zinc-800 dark:bg-zinc-950/95">
+                <button type="button"
+                        x-data
+                        x-on:click="$dispatch('flux-sidebar-toggle')"
+                        data-flux-sidebar-toggle
+                        class="grid size-10 place-items-center justify-self-start rounded-full border border-ink/50 bg-honey transition active:scale-95 dark:border-zinc-700 dark:bg-honey-deep"
+                        aria-label="{{ __('Open menu') }}">
+                    <img src="{{ asset('images/mobile/hive.png') }}"
+                         alt=""
+                         width="22"
+                         height="22"
+                         class="size-[22px] object-contain dark:brightness-0 dark:invert">
+                </button>
 
-            <a href="{{ route('dashboard') }}" class="ms-2 flex items-center gap-2 font-display text-sm font-semibold" wire:navigate>
-                <span class="clip-hex grid size-7 place-items-center bg-honey text-sm font-bold text-ink">d</span>
-                deliBEE
-            </a>
+                <a href="{{ route('dashboard') }}" class="mx-auto flex items-center justify-center" aria-label="deliBEE dashboard" wire:navigate>
+                    <x-ui.bee-logo class="h-auto w-24" />
+                </a>
 
-            <flux:spacer />
-
-            <flux:dropdown position="top" align="end">
-                <flux:profile
-                    :initials="auth()->user()->initials()"
-                    icon-trailing="chevron-down"
-                />
-
-                <flux:menu>
-                    <flux:menu.radio.group>
-                        <div class="p-0 text-sm font-normal">
-                            <div class="flex items-center gap-2 px-1 py-1.5 text-start text-sm">
-                                <flux:avatar
-                                    :name="auth()->user()->name"
-                                    :initials="auth()->user()->initials()"
-                                />
-
-                                <div class="grid flex-1 text-start text-sm leading-tight">
-                                    <flux:heading class="truncate">{{ auth()->user()->name }}</flux:heading>
-                                    <flux:text class="truncate">{{ auth()->user()->email }}</flux:text>
-                                </div>
-                            </div>
-                        </div>
-                    </flux:menu.radio.group>
-
-                    <flux:menu.separator />
-
-                    <flux:menu.radio.group>
-                        <flux:menu.item :href="route('profile.edit')" icon="cog" wire:navigate>
-                            {{ __('Settings') }}
-                        </flux:menu.item>
-                    </flux:menu.radio.group>
-
-                    <flux:menu.separator />
-
-                    <form method="POST" action="{{ route('logout') }}" class="w-full">
-                        @csrf
-                        <flux:menu.item
-                            as="button"
-                            type="submit"
-                            icon="arrow-right-start-on-rectangle"
-                            class="w-full cursor-pointer"
-                            data-test="logout-button"
-                        >
-                            {{ __('Log out') }}
-                        </flux:menu.item>
-                    </form>
-                </flux:menu>
-            </flux:dropdown>
-        </flux:header>
+                <a href="{{ route('dashboard') }}"
+                   class="grid size-9 place-items-center justify-self-end rounded-full border border-ink/60 bg-honey font-display text-xs font-bold text-ink dark:border-zinc-700"
+                   aria-label="Your profile"
+                   wire:navigate>
+                    {{ auth()->user()->initials() }}
+                </a>
+            </header>
+        @endif
 
         {{ $slot }}
+
+        @auth
+            @if (auth()->user()->isAdmin() && request()->routeIs('admin.*'))
+                <x-ui.admin-mobile-nav />
+            @elseif (auth()->user()->hasRole('seller') && request()->routeIs('seller.*') && ! request()->routeIs('seller.onboarding', 'seller.pending'))
+                <x-ui.seller-mobile-nav />
+            @else
+                <x-storefront.mobile-nav />
+            @endif
+        @endauth
 
         @persist('toast')
             <flux:toast.group>

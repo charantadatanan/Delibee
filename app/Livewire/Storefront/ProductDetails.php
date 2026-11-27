@@ -44,6 +44,16 @@ class ProductDetails extends Component
         return app(CartService::class)->quantityOf($user, $this->product);
     }
 
+    public function increment(): void
+    {
+        $this->quantity = min(max(1, $this->quantity + 1), max(1, $this->product->stock));
+    }
+
+    public function decrement(): void
+    {
+        $this->quantity = max(1, $this->quantity - 1);
+    }
+
     public function addToCart(): void
     {
         $user = Auth::user();
@@ -112,6 +122,8 @@ class ProductDetails extends Component
 
         return view('livewire.storefront.product-details', [
             'reviews' => $reviews,
+            'averageRating' => $this->product->reviews()->published()->avg('rating'),
+            'reviewCount' => $this->product->reviews()->published()->count(),
         ]);
     }
 }

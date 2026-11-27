@@ -40,7 +40,7 @@ new #[Livewire\Attributes\Title('Open your shop')] class extends Component
             return;
         }
 
-        $business = Business::create([
+        Business::create([
             'owner_id' => $user->id,
             'name' => $this->name,
             'slug' => $this->uniqueSlug(),
@@ -71,39 +71,80 @@ new #[Livewire\Attributes\Title('Open your shop')] class extends Component
 };
 ?>
 
-<div class="mx-auto max-w-2xl space-y-6">
-    <div>
-        <h1 class="font-display text-3xl font-semibold tracking-tight sm:text-4xl">Open your shop</h1>
+<div class="mx-auto max-w-2xl space-y-5">
+    <x-ui.mobile-header :title="__('Open your shop')" :back="route('dashboard')" />
+
+    <div class="hidden lg:block">
+        <p class="text-[11px] font-semibold uppercase tracking-[0.16em] text-honey-deep dark:text-honey">Sell on deliBEE</p>
+        <h1 class="mt-1 font-display text-4xl font-semibold tracking-tight">Open your shop</h1>
         <p class="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
-            Tell us about your business. Once an admin approves it you can list products and start
-            fulfilling orders.
+            Tell us about your business. Once an admin approves it, you can list products and fulfil orders.
         </p>
     </div>
 
-    <form wire:submit="submit" class="space-y-5 rounded-2xl border border-comb/90 bg-white/70 p-6 dark:border-zinc-800 dark:bg-zinc-900/70">
-        <label class="block">
-            <span class="text-xs font-medium text-zinc-500 dark:text-zinc-400">Business name</span>
-            <input type="text" wire:model="name" placeholder="Sunrise Orchard"
-                   class="mt-1.5 w-full rounded-lg border border-comb bg-paper/60 px-3 py-2 text-sm focus:border-honey-deep focus:outline-none focus:ring-2 focus:ring-honey/40 dark:border-zinc-700 dark:bg-zinc-950">
-        </label>
+    <ol class="grid grid-cols-3 gap-2" aria-label="Seller sign-up steps">
+        <li class="rounded-xl border border-ink bg-honey px-3 py-2 text-ink">
+            <p class="text-[9px] font-bold uppercase tracking-wide">Step 1</p>
+            <p class="text-xs font-semibold">Store details</p>
+        </li>
+        <li class="rounded-xl border border-ink/20 bg-white/60 px-3 py-2 text-zinc-500 dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-400">
+            <p class="text-[9px] font-bold uppercase tracking-wide">Step 2</p>
+            <p class="text-xs font-semibold">Branding</p>
+        </li>
+        <li class="rounded-xl border border-ink/20 bg-white/60 px-3 py-2 text-zinc-500 dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-400">
+            <p class="text-[9px] font-bold uppercase tracking-wide">Step 3</p>
+            <p class="text-xs font-semibold">Review</p>
+        </li>
+    </ol>
 
-        <label class="block">
-            <span class="text-xs font-medium text-zinc-500 dark:text-zinc-400">What do you sell?</span>
-            <textarea wire:model="description" rows="4" placeholder="Freshly picked fruit, delivered within the day."
-                      class="mt-1.5 w-full rounded-lg border border-comb bg-paper/60 px-3 py-2 text-sm focus:border-honey-deep focus:outline-none focus:ring-2 focus:ring-honey/40 dark:border-zinc-700 dark:bg-zinc-950"></textarea>
-        </label>
+    <form wire:submit="submit" class="ui-card bg-paper p-4 dark:bg-zinc-900 sm:p-6">
+        <div class="flex items-center gap-2">
+            <span class="grid size-9 place-items-center rounded-full border border-ink/50 bg-honey font-display text-xs font-bold">1</span>
+            <div>
+                <h2 class="font-display text-xl font-semibold">Store details</h2>
+                <p class="text-xs text-zinc-500 dark:text-zinc-400">You can add a logo, banner and category after approval.</p>
+            </div>
+        </div>
 
-        <label class="block">
-            <span class="text-xs font-medium text-zinc-500 dark:text-zinc-400">Currency</span>
-            <input type="text" wire:model="currency" maxlength="3"
-                   class="mt-1.5 w-24 rounded-lg border border-comb bg-paper/60 px-3 py-2 text-sm uppercase focus:border-honey-deep focus:outline-none focus:ring-2 focus:ring-honey/40 dark:border-zinc-700 dark:bg-zinc-950">
-        </label>
+        <div class="mt-5 space-y-4">
+            <label class="block">
+                <span class="ui-label">Business name</span>
+                <input type="text" wire:model="name" placeholder="Sunrise Orchard" class="ui-field mt-1.5">
+                @error('name') <p class="mt-1 text-xs font-medium text-red-700 dark:text-red-400">{{ $message }}</p> @enderror
+            </label>
 
-        <button type="submit"
-                wire:loading.attr="disabled"
-                class="rounded-lg bg-ink px-4 py-2.5 font-semibold text-paper transition hover:bg-honey hover:text-ink disabled:opacity-50 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-honey dark:hover:text-ink">
+            <label class="block">
+                <span class="ui-label">What do you sell?</span>
+                <textarea wire:model="description" rows="4" placeholder="Freshly picked fruit, delivered within the day." class="ui-field mt-1.5"></textarea>
+                @error('description') <p class="mt-1 text-xs font-medium text-red-700 dark:text-red-400">{{ $message }}</p> @enderror
+            </label>
+
+            <label class="block max-w-40">
+                <span class="ui-label">Currency</span>
+                <input type="text" wire:model="currency" maxlength="3" class="ui-field mt-1.5 uppercase">
+                @error('currency') <p class="mt-1 text-xs font-medium text-red-700 dark:text-red-400">{{ $message }}</p> @enderror
+            </label>
+        </div>
+
+        <div class="ui-note mt-4">
+            <p class="font-medium text-ink dark:text-zinc-200">What happens next?</p>
+            <p class="mt-1 text-xs">
+                An admin reviews the shop. After approval you can add products and start taking orders. KYC documents
+                and payout details are collected then; payments are currently on hold.
+            </p>
+        </div>
+
+        <button type="submit" wire:loading.attr="disabled" class="ui-btn mt-4 w-full">
             <span wire:loading.remove wire:target="submit">Submit for approval</span>
             <span wire:loading wire:target="submit">Submitting…</span>
         </button>
+
+        <p class="mt-3 text-center text-[10px] text-zinc-500 dark:text-zinc-400">
+            By signing up you agree to the deliBEE terms and privacy policy.
+        </p>
     </form>
+
+    <div class="lg:hidden">
+        <x-ui.hills class="h-24 w-full" />
+    </div>
 </div>
