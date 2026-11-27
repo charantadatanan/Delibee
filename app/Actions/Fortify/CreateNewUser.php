@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Laravel\Fortify\Contracts\CreatesNewUsers;
+use Spatie\Permission\Models\Role;
 
 class CreateNewUser implements CreatesNewUsers
 {
@@ -70,6 +71,8 @@ class CreateNewUser implements CreatesNewUsers
             'phone' => $phone,
             'phone_country' => $country,
         ]);
+
+        $user->assignRole(Role::findOrCreate('customer', 'web'));
 
         return $user;
     }

@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\User;
 use Laravel\Fortify\Features;
 
 it('can render the registration screen', function () {
@@ -24,4 +25,6 @@ it('allows new users to register', function () {
         ->assertRedirect(route('dashboard', absolute: false));
 
     $this->assertAuthenticated();
+
+    expect(User::where('email', 'test@example.com')->firstOrFail()->hasRole('customer'))->toBeTrue();
 });
