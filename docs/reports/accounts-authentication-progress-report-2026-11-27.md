@@ -5,7 +5,7 @@
 **Report date:** 27 November 2026
 **Scope:** Accounts & Authentication
 **Production:** https://delibee-production-6l26tu.laravel.cloud
-**Status:** Authentication live; outbound auth email blocked
+**Status:** Authentication live; email delivery live via Gmail SMTP
 
 ---
 
@@ -72,11 +72,17 @@ The `users.username` column is nullable, unique and limited to 30 characters. `C
 
 ---
 
-## Open item
+## Email delivery — resolved
 
-**OTP and password-reset email delivery is blocked.** Production has no verified Resend sending domain and no SMTP provider attached. `docs/guides/laravel-cloud.md` sets `MAIL_MAILER=log` and `LOG_LEVEL=info`; the log mailer writes at debug level, which this level filters out, so verification codes and reset links are neither delivered nor retained. New users can complete registration but cannot receive the OTP or a reset link by email.
+**OTP and password-reset email delivery now works.** Production uses Gmail SMTP
+(`smtp.gmail.com:465`, implicit TLS) with a dedicated app password stored as the encrypted Cloud
+secret `MAIL_PASSWORD`. A live test email and a fresh registration OTP were sent successfully on
+27 November 2026 and confirmed received.
 
-The application side is ready: the OTP and reset flows are implemented, `resend/resend-php` `^1.19` is installed in `composer.json` (commit `d6c2f54`), and `config/mail.php` already defines the `resend` transport. Closing the item requires connecting Resend, verifying a sending domain, attaching the sender in Laravel Cloud, setting `MAIL_MAILER=resend` with a verified `MAIL_FROM_ADDRESS`, redeploying, and registering plus resetting a password end to end. The Laravel Cloud checklist still has "Resend connected and a verified sending domain attached" unchecked.
+`resend/resend-php` `^1.19` remains installed as an optional future transport. The Resend domain
+currently pending in Cloud is the `laravel.cloud` vanity hostname, whose DNS cannot be managed by
+the application owner, so it will not verify; any future Resend migration should use an owned
+domain.
 
 ## Update — 28 November 2026
 

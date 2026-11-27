@@ -69,29 +69,39 @@ QUEUE_CONNECTION=database
 FILESYSTEM_DISK=public
 LOG_CHANNEL=stderr
 LOG_LEVEL=info
-MAIL_MAILER=log
-MAIL_FROM_ADDRESS=hello@delibee.example
+MAIL_MAILER=smtp
+MAIL_SCHEME=smtps
+MAIL_HOST=smtp.gmail.com
+MAIL_PORT=465
+MAIL_USERNAME=<gmail address>
+MAIL_FROM_ADDRESS=<gmail address>
 MAIL_FROM_NAME=deliBEE
 VITE_APP_NAME=deliBEE
 BCRYPT_ROUNDS=12
 ```
 
+`MAIL_PASSWORD` is not written to the repository. It is attached to the environment as the
+encrypted Cloud secret of the same name.
+
 ## Email
 
-Resend is not attached yet, so `MAIL_MAILER=log`. At `LOG_LEVEL=info` the log mailer's debug
-output is filtered, so verification codes and reset links are neither delivered nor retained.
-For temporary private testing only, set `LOG_LEVEL=debug`, trigger a resend, read the code from
-the Cloud logs, and then restore `LOG_LEVEL=info`. To enable real email:
+Production sends through **Gmail SMTP** (`smtp.gmail.com:465`, implicit TLS), using the project
+Gmail address as the sender. The Gmail account has 2-Step Verification enabled and a dedicated
+app password stored in the `MAIL_PASSWORD` Cloud secret. A live test email and a registration OTP
+were both accepted and delivered on 27 November 2026.
 
-1. Connect Resend and verify a sending domain in the Laravel Cloud dashboard.
-2. Add the mail package: `composer require resend/resend-php`.
-3. Attach the sender:
+Gmail's consumer sending limit is roughly 500 messages per day, which is sufficient for OTP and
+password-reset traffic at this stage. If volume grows, move to a transactional provider with a
+verified domain.
 
-   ```sh
-   ./vendor/bin/cloud resend:attach {environment} --from-address=hello@your-domain --from-name=deliBEE -n
-   ```
+Resend remains an optional long-term provider. The Resend domain currently pending in the Cloud
+integration is the `laravel.cloud` vanity hostname; its DNS cannot be edited by the application
+owner, so it will not verify. A Resend migration needs a domain you control:
 
-4. Redeploy and verify a registration end to end.
+1. Add and verify that domain in Resend, publishing its DNS records.
+2. Attach the sender:
+   `./vendor/bin/cloud resend:attach {environment} --from-address=hello@your-domain --from-name=deliBEE -n`
+3. Redeploy and verify a registration end to end.
 
 ## Admin access
 
@@ -121,5 +131,6 @@ The App instance scheduler runs `php artisan schedule:run` every minute. The app
 - [x] Initial deployment succeeded
 - [x] `/up`, marketplace, auth and Hive Guard checked
 - [x] Object-storage write/read/delete checked
-- [ ] Resend connected and a verified sending domain attached
+- [x] Email delivery via Gmail SMTP tested with a live OTP
+- [ ] Transactional provider with an owned domain attached before scaling email volume
 - [ ] Custom domain and DNS configured
