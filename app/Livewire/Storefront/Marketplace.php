@@ -63,6 +63,10 @@ class Marketplace extends Component
             ->active()
             ->whereHas('products', fn (Builder $query) => $query->where('status', ProductStatus::Active))
             ->withCount(['products' => fn (Builder $query) => $query->where('status', ProductStatus::Active)])
+            ->with(['products' => fn ($query) => $query
+                ->where('status', ProductStatus::Active)
+                ->with('images')
+                ->orderBy('id')])
             ->orderByDesc('products_count')
             ->take(8)
             ->get();

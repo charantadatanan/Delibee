@@ -14,11 +14,11 @@ it('renders the mobile marketplace sections alongside the desktop hero', functio
     $response->assertOk()
         ->assertSee('Top Products')
         ->assertSee('Featured Shops')
-        ->assertSee('Trending Now')
+        ->assertSee('The marketplace')
         ->assertSee('Sunrise Orchard')
         ->assertSee('Golden Mangoes')
         ->assertSee('Mobile navigation', escape: false)
-        ->assertSee('Search product, businesses', escape: false)
+        ->assertSee('Search products or shops', escape: false)
         ->assertSee('Good sellers rise.');
 });
 

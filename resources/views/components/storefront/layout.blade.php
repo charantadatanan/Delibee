@@ -62,9 +62,39 @@
             </div>
         </header>
 
-        <main class="mx-auto max-w-7xl px-4 pt-3 pb-32 sm:pt-4 lg:pt-10 lg:pb-10">
+        <main class="mx-auto max-w-7xl px-4 pt-3 pb-10 sm:pt-4 lg:pt-10 lg:pb-10">
             {{ $slot }}
         </main>
+
+        <footer class="mt-10 border-t border-ink/10 px-4 pb-32 pt-8 lg:hidden dark:border-zinc-800">
+            <div class="flex items-center justify-between gap-4">
+                <x-ui.bee-logo class="h-auto w-24" />
+                <a href="{{ route('seller.onboarding') }}"
+                   class="inline-flex min-h-11 items-center text-xs font-semibold text-honey-deep dark:text-honey"
+                   wire:navigate>
+                    Sell on deliBEE →
+                </a>
+            </div>
+
+            <nav aria-label="Footer" class="mt-3 grid grid-cols-2 gap-x-4 text-sm">
+                <a class="inline-flex min-h-11 items-center text-zinc-600 dark:text-zinc-300"
+                   href="{{ route('marketplace') }}" wire:navigate>Marketplace</a>
+                <a class="inline-flex min-h-11 items-center text-zinc-600 dark:text-zinc-300"
+                   href="{{ route('categories.index') }}" wire:navigate>Categories</a>
+                <a class="inline-flex min-h-11 items-center text-zinc-600 dark:text-zinc-300"
+                   href="{{ route('ranking') }}" wire:navigate>BeeRank leaderboard</a>
+                <a class="inline-flex min-h-11 items-center text-zinc-600 dark:text-zinc-300"
+                   href="{{ route('help') }}" wire:navigate>Help</a>
+                <a class="inline-flex min-h-11 items-center text-zinc-600 dark:text-zinc-300"
+                   href="{{ route('credits') }}" wire:navigate>Demo photo credits</a>
+                <a class="inline-flex min-h-11 items-center text-zinc-600 dark:text-zinc-300"
+                   href="{{ route('legal.terms') }}" wire:navigate>Terms</a>
+            </nav>
+
+            <p class="mt-2 text-[11px] leading-relaxed text-zinc-500 dark:text-zinc-400">
+                © {{ now()->year }} deliBEE. Ranked on the last 30 days of trading.
+            </p>
+        </footer>
 
         <footer class="mt-16 hidden overflow-hidden bg-ink text-paper lg:block dark:border-t dark:border-zinc-800">
             <div class="relative mx-auto grid max-w-7xl gap-10 px-4 py-14 md:grid-cols-[1.4fr_1fr_1fr]">

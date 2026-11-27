@@ -476,7 +476,7 @@ html:not(.dark) [data-flux-subheading] {
     }
 
     .ui-price {
-        @apply font-display font-semibold text-ink;
+        @apply font-display font-semibold text-ink dark:text-zinc-100;
     }
 
     .ui-sheet {
@@ -526,6 +526,21 @@ textarea:-webkit-autofill {
     border-color: rgb(255 255 255 / 0.18);
     background-color: var(--color-zinc-900);
     color: var(--color-zinc-100);
+}
+
+/* Honey cards stay cream in dark mode as an accent: keep the card's own text
+   ink, and keep text on any nested dark surface light. */
+.dark .ui-card-honey {
+    color: var(--color-ink);
+}
+
+.dark .ui-card-honey [class~="dark:bg-zinc-900"],
+.dark .ui-card-honey [class~="dark:bg-zinc-950"] {
+    color: var(--color-zinc-100);
+}
+
+.dark .ui-card-honey [class~="bg-paper"] {
+    color: var(--color-ink);
 }
 
 .dark .ui-btn-ghost {

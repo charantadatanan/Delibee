@@ -28,7 +28,7 @@
                 <flux:icon name="magnifying-glass" class="pointer-events-none absolute left-3.5 top-1/2 size-5 -translate-y-1/2 text-zinc-500 dark:text-zinc-400" />
                 <input type="search"
                        wire:model.live.debounce.300ms="search"
-                       placeholder="Search product, businesses"
+                       placeholder="Search products or shops"
                        aria-label="Search products and businesses"
                        class="min-h-11 w-full rounded-lg border border-ink/70 bg-paper py-3 ps-11 pe-14 text-base placeholder:text-zinc-500 focus:border-honey-deep focus:outline-none focus:ring-2 focus:ring-honey-deep dark:border-zinc-700 dark:bg-zinc-950 dark:placeholder:text-zinc-400 dark:focus:ring-honey">
                 <button type="button"
@@ -197,7 +197,7 @@
                     <a href="{{ route('categories.index') }}"
                        class="text-xs font-semibold text-honey-deep dark:text-honey"
                        wire:navigate>
-                        See all →
+                        Browse categories →
                     </a>
                 </div>
 
@@ -208,9 +208,11 @@
                            style="--shop-index: {{ $loop->index }}"
                            class="mobile-shop-reveal group flex w-16 shrink-0 flex-col items-center gap-1.5 text-center transition-transform duration-200 hover:-translate-y-0.5 active:scale-95 motion-reduce:transition-none"
                            wire:navigate>
-                            <span class="mobile-shop-logo grid size-[50px] place-items-center overflow-hidden rounded-full border border-ink/40 bg-white shadow-sm transition group-hover:scale-105 dark:border-zinc-700 dark:bg-zinc-900">
-                                @if ($business->logo_path)
-                                    <img src="{{ \Illuminate\Support\Facades\Storage::url($business->logo_path) }}"
+                            @php($shopImage = $business->products->isNotEmpty() ? $business->products[$business->id % $business->products->count()]->images->first() : null)
+
+                            <span class="mobile-shop-logo grid size-[50px] place-items-center overflow-hidden rounded-full border border-ink/40 bg-white shadow-sm transition group-hover:scale-[1.03] dark:border-zinc-700 dark:bg-zinc-900">
+                                @if ($business->logo_path || $shopImage)
+                                    <img src="{{ \Illuminate\Support\Facades\Storage::url($business->logo_path ?? $shopImage->path) }}"
                                          alt=""
                                          loading="lazy"
                                          decoding="async"
@@ -229,9 +231,9 @@
             </section>
         @endif
 
-        <section class="mobile-reveal mobile-reveal-delay-3 mt-6" aria-label="Trending products">
+        <section class="mobile-reveal mobile-reveal-delay-3 mt-6" aria-label="Marketplace products">
             <div class="flex items-baseline justify-between">
-                <h2 class="font-display text-xl font-semibold">Trending Now</h2>
+                <h2 class="font-display text-xl font-semibold">The marketplace</h2>
             </div>
 
             @if ($products->isEmpty())
@@ -262,7 +264,7 @@
                                          alt="{{ $image->alt_text ?? $product->name }}"
                                          loading="lazy"
                                          decoding="async"
-                                         class="relative size-full object-cover transition-transform duration-500 group-hover:scale-[1.04]">
+                                         class="relative size-full object-cover transition-transform duration-500 group-hover:scale-[1.03]">
                                 @else
                                     <span class="clip-hex absolute left-1/2 top-1/2 grid size-10 -translate-x-1/2 -translate-y-1/2 place-items-center bg-white/85 font-display text-lg font-semibold text-honey-deep shadow-sm dark:bg-zinc-900/80 dark:text-honey">
                                         {{ \Illuminate\Support\Str::upper(\Illuminate\Support\Str::substr($product->name, 0, 1)) }}
@@ -300,14 +302,17 @@
 
     {{-- Desktop marketplace --}}
     <div class="hidden lg:block">
+        @php($spotlight = $featuredBusinesses->firstWhere('slug', 'sunrise-orchard'))
+        @php($spotlightImage = $spotlight?->products->firstWhere('name', 'Golden Mangoes')?->images->first() ?? $spotlight?->products->first()?->images->first())
+
         <section class="relative overflow-hidden rounded-[32px] border border-ink/70 bg-hero dark:border-zinc-800 dark:bg-zinc-900">
             <div class="absolute inset-0 bg-comb opacity-50 dark:opacity-10"></div>
 
             <div class="relative grid gap-8 p-6 sm:p-10 lg:grid-cols-[1.18fr_0.82fr] lg:items-center">
                 <div>
-                    <p class="inline-flex items-center gap-2 rounded-full border border-ink/40 bg-paper/80 px-3 py-1 text-xs font-semibold">
+                    <p class="inline-flex items-center gap-2 rounded-full border border-ink/40 bg-paper/80 px-3 py-1 text-xs font-semibold text-ink">
                         <span class="size-1.5 rounded-full bg-leaf" aria-hidden="true"></span>
-                        Your local marketplace, ranked every month
+                        Your local food marketplace, ranked every month
                     </p>
 
                     <h1 class="mt-5 max-w-xl font-display text-4xl font-semibold leading-[1.02] tracking-tight sm:text-6xl">
@@ -316,8 +321,8 @@
                     </h1>
 
                     <p class="mt-5 max-w-lg text-base leading-relaxed text-zinc-700 dark:text-zinc-300">
-                        Everything on deliBEE, from many sellers in one place. Businesses are ranked on how they
-                        are performing right now, not on how long they have been around.
+                        Every business is ranked on what it is doing now — not on how long it has been around.
+                        One basket across many local sellers, delivered from the hive.
                     </p>
 
                     <div class="mt-7 flex flex-wrap gap-3">
@@ -326,7 +331,7 @@
                             <flux:icon name="arrow-down" class="size-4" />
                         </a>
                         <a href="{{ route('ranking') }}" class="ui-btn ui-btn-ghost" wire:navigate>
-                            See the BeeRank
+                            See BeeRank
                         </a>
                     </div>
 
@@ -353,14 +358,25 @@
                             <span class="grid size-12 place-items-center rounded-full border border-ink/60 bg-honey font-display text-lg font-bold">1</span>
                         </div>
 
-                        <div class="mt-4 flex items-center gap-3 rounded-xl border border-ink/40 bg-white/80 p-3 dark:border-zinc-700 dark:bg-zinc-900">
-                            <span class="clip-hex grid size-10 place-items-center bg-honey font-display font-bold">S</span>
+                        <a href="{{ route('businesses.show', $spotlight?->slug ?? 'sunrise-orchard') }}"
+                           class="mt-4 flex items-center gap-3 rounded-xl border border-ink/40 bg-white/80 p-3 transition hover:border-ink hover:bg-white dark:border-zinc-700 dark:bg-zinc-900 dark:hover:border-zinc-500"
+                           wire:navigate>
+                            <span class="clip-hex grid size-10 place-items-center overflow-hidden bg-honey font-display font-bold">
+                                @if ($spotlightImage)
+                                    <img src="{{ \Illuminate\Support\Facades\Storage::url($spotlightImage->path) }}"
+                                         alt=""
+                                         decoding="async"
+                                         class="size-full object-cover">
+                                @else
+                                    S
+                                @endif
+                            </span>
                             <div class="min-w-0 flex-1">
                                 <p class="truncate font-semibold">Sunrise Orchard</p>
                                 <p class="text-xs text-zinc-500 dark:text-zinc-400">Fresh fruit & cold-pressed juice</p>
                             </div>
                             <span class="rounded-full bg-leaf/10 px-2.5 py-1 text-xs font-semibold text-leaf dark:text-emerald-300">Top rated</span>
-                        </div>
+                        </a>
 
                         <div class="mt-4 grid grid-cols-3 gap-2 text-center text-[11px]">
                             <div class="rounded-xl border border-ink/20 bg-white/60 p-2 dark:border-zinc-700 dark:bg-zinc-900">
@@ -368,7 +384,7 @@
                                 <p class="text-zinc-500 dark:text-zinc-400">day window</p>
                             </div>
                             <div class="rounded-xl border border-ink/20 bg-white/60 p-2 dark:border-zinc-700 dark:bg-zinc-900">
-                                <p class="font-display text-lg font-semibold">4.8</p>
+                                <p class="font-display text-lg font-semibold">5.0</p>
                                 <p class="text-zinc-500 dark:text-zinc-400">verified ★</p>
                             </div>
                             <div class="rounded-xl border border-ink/20 bg-white/60 p-2 dark:border-zinc-700 dark:bg-zinc-900">
@@ -395,7 +411,7 @@
                         <h2 class="mt-1 font-display text-3xl font-semibold tracking-tight">Featured Shops</h2>
                     </div>
                     <a href="{{ route('categories.index') }}" class="text-sm font-semibold text-honey-deep underline-offset-4 hover:underline dark:text-honey" wire:navigate>
-                        See all shops →
+                        Browse categories →
                     </a>
                 </div>
 
@@ -404,9 +420,15 @@
                         <a href="{{ route('businesses.show', $business) }}"
                            class="group ui-card flex items-center gap-4 bg-white/75 p-4 transition hover:-translate-y-0.5 hover:border-ink dark:bg-zinc-900"
                            wire:navigate>
+                            @php($shopImage = $business->products->isNotEmpty() ? $business->products[$business->id % $business->products->count()]->images->first() : null)
+
                             <span class="grid size-14 shrink-0 place-items-center overflow-hidden rounded-full border border-ink/50 bg-hero font-display text-xl font-bold text-honey-deep dark:bg-zinc-950 dark:text-honey">
-                                @if ($business->logo_path)
-                                    <img src="{{ \Illuminate\Support\Facades\Storage::url($business->logo_path) }}" alt="" class="size-full object-cover">
+                                @if ($business->logo_path || $shopImage)
+                                    <img src="{{ \Illuminate\Support\Facades\Storage::url($business->logo_path ?? $shopImage->path) }}"
+                                         alt=""
+                                         loading="lazy"
+                                         decoding="async"
+                                         class="size-full object-cover">
                                 @else
                                     {{ \Illuminate\Support\Str::upper(\Illuminate\Support\Str::substr($business->name, 0, 1)) }}
                                 @endif
@@ -426,8 +448,8 @@
         <div id="marketplace-products" class="mt-10 scroll-mt-24 rounded-3xl border border-ink/20 bg-white/70 p-4 shadow-[0_18px_50px_-40px_rgba(30,30,30,0.7)] dark:border-zinc-800 dark:bg-zinc-900/70">
             <div class="mb-4 flex flex-wrap items-center justify-between gap-3 px-1">
                 <div>
-                    <p class="text-[11px] font-semibold uppercase tracking-[0.16em] text-honey-deep dark:text-honey">The marketplace</p>
-                    <h2 class="mt-1 font-display text-2xl font-semibold">Trending Now</h2>
+                    <p class="text-[11px] font-semibold uppercase tracking-[0.16em] text-honey-deep dark:text-honey">Browse all</p>
+                    <h2 class="mt-1 font-display text-2xl font-semibold">The marketplace</h2>
                 </div>
                 <p class="text-sm text-zinc-500 dark:text-zinc-400">{{ $products->total() }} {{ \Illuminate\Support\Str::plural('product', $products->total()) }}</p>
             </div>
