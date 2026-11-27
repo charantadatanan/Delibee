@@ -61,7 +61,7 @@ orders and view analytics; the demo admin can approve the pending shop and moder
 | Seller routes | `/seller/dashboard`, `/seller/products`, `/seller/orders`, `/seller/analytics` — HTTP 200 as a demo seller on production |
 | Hive Guard routes | `/admin/businesses`, `/admin/orders`, `/admin/reviews` — HTTP 200 as a demo admin on production |
 | Storage | Bucket-hosted product images and a write/read/delete round-trip verified |
-| Automated suite | 123 tests, 122 passed, 1 skipped, 315 assertions; Pint clean; PHPStan 0 errors |
+| Automated suite | 123 tests, 122 passed, 1 skipped, 316 assertions; Pint clean; PHPStan 0 errors |
 | Build | Vite production build succeeds |
 
 ## Open items

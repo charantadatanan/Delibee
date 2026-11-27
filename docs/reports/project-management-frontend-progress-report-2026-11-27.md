@@ -72,7 +72,7 @@ Smoke checks returned `/up` 200, `/marketplace` 200, `/login` 200 and `/ranking`
 
 | Check | Command | Result |
 |---|---|---|
-| Tests | `php artisan test` | **123 tests — 122 passed, 1 skipped, 315 assertions** |
+| Tests | `php artisan test` | **123 tests — 122 passed, 1 skipped, 316 assertions** |
 | Coding style | `vendor/bin/pint --test` | Passed |
 | Static analysis | `vendor/bin/phpstan analyse --no-progress` | Passed — 0 errors (level 8) |
 | Front-end build | `npm run build` | Passed — `app.css` 463.05 kB (48.72 kB gzip); Poppins and Fredoka assets emitted |
@@ -94,4 +94,4 @@ The suite, Pint, PHPStan and Vite build were run against the release candidate o
 
 ## Summary
 
-The Project Management + Custom Front-end category is complete through the design system, the Figma 122-link/36-screen mapping, the official bee identity, responsive desktop/mobile layouts, the radial mobile navigation, documentation, CI and a live Laravel Cloud deployment. Verification is green: 123 tests (122 passed, 1 skipped, 315 assertions), Pint, PHPStan and the Vite build all pass. The remaining work is integration and release hygiene — commit and deploy the working-tree theme toggle, then resolve social sign-in, email delivery, the optional custom domain and the on-hold payment gateway.
+The Project Management + Custom Front-end category is complete through the design system, the Figma 122-link/36-screen mapping, the official bee identity, responsive desktop/mobile layouts, the radial mobile navigation, documentation, CI and a live Laravel Cloud deployment. Verification is green: 123 tests (122 passed, 1 skipped, 316 assertions), Pint, PHPStan and the Vite build all pass. The theme toggle is deployed. The remaining work is integration and release hygiene — resolve social sign-in, email delivery, the optional custom domain and the on-hold payment gateway.

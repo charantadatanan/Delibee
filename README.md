@@ -217,7 +217,7 @@ variables. Infrastructure and deploy details: [`docs/guides/laravel-cloud.md`](d
 
 ## Status
 
-- 123 tests (122 passing, 1 skipped — two-factor authentication is disabled in this build), 315 assertions.
+- 123 tests (122 passing, 1 skipped — two-factor authentication is disabled in this build), 316 assertions.
 - PHPStan level 8: 0 errors. Pint: clean.
 - Storefront, customer, seller, admin and settings pages were audited with axe-core against WCAG 2.2 AA and report zero violations.
 - Payment is offline for now; the payment gateway remains an open product decision.
