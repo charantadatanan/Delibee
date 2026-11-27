@@ -10,7 +10,7 @@
            class="flex min-w-0 items-center"
            aria-label="deliBEE marketplace"
            wire:navigate>
-            <x-ui.bee-logo class="mobile-bee-logo h-auto w-28 sm:w-32" />
+            <x-ui.bee-logo class="mobile-bee-logo h-auto w-28 max-[340px]:w-20 sm:w-32" />
         </a>
 
         <div class="ms-auto flex items-center gap-2">
@@ -28,6 +28,8 @@
                     Join deliBEE
                 </a>
             @endauth
+
+            <x-ui.theme-toggle />
 
             <a href="{{ auth()->check() ? route('chat.index') : route('login') }}"
                class="grid size-11 place-items-center rounded-full border border-ink/50 bg-white transition hover:border-honey-deep/40 dark:border-zinc-700 dark:bg-zinc-900"

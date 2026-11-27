@@ -28,6 +28,9 @@ yarn-error.log
 /.claude
 /.playwright-mcp
 /.playwright-cli
+
+# Local credential sheet; never commit account passwords.
+/docs/accounts.local.md
 /.cursor
 /.factory
 /.grok

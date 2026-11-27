@@ -78,8 +78,10 @@ BCRYPT_ROUNDS=12
 
 ## Email
 
-Resend is not attached yet, so `MAIL_MAILER=log`: verification codes and reset links are written
-to the Cloud logs rather than delivered. To enable real email:
+Resend is not attached yet, so `MAIL_MAILER=log`. At `LOG_LEVEL=info` the log mailer's debug
+output is filtered, so verification codes and reset links are neither delivered nor retained.
+For temporary private testing only, set `LOG_LEVEL=debug`, trigger a resend, read the code from
+the Cloud logs, and then restore `LOG_LEVEL=info`. To enable real email:
 
 1. Connect Resend and verify a sending domain in the Laravel Cloud dashboard.
 2. Add the mail package: `composer require resend/resend-php`.

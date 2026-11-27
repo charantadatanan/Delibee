@@ -25,6 +25,8 @@
                 </nav>
 
                 <div class="ms-auto flex items-center gap-2">
+                    <x-ui.theme-toggle />
+
                     @auth
                         <a href="{{ route('cart.index') }}"
                            class="relative grid size-10 place-items-center rounded-full border border-ink/30 bg-white/70 transition hover:border-ink hover:bg-honey dark:border-zinc-700 dark:bg-zinc-900"

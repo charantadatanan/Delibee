@@ -55,6 +55,10 @@
             </aside>
 
             <section class="relative flex min-h-svh flex-col px-5 pb-32 pt-8 sm:px-10 lg:justify-center lg:pb-16">
+                <div class="absolute end-4 top-4 z-20">
+                    <x-ui.theme-toggle />
+                </div>
+
                 <div class="flex justify-center lg:hidden">
                     <a href="{{ route('marketplace') }}" class="inline-flex flex-col items-center gap-1" wire:navigate>
                         <x-ui.bee-logo class="h-auto w-40" />

@@ -8,6 +8,11 @@
 - `reports/` — progress and submission reports.
   - `project-progress-report-2026-11-12.md` — the full build story from start to finish.
   - `database-progress-report-2026-11-09.md` — the database report (kept local until submitted).
+  - `project-management-frontend-progress-report-2026-11-27.md` — project milestones and the custom front-end.
+  - `accounts-authentication-progress-report-2026-11-27.md` — accounts, OTP, login and the email blocker.
+  - `products-inventory-admin-progress-report-2026-11-27.md` — seller inventory, approvals and Hive Guard.
+  - `database-integration-progress-report-2026-11-27.md` — schema, seeding and Cloud Postgres.
+  - `orders-checkout-points-progress-report-2026-11-27.md` — checkout, Bee Flight orders, reviews and Honey Points.
 - `screens/` — current desktop and mobile screenshots used by the README.
 - `screenshots/figma-theme/` and `screenshots/` — earlier Figma-theme and Warm Hive screenshots, kept for comparison.
 - `operations/` — database runbook: backups, off-site copies, restore drills, PITR and network hardening.

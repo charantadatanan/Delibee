@@ -24,6 +24,7 @@
         </div>
 
         <div class="flex min-w-9 items-center justify-end gap-2">
+            <x-ui.theme-toggle />
             {{ $actions ?? '' }}
         </div>
     </div>

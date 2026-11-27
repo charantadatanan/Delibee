@@ -88,12 +88,17 @@
                 </flux:sidebar.item>
             </flux:sidebar.nav>
 
+            <div class="flex items-center justify-between gap-3 rounded-xl border border-comb/70 bg-paper/70 px-3 py-2 dark:border-zinc-800 dark:bg-zinc-900/70">
+                <span class="text-sm font-medium text-ink dark:text-zinc-200">{{ __('Theme') }}</span>
+                <x-ui.theme-toggle />
+            </div>
+
             <x-desktop-user-menu class="hidden lg:block" :name="auth()->user()->name" />
         </flux:sidebar>
 
         @if (request()->routeIs('admin.*'))
             <!-- Admin-only mobile app bar; customer and seller pages carry their own header. -->
-            <header data-mobile-app-bar class="sticky top-0 z-40 grid grid-cols-[2.5rem_1fr_2.5rem] items-center gap-2 border-b border-ink/10 bg-paper/95 px-4 py-2.5 backdrop-blur-md lg:hidden dark:border-zinc-800 dark:bg-zinc-950/95">
+            <header data-mobile-app-bar class="sticky top-0 z-40 grid grid-cols-[2.5rem_1fr_auto] items-center gap-2 border-b border-ink/10 bg-paper/95 px-4 py-2.5 backdrop-blur-md lg:hidden dark:border-zinc-800 dark:bg-zinc-950/95">
                 <button type="button"
                         x-data
                         x-on:click="$dispatch('flux-sidebar-toggle')"
@@ -111,12 +116,16 @@
                     <x-ui.bee-logo class="h-auto w-24" />
                 </a>
 
-                <a href="{{ route('dashboard') }}"
-                   class="grid size-9 place-items-center justify-self-end rounded-full border border-ink/60 bg-honey font-display text-xs font-bold text-ink dark:border-zinc-700"
-                   aria-label="Your profile"
-                   wire:navigate>
-                    {{ auth()->user()->initials() }}
-                </a>
+                <div class="flex items-center justify-end gap-2">
+                    <x-ui.theme-toggle />
+
+                    <a href="{{ route('dashboard') }}"
+                       class="grid size-9 place-items-center rounded-full border border-ink/60 bg-honey font-display text-xs font-bold text-ink dark:border-zinc-700"
+                       aria-label="Your profile"
+                       wire:navigate>
+                        {{ auth()->user()->initials() }}
+                    </a>
+                </div>
             </header>
         @endif
 
